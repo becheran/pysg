@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 """Camera is needed to render a scene
 """
+import math
+import numpy as np
+
 from pysg.node_3d import Node3D
 
 
@@ -12,7 +15,8 @@ class Camera(Node3D):
         Args:
             TODO:
         """
-        pass
+        super().__init__()
+        self.projection_matrix = np.zeros([3, 4], float)
 
 
 class PerspectiveCamera(Camera):
@@ -28,3 +32,19 @@ class PerspectiveCamera(Camera):
 
         """
         super().__init__()
+        self._fov = fov
+        self._aspect = aspect
+        self._near = near
+        self._far = far
+        self.projection_matrix = self.compute_projection_matrix()
+
+    def compute_projection_matrix(self):
+        z = (-2.0 * self._near * self._far) / (self._far - self._near)
+        y = 1.0 / math.tan(self._fov * math.pi / 360)
+        x = y / self._aspect
+
+        return np.array([
+            x, 0.0, 0.0, 0.0,
+            0.0, y, 0.0, 0.0,
+            0.0, 0.0, -1.0, -1.0,
+            0.0, 0.0, z, 0.0])

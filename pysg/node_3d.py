@@ -18,6 +18,5 @@ class Node3D:
         Args:
             node_3d (Node3D): The child node which shall be added to the scene graph.
         """
-        #TODO
-        raise NotImplementedError
+        #TODO IMPLEMENT METHOD HERE!
 
