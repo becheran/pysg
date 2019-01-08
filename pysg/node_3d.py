@@ -4,13 +4,12 @@
 
 
 class Node3D:
-    """Node object of the scene graph. Contains transformd of objects in the scene."""
+    """Node object of the scene graph. Contains transforms of objects in the scene."""
 
     def __init__(self):
+        """ Scene is the base node. All other nodes need to be added to the scene.
         """
-        Args:
-            TODO: TODO
-        """
+        self.child = None
 
     def add(self, node_3d):
         """ Adds another node as a child of this node to the scene graph.
@@ -18,5 +17,4 @@ class Node3D:
         Args:
             node_3d (Node3D): The child node which shall be added to the scene graph.
         """
-        #TODO IMPLEMENT METHOD HERE!
-
+        self.child = node_3d

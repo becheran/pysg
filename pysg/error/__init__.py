@@ -7,7 +7,7 @@ class Error(Exception):
     pass
 
 
-class CameraParameterError(Error):
+class ParameterError(Error):
     """Exception raised for invalid camera parameter."""
 
     def __init__(self, expr, msg):

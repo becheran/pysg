@@ -5,7 +5,7 @@ import math
 
 import numpy as np
 
-from pysg.error import CameraParameterError
+from pysg.error import ParameterError
 from pysg.math.type_checker import is_valid_angle
 from pysg.node_3d import Node3D
 
@@ -63,15 +63,15 @@ class PerspectiveCamera(Camera):
         if fov <= 0 \
                 or fov >= 180 \
                 or not is_valid_angle(fov, in_degrees=True, allow_negative=False, limit_to_circle=True):
-            raise CameraParameterError(fov, 'Field of view with this value is not allowed!')
+            raise ParameterError(fov, 'Field of view with this value is not allowed!')
         if aspect <= 0:
-            raise CameraParameterError(aspect, 'Aspect smaller or equals zero not allowed!')
+            raise ParameterError(aspect, 'Aspect smaller or equals zero not allowed!')
         if near >= far:
-            raise CameraParameterError((near, far), 'Near must be smaller than far!')
+            raise ParameterError((near, far), 'Near must be smaller than far!')
         if near <= 0:
-            raise CameraParameterError(near, 'Near must be greater zero!')
+            raise ParameterError(near, 'Near must be greater zero!')
         if far <= 0:
-            raise CameraParameterError(far, 'Far must be greater zero!')
+            raise ParameterError(far, 'Far must be greater zero!')
 
         self.__fov = fov
         self.__aspect = aspect
@@ -118,15 +118,15 @@ class OrthographicCamera(Camera):
 
         # Check all parameter
         if left >= right:
-            raise CameraParameterError((left, right), 'Left must be smaller than right!')
+            raise ParameterError((left, right), 'Left must be smaller than right!')
         if near >= far:
-            raise CameraParameterError((near, far), 'Near must be smaller than far!')
+            raise ParameterError((near, far), 'Near must be smaller than far!')
         if bottom >= top:
-            raise CameraParameterError((top, bottom), 'Bottom must be smaller than top!')
+            raise ParameterError((top, bottom), 'Bottom must be smaller than top!')
         if near <= 0:
-            raise CameraParameterError(near, 'Near must be greater zero!')
+            raise ParameterError(near, 'Near must be greater zero!')
         if far <= 0:
-            raise CameraParameterError(far, 'Far must be greater zero!')
+            raise ParameterError(far, 'Far must be greater zero!')
 
         self.__bottom = bottom
         self.__top = top

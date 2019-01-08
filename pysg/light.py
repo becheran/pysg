@@ -1,17 +1,12 @@
 # -*- coding: utf-8 -*-
+""" Lights can be added to the scene.
+Some materials like the BasicMaterial ignores any light sources and simply outputs a color.
 """
-TODO
-
-"""
+from pysg.node_3d import Node3D
 
 
-class Light:
-    """The base light class which all other lights need to inherit from."""
+class Light(Node3D):
 
-    def __init__(self, auto_update=True):
+    def __init__(self):
+        """ Base class of all lights which can be added to the scene.
         """
-        Args:
-            auto_update: If true the object transform will be updated automatically.
-            Otherwise you have to do it manually.
-        """
-        self.auto_update = auto_update

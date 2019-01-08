@@ -15,10 +15,9 @@ class Geometry:
 
 
 class BoxGeometry:
-    """Creates a simple 3D box"""
 
     def __init__(self, width, height, depth):
-        """Cube geometry.
+        """Creates a simple cube geometry
 
         Args:
             width (float): Width of cube in meters.

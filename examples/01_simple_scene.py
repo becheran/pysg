@@ -3,12 +3,10 @@
 """
 # TODO remove once api is released
 import sys
+sys.path.append("..")  # Adds higher directory to python modules path.
 
 from pysg.material import BasicMaterial
 from pysg.model_3d import Model3D
-
-sys.path.append("..")  # Adds higher directory to python modules path.
-
 from pysg.camera import PerspectiveCamera
 from pysg.scene import Scene
 from pysg.renderer import GLRenderer
