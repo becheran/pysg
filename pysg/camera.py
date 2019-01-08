@@ -2,8 +2,11 @@
 """Camera is needed to render a scene
 """
 import math
+
 import numpy as np
 
+from pysg.error import CameraParameterError
+from pysg.math.number_type import is_valid_angle
 from pysg.node_3d import Node3D
 
 
@@ -32,6 +35,17 @@ class PerspectiveCamera(Camera):
 
         """
         super().__init__()
+        if fov <= 0 or not is_valid_angle(fov, in_degrees=True, allow_negative=False, limit_to_circle=True):
+            raise CameraParameterError(fov, 'Field of view with this value is not allowed!')
+        if aspect <= 0:
+            raise CameraParameterError(aspect, 'Aspect smaller or equals zero not allowed!')
+        if near > far:
+            raise CameraParameterError((near, far), 'Near must be smaller than far!')
+        if near <= 0:
+            raise CameraParameterError(near, 'Near must be greater zero!')
+        if far <= 0:
+            raise CameraParameterError(near, 'Far must be greater zero!')
+
         self._fov = fov
         self._aspect = aspect
         self._near = near
@@ -74,12 +88,4 @@ class OrthographicCamera(Camera):
         self.projection_matrix = self.compute_projection_matrix()
 
     def compute_projection_matrix(self):
-        z = (-2.0 * self._near * self._far) / (self._far - self._near)
-        y = 1.0 / math.tan(self._fov * math.pi / 360)
-        x = y / self._aspect
-
-        return np.array([
-            x, 0.0, 0.0, 0.0,
-            0.0, y, 0.0, 0.0,
-            0.0, 0.0, -1.0, -1.0,
-            0.0, 0.0, z, 0.0])
+        raise NotImplementedError()
