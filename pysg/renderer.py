@@ -4,6 +4,9 @@
 All children added to this node can be rendered via a renderer.
 
 """
+import moderngl
+
+from pysg.camera import Camera
 from pysg.error import ParameterError
 from pysg.scene import Scene
 
@@ -17,8 +20,11 @@ class Renderer:
             camera (Camera): Camera which is used to view scene.
 
         """
-        if type(scene) is not Scene:
-            raise ParameterError(scene, "Given Scene object is not from type Scene.")
+
+        if not issubclass(type(scene), Scene):
+            raise ParameterError(scene, "Given scene object is not from type Scene.")
+        if not issubclass(type(camera), Camera):
+            raise ParameterError(camera, "Given camera object is not from type Camera.")
 
         self.scene = scene
         self.camera = camera
@@ -26,20 +32,20 @@ class Renderer:
     def render(self):
         raise NotImplementedError()
 
+
 class GLRenderer(Renderer):
-    """Render the scene and the camera to a OpenGL window."""
 
     def __init__(self, scene, camera):
-        """
-
-        Args:
-            scene:
-            camera:
-        """
+        """Render the scene to a given viewport."""
         super().__init__(scene, camera)
+        # Viewport is a tuple of size four (x, y, width, height).
+        self.viewport = None
+        self.ctx = moderngl.create_context()
 
     def render(self):
-        pass
+        self.ctx.viewport = self.viewport
+        self.ctx.clear(*self.scene.background_color) #TODO from scene
+        #TODO self.vao.render(moderngl.LINES, 65 * 4)
 
 
 class HeadlessGLRenderer(Renderer):
@@ -60,4 +66,3 @@ class HeadlessGLRenderer(Renderer):
     def render(self):
         # TODO
         pass
-

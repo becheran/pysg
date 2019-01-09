@@ -4,13 +4,14 @@
 All children added to this node can be rendered via a renderer.
 
 """
+from pysg import color
 from pysg.node_3d import Node3D
 
 
 class Scene(Node3D):
     """The scene object"""
 
-    def __init__(self, auto_update=True):
+    def __init__(self, background_color=color.rgb["black"], auto_update=True):
         """
         Args:
             auto_update: If true the object transform will be updated automatically.
@@ -18,4 +19,4 @@ class Scene(Node3D):
         """
         super().__init__()
         self.auto_update = auto_update
-        self.background_color = color.black
+        self.background_color = background_color
