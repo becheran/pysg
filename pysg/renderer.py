@@ -42,9 +42,23 @@ class GLRenderer(Renderer):
         self.viewport = None
         self.ctx = moderngl.create_context()
 
+        # TODO Load also other shader
+        vertex_shader_source = open('shader/simple.vert').read()
+        fragment_shader_source = open('shader/simple.frag').read()
+        self.prog = self.ctx.program(fragment_shader=fragment_shader_source, vertex_shader=vertex_shader_source)
+        self.mvp = self.prog['Mvp']
+        self.light = self.prog['Light']
+
     def render(self):
         self.ctx.viewport = self.viewport
-        self.ctx.clear(*self.scene.background_color) #TODO from scene
+        self.ctx.clear(*self.scene.background_color)
+
+        if self.scene.auto_update:
+            self.scene.update_world_matrix()
+
+        if self.camera.parent is None:
+
+        #TODO self.mvp.write((self.camera.projection_matrix() * self.camera.).astype('f4').tobytes())
         #TODO self.vao.render(moderngl.LINES, 65 * 4)
 
 

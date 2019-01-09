@@ -1,8 +1,8 @@
-""" Helper functions to evaluate different number representations. """
+""" Transform contains all functions and types needed to transform objects in 3D space."""
 import math
 
 
-def is_valid_angle(angle, *, in_degrees, allow_negative, limit_to_circle):
+def is_angle(angle, *, in_degrees, allow_negative, limit_to_circle):
     """ Check whether the given number is a valid angle rotation
 
     Args:

@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 """The base of all objects which are displayed in the scene.
 """
+from typing import TypeVar
+
+import pyrr
 
 
 class Node3D:
@@ -9,12 +12,40 @@ class Node3D:
     def __init__(self):
         """ Scene is the base node. All other nodes need to be added to the scene.
         """
-        self.child = None
+        self.children = list()
+        self.parent = None
 
-    def add(self, node_3d):
+        # TODO rotation!
+        self.matrix_world = None
+        self.matrix = None
+        self.eulerAngles = None
+
+    def add(self, node_3d: 'Node3D') -> None:
         """ Adds another node as a child of this node to the scene graph.
 
         Args:
             node_3d (Node3D): The child node which shall be added to the scene graph.
         """
-        self.child = node_3d
+        self.children.append(node_3d)
+        node_3d.parent = self
+
+    def remove(self, node_3d: 'Node3D') -> None:
+        """ Remove a child from the scene graph.
+
+        Args:
+            node_3d (Node3D): The child node which shall be removed from the scene graph.
+        """
+        self.children.remove(node_3d)
+
+    # All transform related stuff
+
+    def update_world_matrix(self) -> None:
+        """ Updates the world matrix for a given node in the render scene graph."""
+        if self.parent is None:
+            self.matrix_world = self.matrix
+        else:
+            self.matrix_world = self.matrix_world * self.matrix
+
+        # TODO execute in multiple worker threads?
+        for child in self.children:
+            child.updateMatrixWorld()

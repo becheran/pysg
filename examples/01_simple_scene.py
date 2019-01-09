@@ -21,7 +21,7 @@ class SimpleScene(Example):
         width = self.WINDOW_SIZE[0]
         height = self.WINDOW_SIZE[1]
         camera = PerspectiveCamera(fov=45, aspect=width / height, near=0.01, far=1000)
-        scene = Scene(background_color=color.rgb["blue"])
+        scene = Scene(background_color=color.rgb["blue"], auto_update=True)
         geometry = BoxGeometry(1, 1, 1)
         material = BasicMaterial()
         cube = Model3D(geometry, material)

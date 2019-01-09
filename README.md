@@ -2,38 +2,31 @@
 
 Simple and lightweight 3D render scene graph for python
 
+## TODO
+
+- [ ] Doc
+	- [ ] Static pages 
+	- [x] Setup autodoc with SPHINX
+	- [ ] Add to readthedocs.io
+- [ ] Static typing for most function calls and methods
+- [ ] Make pip package
+- [ ] Examples
+
 ## Dependencies
-TODO
 
-## Getting Started
+* [ModernGL](https://github.com/cprogrammer1994/ModernGL) - OpenGL related stuff.
+* [pyrr](https://github.com/adamlwgriffiths/Pyrr) - Math operations in 3D like matrix multiplication etc.. Fast due to the heavy use of [numpy](http://www.numpy.org/).
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+<!-- 
+## Installing
 
-### Prerequisites
+The pysg package can be installed using pip. Please note that a python version >=3.6 is required since the static type checking feature is used.
 
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
-
-### Installing
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
+TODO: make sure pysg is in pip
 
 ```
-Give the example
+pip install pysg
 ```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
 
 ## Running the tests
 
@@ -54,6 +47,7 @@ Explain what these tests test and why
 ```
 Give an example
 ```
+-->
 
 ## Built With
 
@@ -68,4 +62,6 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Acknowledgments
-Many thanks to the [ModernGL](https://github.com/cprogrammer1994/ModernGL) team. Without this lib it would have been a lot more difficult to realize this project. 
+Many thanks to the [ModernGL](https://github.com/cprogrammer1994/ModernGL) and [pyrr](https://github.com/adamlwgriffiths/Pyrr) teams. 
+
+Also many thanks to the [three.js](https://threejs.org/) developers where I got a lot of inspiration from.
