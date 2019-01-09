@@ -10,3 +10,5 @@ class Light(Node3D):
     def __init__(self):
         """ Base class of all lights which can be added to the scene.
         """
+        # TODO Implement
+        super().__init__()

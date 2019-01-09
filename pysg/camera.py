@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
-"""Camera is needed to render a scene
+"""Camera is used to render a scene to the screen
 """
 import math
 
-import numpy as np
+import pyrr
+from pyrr import Matrix44
 
-from pysg.error import ParameterError
 import pysg.math as pysg_math
+from pysg.error import ParameterError
 from pysg.node_3d import Node3D
 
 
@@ -17,7 +18,7 @@ class Camera(Node3D):
         """Base class of all camera types used in pysg."""
 
         super().__init__()
-        self.__projection_matrix = np.zeros([3, 4], float)
+        self.__projection_matrix = pyrr.Matrix44()
         self._need_matrix_update = True
 
     @property
@@ -25,17 +26,17 @@ class Camera(Node3D):
         return self.__projection_matrix
 
     @projection_matrix.getter
-    def projection_matrix(self):
+    def projection_matrix(self) -> Matrix44:
         if self._need_matrix_update:
             self._need_matrix_update = False
             self.__projection_matrix = self.compute_projection_matrix()
         return self.__projection_matrix
 
-    def compute_projection_matrix(self):
+    def compute_projection_matrix(self) -> Matrix44:
         """ Projection matrix calculation based on different camera types.
 
         Returns:
-            np.array([3, 4], float): Projection matrix in OpenGL format.
+            Matrix44: Projection matrix in OpenGL format.
             m0 m4 m8  m12
             m1 m5 m9  m13
             m2 m6 m10 m14
@@ -48,7 +49,7 @@ class Camera(Node3D):
 class PerspectiveCamera(Camera):
     """Uses frustum as projection matrix"""
 
-    def __init__(self, *, fov, aspect, near, far):
+    def __init__(self, *, fov: float, aspect: float, near: float, far: float):
         """
         Args:
             fov (float): Vertical field of view for the perspective camera in degrees.
@@ -78,7 +79,7 @@ class PerspectiveCamera(Camera):
         self.__near = near
         self.__far = far
 
-    def compute_projection_matrix(self):
+    def compute_projection_matrix(self) -> Matrix44:
         """ Projection matrix calculation for the perspective camera.
             Based on: https://glumpy.github.io/modern-gl.html#projection-matrix
             Only difference is that we use the horizontal FOV not vertical
@@ -89,11 +90,11 @@ class PerspectiveCamera(Camera):
         aspect_reciprocal = 1 / self.__aspect
 
         m00 = f
-        m11 = f / aspect_reciprocal 
+        m11 = f / aspect_reciprocal
         m22 = (self.__far + self.__near) / near_minus_far
         m23 = (2 * self.__near * self.__far) / near_minus_far
 
-        return np.array([
+        return Matrix44([
             m00, 0.0, 0.0, 0.0,
             0.0, m11, 0.0, 0.0,
             0.0, 0.0, m22, m23,
@@ -103,7 +104,7 @@ class PerspectiveCamera(Camera):
 class OrthographicCamera(Camera):
     """Uses square as projection matrix"""
 
-    def __init__(self, *, left, right, top, bottom, near, far):
+    def __init__(self, *, left: float, right: float, top: float, bottom: float, near: float, far: float):
         """
         Args:
             left (float):  Camera volume left (usually -screen_width/2).
@@ -135,7 +136,7 @@ class OrthographicCamera(Camera):
         self.__near = near
         self.__far = far
 
-    def compute_projection_matrix(self):
+    def compute_projection_matrix(self) -> Matrix44:
         """ Projection matrix calculation for the orthographic camera.
                 Based on: https://glumpy.github.io/modern-gl.html#projection-matrix
         """
@@ -152,7 +153,7 @@ class OrthographicCamera(Camera):
         m31 = -(self.__top + self.__bottom) / top_minus_bottom
         m32 = -(self.__far + self.__near) / far_minus_near
 
-        return np.array([
+        return Matrix44([
             m00, 0.0, 0.0, m30,
             0.0, m11, 0.0, m31,
             0.0, 0.0, m22, m32,

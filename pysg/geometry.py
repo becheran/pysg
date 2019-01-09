@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Geometry defines the verticies layout of a 3D object
+"""Geometry defines the vertices layout of a 3D object
 """
 
 
@@ -14,9 +14,9 @@ class Geometry:
         pass
 
 
-class BoxGeometry:
+class BoxGeometry(Geometry):
 
-    def __init__(self, width, height, depth):
+    def __init__(self, width: float, height: float, depth: float):
         """Creates a simple cube geometry
 
         Args:
@@ -24,6 +24,7 @@ class BoxGeometry:
             height (float): Height of cube in meters.
             depth (float): Depth of cube in meters.
         """
+        super().__init__()
         self.width = width
         self.height = height
         self.depth = depth

@@ -1,18 +1,15 @@
 # -*- coding: utf-8 -*-
-"""The root of the scene graph
-
-All children added to this node can be rendered via a renderer.
+""" All rendering related functions and classes
 
 """
 import moderngl
 
 from pysg.camera import Camera
-from pysg.error import ParameterError
 from pysg.scene import Scene
 
 
 class Renderer:
-    def __init__(self, scene, camera):
+    def __init__(self, scene: Scene, camera: Camera):
         """Base class which takes a scene and camera and render.
 
         Args:
@@ -20,12 +17,6 @@ class Renderer:
             camera (Camera): Camera which is used to view scene.
 
         """
-
-        if not issubclass(type(scene), Scene):
-            raise ParameterError(scene, "Given scene object is not from type Scene.")
-        if not issubclass(type(camera), Camera):
-            raise ParameterError(camera, "Given camera object is not from type Camera.")
-
         self.scene = scene
         self.camera = camera
 
@@ -35,8 +26,13 @@ class Renderer:
 
 class GLRenderer(Renderer):
 
-    def __init__(self, scene, camera):
-        """Render the scene to a given viewport."""
+    def __init__(self, scene: Scene, camera: Camera):
+        """Render the scene to a given viewport.
+
+        Args:
+            scene (Scene): Scene which shall be rendered.
+            camera (Camera): Camera which is used to view scene.
+        """
         super().__init__(scene, camera)
         # Viewport is a tuple of size four (x, y, width, height).
         self.viewport = None
@@ -49,7 +45,7 @@ class GLRenderer(Renderer):
         self.mvp = self.prog['Mvp']
         self.light = self.prog['Light']
 
-    def render(self):
+    def render(self) -> None:
         self.ctx.viewport = self.viewport
         self.ctx.clear(*self.scene.background_color)
 
@@ -57,26 +53,28 @@ class GLRenderer(Renderer):
             self.scene.update_world_matrix()
 
         if self.camera.parent is None:
+            self.camera.update_world_matrix()
 
-        #TODO self.mvp.write((self.camera.projection_matrix() * self.camera.).astype('f4').tobytes())
-        #TODO self.vao.render(moderngl.LINES, 65 * 4)
+        # TODO self.mvp.write((self.camera.projection_matrix() * self.camera.).astype('f4').tobytes())
+        # TODO self.vao.render(moderngl.LINES, 65 * 4)
 
 
 class HeadlessGLRenderer(Renderer):
-    """Render the scene to a framebuffer which can be read to CPU RAM to be used as an image."""
 
-    def __init__(self, scene, camera, *, width, height):
-        """
+    def __init__(self, scene: Scene, camera: Camera, *, width: int, height: int):
+        """Render the scene to a framebuffer which can be read to CPU RAM to be used as an image.
 
         Args:
-            scene:
-            camera:
+            scene (Scene): Scene which shall be rendered.
+            camera (Camera): Camera which is used to view scene.
+            width (float): Width of output image in pixel
+            height (float): Height of output image in pixel
         """
 
         super().__init__(scene, camera)
         self.width = width
         self.height = height
 
-    def render(self):
+    def render(self) -> None:
         # TODO
         pass

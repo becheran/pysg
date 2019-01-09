@@ -1,4 +1,4 @@
-""" Transform contains all functions and types needed to transform objects in 3D space."""
+""" Contains some math functions."""
 import math
 
 

@@ -1,25 +1,18 @@
 # -*- coding: utf-8 -*-
-"""
-TODO
-
+""" Materials are used to compute the RGB values of a 3D model.
 """
 
 
 class Material:
-    """The base material class which all other materials need to inherit from."""
 
     def __init__(self):
-        """
-        Args:
-            TODO: TODO
-        """
+        """ Base material class which all other materials need to inherit from."""
+        # TODO implement
 
 
-class BasicMaterial:
-    """Very basic material which is not affected by lights."""
+class BasicMaterial(Material):
 
     def __init__(self):
-        """
-        TODO
-        """
+        """ Very basic material which is not affected by lights."""
         super().__init__()
+        # TODO implment
