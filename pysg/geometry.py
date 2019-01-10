@@ -4,13 +4,9 @@
 
 
 class Geometry:
-    """Base class for all geometry objects"""
 
     def __init__(self):
-        """
-        Args:
-            TODO:
-        """
+        """Base class for all geometry objects"""
         pass
 
 
