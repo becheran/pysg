@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 """ Model3D methods and class"""
-from typing import Type
 
 from pysg.geometry import Geometry
 from pysg.material import Material
@@ -21,4 +20,3 @@ class Model3D(Node3D):
         super().__init__()
         self.geometry = geometry
         self.material = material
-

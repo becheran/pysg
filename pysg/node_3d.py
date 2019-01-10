@@ -4,6 +4,7 @@
 from typing import TypeVar
 
 import pyrr
+from pyrr import Matrix44, Vector3
 
 
 class Node3D:
@@ -15,10 +16,9 @@ class Node3D:
         self.children = list()
         self.parent = None
 
-        # TODO rotation!
-        self.matrix_world = None
-        self.matrix = None
-        self.eulerAngles = None
+        self.matrix_world = Matrix44.identity()
+        self.matrix = Matrix44.identity()
+        self.eulerAngles = Vector3()
 
     def add(self, node_3d: 'Node3D') -> None:
         """ Adds another node as a child of this node to the scene graph.
@@ -48,4 +48,4 @@ class Node3D:
 
         # TODO execute in multiple worker threads?
         for child in self.children:
-            child.updateMatrixWorld()
+            child.update_world_matrix()

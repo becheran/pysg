@@ -2,6 +2,8 @@
 """ All rendering related functions and classes
 
 """
+import os
+
 import moderngl
 
 from pysg.camera import Camera
@@ -39,8 +41,9 @@ class GLRenderer(Renderer):
         self.ctx = moderngl.create_context()
 
         # TODO Load also other shader
-        vertex_shader_source = open('shader/simple.vert').read()
-        fragment_shader_source = open('shader/simple.frag').read()
+        shader_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'shader')
+        vertex_shader_source = open(os.path.join(shader_path, 'simple.vert')).read()
+        fragment_shader_source = open(os.path.join(shader_path, 'simple.frag')).read()
         self.prog = self.ctx.program(fragment_shader=fragment_shader_source, vertex_shader=vertex_shader_source)
         self.mvp = self.prog['Mvp']
         self.light = self.prog['Light']
