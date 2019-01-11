@@ -1,27 +1,10 @@
 #version 330
 
-uniform sampler2D Texture;
-uniform vec4 Color;
-uniform vec3 Light;
-
-in vec3 v_vert;
-in vec3 v_norm;
-in vec3 v_text;
-
+// TODO in vec3 v_color;
 out vec4 f_color;
 
 void main() {
-	float lum = dot(normalize(v_norm), normalize(v_vert - Light));
-	lum = acos(lum) / 3.14159265;
-	lum = clamp(lum, 0.0, 1.0);
-	lum = lum * lum;
-	lum = smoothstep(0.0, 1.0, lum);
-
-	lum *= smoothstep(0.0, 80.0, v_vert.z) * 0.3 + 0.7;
-
-	lum = lum * 0.8 + 0.2;
-
-	vec3 color = texture(Texture, v_text.xy).rgb;
-	color = color * (1.0 - Color.a) + Color.rgb * Color.a;
-	f_color = vec4(color * lum, 1.0);
+    f_color = vec4(0.3, 0.5, 1.0, 1.0);
+    // TODO We're not interested in changing the alpha value
+    // TODO f_color = vec4(v_color, 1.0);
 }

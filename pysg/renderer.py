@@ -5,6 +5,7 @@
 import os
 
 import moderngl
+from pyrr import Matrix44
 
 from pysg.camera import Camera
 from pysg.scene import Scene
@@ -46,20 +47,41 @@ class GLRenderer(Renderer):
         fragment_shader_source = open(os.path.join(shader_path, 'simple.frag')).read()
         self.prog = self.ctx.program(fragment_shader=fragment_shader_source, vertex_shader=vertex_shader_source)
         self.mvp = self.prog['Mvp']
-        self.light = self.prog['Light']
+        # TODO add light and other stuff
+        # self.light = self.prog['Light']
 
     def render(self) -> None:
         self.ctx.viewport = self.viewport
         self.ctx.clear(*self.scene.background_color)
 
+        # Update projection matrices
         if self.scene.auto_update:
             self.scene.update_world_matrix()
 
         if self.camera.parent is None:
             self.camera.update_world_matrix()
 
-        # TODO self.mvp.write((self.camera.projection_matrix() * self.camera.).astype('f4').tobytes())
-        # TODO self.vao.render(moderngl.LINES, 65 * 4)
+        # Render all objects
+        for model_3d in self.scene.render_list:
+            vert_pos = model_3d.geometry.vertex_position
+            vert_idx = model_3d.geometry.vertex_indices
+            vbo = self.ctx.buffer(vert_pos.astype('f4').tobytes())
+            ibo = self.ctx.buffer(vert_idx.astype('i4').tobytes())
+            vao_content = [
+                (vbo, '3f', 'in_vert')
+            ]
+            vao = self.ctx.vertex_array(self.prog, vao_content, index_buffer=ibo)
+
+            # TODO Own camera matrix
+            # proj = self.camera.projection_matrix
+            proj = Matrix44.perspective_projection(45.0, 800 / 600, 0.1, 1000.0)
+            lookat = Matrix44.look_at(
+                eye=(5, 3, 4),
+                target=(0.0, 0.0, 0.0),
+                up=(0.0, 0.0, 1.0),
+            )
+            self.mvp.write((proj * lookat).astype('f4').tobytes())
+            vao.render(moderngl.TRIANGLE_STRIP)
 
 
 class HeadlessGLRenderer(Renderer):

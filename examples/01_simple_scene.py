@@ -21,11 +21,25 @@ class SimpleScene(Example):
         width = self.WINDOW_SIZE[0]
         height = self.WINDOW_SIZE[1]
         camera = PerspectiveCamera(fov=45, aspect=width / height, near=0.01, far=1000)
-        scene = Scene(background_color=color.rgb["blue"], auto_update=True)
+        scene = Scene(background_color=color.rgb["black"], auto_update=True)
         geometry = BoxGeometry(1, 1, 1)
         material = BasicMaterial()
         cube = Model3D(geometry, material)
+        cube.name = "Cube_1"
         scene.add(cube)  # TODO camera.position.z = 5
+
+        #TODO TEST
+        cube2 = Model3D(geometry, material)
+        cube2.name = "Cube_2"
+        cube2_1 = Model3D(geometry, material)
+        cube2_1.name = "Cube_2-1"
+        cube2.add(cube2_1)
+        cube2_2 = Model3D(geometry, material)
+        cube2_2.name = "Cube_2-2"
+        cube2.add(cube2_2)
+        scene.add(cube2)
+
+
         self.renderer = GLRenderer(scene, camera)
 
     def update(self):

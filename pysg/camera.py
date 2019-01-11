@@ -22,10 +22,6 @@ class Camera(Node3D):
         self._need_matrix_update = True
 
     @property
-    def projection_matrix(self):
-        return self.__projection_matrix
-
-    @projection_matrix.getter
     def projection_matrix(self) -> Matrix44:
         if self._need_matrix_update:
             self._need_matrix_update = False
