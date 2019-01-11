@@ -88,13 +88,13 @@ class PerspectiveCamera(Camera):
         m00 = f
         m11 = f / aspect_reciprocal
         m22 = (self.__far + self.__near) / near_minus_far
-        m23 = (2 * self.__near * self.__far) / near_minus_far
+        m32 = (2 * self.__near * self.__far) / near_minus_far
 
         return Matrix44([
             m00, 0.0, 0.0, 0.0,
             0.0, m11, 0.0, 0.0,
-            0.0, 0.0, m22, m23,
-            0.0, 0.0, -1, 0.0])
+            0.0, 0.0, m22, -1,
+            0.0, 0.0, m32, 0.0])
 
 
 class OrthographicCamera(Camera):
@@ -150,7 +150,7 @@ class OrthographicCamera(Camera):
         m32 = -(self.__far + self.__near) / far_minus_near
 
         return Matrix44([
-            m00, 0.0, 0.0, m30,
-            0.0, m11, 0.0, m31,
-            0.0, 0.0, m22, m32,
-            0.0, 0.0, 0.0, 1.0])
+            m00, 0.0, 0.0, 0.0,
+            0.0, m11, 0.0, 0.0,
+            0.0, 0.0, m22, 0.0,
+            m30, m31, m32, 1.0])

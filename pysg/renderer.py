@@ -72,15 +72,13 @@ class GLRenderer(Renderer):
             ]
             vao = self.ctx.vertex_array(self.prog, vao_content, index_buffer=ibo)
 
-            # TODO Own camera matrix
-            # proj = self.camera.projection_matrix
-            proj = Matrix44.perspective_projection(45.0, 800 / 600, 0.1, 1000.0)
+            # TODO Use camera transformation matrix
             lookat = Matrix44.look_at(
                 eye=(5, 3, 4),
                 target=(0.0, 0.0, 0.0),
                 up=(0.0, 0.0, 1.0),
             )
-            self.mvp.write((proj * lookat).astype('f4').tobytes())
+            self.mvp.write((self.camera.projection_matrix * lookat).astype('f4').tobytes())
             vao.render(moderngl.TRIANGLE_STRIP)
 
 
