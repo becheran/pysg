@@ -25,6 +25,12 @@ References
     :maxdepth: 2
 
     references/camera
+    references/geometry
+    references/material
+    references/model_3d
+    references/node_3d
+    references/renderer
+    references/util
 
 Development
 ===========

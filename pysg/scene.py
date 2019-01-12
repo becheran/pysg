@@ -4,8 +4,7 @@
 All children added to this node can be rendered via a renderer.
 
 """
-from pysg import color
-from pysg.model_3d import Model3D
+from pysg.constants import color
 from pysg.node_3d import Node3D
 
 

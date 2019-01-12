@@ -5,7 +5,7 @@ import sys
 
 sys.path.append("..")  # Adds higher directory to python modules path.
 
-from pysg import color
+from pysg.constants import color
 from pysg.material import BasicMaterial
 from pysg.model_3d import Model3D
 from pysg.camera import PerspectiveCamera

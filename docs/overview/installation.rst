@@ -1,6 +1,8 @@
 Installation
 ============
 
+.. _installation:
+
 Install pysg with :command:`pip`:
 
 .. code-block:: sh

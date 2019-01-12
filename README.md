@@ -1,8 +1,10 @@
 # pysg
 
-Simple and lightweight 3D render scene graph for python
+Simple and lightweight 3D render scene graph for python 3.
 
 ## TODO
+
+Right now pysg is under construction and not ready for usage yet. This is a list of things that still need to be done:
 
 - [ ] Doc
 	- [ ] Static pages 
@@ -53,9 +55,11 @@ Give an example
 
 * [SPHINX](http://www.sphinx-doc.org/en/master/) - Used to generate Documentation
 
+<!-- 
 ## Contributing
 
 Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+-->
 
 ## License
 
