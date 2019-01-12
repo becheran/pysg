@@ -141,16 +141,16 @@ latex_elements = {
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
-#  author, documentclass [howto, manual, or own class]).
+#  author, documentclass [howto, references, or own class]).
 latex_documents = [
     (master_doc, 'pysg.tex', 'pysg Documentation',
-     'Armin Becher', 'manual'),
+     'Armin Becher', 'references'),
 ]
 
-# -- Options for manual page output ------------------------------------------
+# -- Options for references page output ------------------------------------------
 
-# One entry per manual page. List of tuples
-# (source start file, name, description, authors, manual section).
+# One entry per references page. List of tuples
+# (source start file, name, description, authors, references section).
 man_pages = [
     (master_doc, 'pysg', 'pysg Documentation',
      [author], 1)
