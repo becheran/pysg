@@ -6,10 +6,7 @@ from pysg.error import Error
 
 class TestPerspectiveCamera(TestCase):
 
-    def test_parameter_errors(self):
-        # Different invalid configurations which should through built-in errors
-
-        # Field of view
+    def test_parameter_errors_FOV(self):
         with self.assertRaises(Error):
             PerspectiveCamera(fov=-1, aspect=1, near=0.1, far=100)
         with self.assertRaises(Error):
@@ -21,7 +18,7 @@ class TestPerspectiveCamera(TestCase):
         with self.assertRaises(Error):
             PerspectiveCamera(fov=180, aspect=1, near=0.1, far=100)
 
-        # Aspect ratio
+    def test_parameter_errors_aspect_ratio(self):
         with self.assertRaises(Error):
             PerspectiveCamera(fov=45, aspect=-0.1, near=0.1, far=100)
         with self.assertRaises(Error):
@@ -31,7 +28,7 @@ class TestPerspectiveCamera(TestCase):
         with self.assertRaises(Error):
             PerspectiveCamera(fov=45, aspect=0, near=0.1, far=100)
 
-        # Near and far
+    def test_parameter_errors_near_far(self):
         with self.assertRaises(Error):
             PerspectiveCamera(fov=45, aspect=0.2, near=-1, far=100)
         with self.assertRaises(Error):
@@ -48,10 +45,7 @@ class TestPerspectiveCamera(TestCase):
 
 class TestOrthographicCamera(TestCase):
 
-    def test_parameter_errors(self):
-        # Different invalid configurations which should through built-in errors
-
-        # Left Right
+    def test_parameter_errors_left_right(self):
         with self.assertRaises(Error):
             OrthographicCamera(left=100, right=-100, top=100, bottom=-100, near=0.1, far=100)
         with self.assertRaises(Error):
@@ -59,7 +53,7 @@ class TestOrthographicCamera(TestCase):
         with self.assertRaises(Error):
             OrthographicCamera(left=100, right=100, top=100, bottom=-100, near=0.1, far=100)
 
-        # Top Bottom
+    def test_parameter_errors_top_bottom(self):
         with self.assertRaises(Error):
             OrthographicCamera(left=-100, right=100, top=-100, bottom=100, near=0.1, far=100)
         with self.assertRaises(Error):
@@ -67,7 +61,7 @@ class TestOrthographicCamera(TestCase):
         with self.assertRaises(Error):
             OrthographicCamera(left=-100, right=100, top=0, bottom=0, near=0.1, far=100)
 
-        # Near and far
+    def test_parameter_errors_near_far(self):
         with self.assertRaises(Error):
             PerspectiveCamera(fov=45, aspect=0.2, near=-1, far=100)
         with self.assertRaises(Error):

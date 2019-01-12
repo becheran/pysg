@@ -58,7 +58,7 @@ class GLRenderer(Renderer):
         if self.scene.auto_update:
             self.scene.update_world_matrix()
 
-        if self.camera.parent is None:
+        if self.camera._parent is None:
             self.camera.update_world_matrix()
 
         # Render all objects

@@ -13,3 +13,11 @@ class ParameterError(Error):
     def __init__(self, expr, msg):
         self.expr = expr
         self.msg = msg
+
+
+class PyrrTypeError(Error):
+    """Exception raised for invalid pysg type."""
+
+    def __init__(self, expr, msg):
+        self.expr = expr
+        self.msg = msg
