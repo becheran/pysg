@@ -4,6 +4,7 @@ from typing import List
 
 import numpy as np
 import pyrr
+from pyrr import Matrix44
 
 
 def is_angle(angle, *, in_degrees, allow_negative, limit_to_circle):
@@ -91,3 +92,23 @@ def solve_quadratic_equation(a: float, b: float, c: float) -> List[float]:
     else:
         # No solution exists
         return list()
+
+
+# TODO Fork request to Pyrr
+def compose_matrix(qaterenion, position, scale):
+    """TODO
+    """
+    m = Matrix44()
+
+    # TODO ADD SCALE AND ROTATION
+
+   #scale = np.linalg.norm(m[:3, :3], axis=1)
+    #det = np.linalg.det(m)
+    #if det < 0:
+    #    scale[0] *= -1
+
+    m[3, :3] = position
+
+    #rotation = m[:3, :3] * (1 / scale)[:, None]
+
+    return m
