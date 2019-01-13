@@ -4,7 +4,7 @@ from typing import List
 
 import numpy as np
 import pyrr
-from pyrr import Matrix44
+from pyrr import Matrix44, Quaternion, Vector3
 
 
 def is_angle(angle, *, in_degrees, allow_negative, limit_to_circle):
@@ -95,20 +95,24 @@ def solve_quadratic_equation(a: float, b: float, c: float) -> List[float]:
 
 
 # TODO Fork request to Pyrr
-def compose_matrix(qaterenion, position, scale):
-    """TODO
+def compose_matrix(position: Vector3, quaternion: Quaternion, scale: Vector3) -> Matrix44:
+    """ Reconstruct a 4x4 matrix from rotation, position and scale.
+
+    Note that all matrices are in the OpenGL column first layout.
+
+    Args:
+        quaternion: Input rotation in Quaternion representation.
+        position: Position in 3D space as Vector3.
+        scale: Scale of object (x, y, and z) as Vector3.
     """
-    m = Matrix44()
 
-    # TODO ADD SCALE AND ROTATION
-
-   #scale = np.linalg.norm(m[:3, :3], axis=1)
-    #det = np.linalg.det(m)
-    #if det < 0:
-    #    scale[0] *= -1
-
-    m[3, :3] = position
-
-    #rotation = m[:3, :3] * (1 / scale)[:, None]
-
-    return m
+    translation_matrix = Matrix44([[1., 0., 0., 0.],
+                                   [0., 1., 0., 0.],
+                                   [0., 0., 1., 0.],
+                                   [position[0], position[1], position[2], 1.]])
+    rotation_matrix = quaternion.matrix44
+    scale_matrix = Matrix44([[scale[0], 0., 0., 0.0],
+                             [0., scale[1], 0., 0.0],
+                             [0., 0., scale[2], 0.0],
+                             [0., 0., 0., 1.]])
+    return translation_matrix * rotation_matrix * scale_matrix

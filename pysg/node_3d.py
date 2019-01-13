@@ -4,6 +4,7 @@
 
 from pyrr import Matrix44, Vector3, Quaternion
 
+from pysg.math import compose_matrix
 from pysg.util import pyrr_type_checker
 
 
@@ -23,7 +24,7 @@ class Node3D:
         self._local_position = Vector3()
         self._world_position = Vector3()
 
-        self._scale = Vector3()
+        self._scale = Vector3([1., 1., 1.])
 
         self._local_quaternion = Quaternion()
         self._world_quaternion = Quaternion()
@@ -33,7 +34,7 @@ class Node3D:
         self._local_matrix = Matrix44.identity()
         # TODO Rotation as matrix33
 
-        self.__matrix_needs_update = False
+        self.__matrix_needs_update = True
 
     @property
     def parent(self):
@@ -99,14 +100,16 @@ class Node3D:
     def local_matrix(self):
         if self.__matrix_needs_update:
             self.__matrix_needs_update = False
-            # TODO
+            self._local_matrix = compose_matrix(self.local_position, self.local_quaternion, self.scale)
         return self._local_matrix
 
     @property
     def world_matrix(self):
-        if self.__matrix_needs_update:
-            self.__matrix_needs_update = False
         return self._world_matrix
+
+    @property
+    def scale(self):
+        return self._scale
 
     def __repr__(self):
         return "Node(%s)" % self.name
@@ -134,9 +137,9 @@ class Node3D:
     def update_world_matrix(self) -> None:
         """ Updates the world matrix for a given node in the render scene graph."""
         if self._parent is None:
-            self._world_matrix = self._local_matrix
+            self._world_matrix = self.local_matrix
         else:
-            self._world_matrix = self._parent.world_matrix * self._local_matrix
+            self._world_matrix = self.parent.world_matrix * self.local_matrix
 
         for child in self.children:
             child.update_world_matrix()

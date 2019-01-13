@@ -26,20 +26,9 @@ class SimpleScene(Example):
         material = BasicMaterial()
         cube = Model3D(geometry, material)
         cube.name = "Cube_1"
-        scene.add(cube)  # TODO camera.position.z = 5
-
-        #TODO TEST
-        cube2 = Model3D(geometry, material)
-        cube2.name = "Cube_2"
-        cube2_1 = Model3D(geometry, material)
-        cube2_1.name = "Cube_2-1"
-        cube2.add(cube2_1)
-        cube2_2 = Model3D(geometry, material)
-        cube2_2.name = "Cube_2-2"
-        cube2.add(cube2_2)
-        scene.add(cube2)
-
-
+        camera.local_position.z += 5
+        camera.local_position.y -= 1
+        scene.add(cube)
         self.renderer = GLRenderer(scene, camera)
 
     def update(self):

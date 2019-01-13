@@ -5,7 +5,6 @@
 import os
 
 import moderngl
-from pyrr import Matrix44
 
 from pysg.camera import Camera
 from pysg.scene import Scene
@@ -61,6 +60,8 @@ class GLRenderer(Renderer):
         if self.camera._parent is None:
             self.camera.update_world_matrix()
 
+        view_projection_matrix = self.camera.projection_matrix * self.camera.world_matrix.inverse
+
         # Render all objects
         for model_3d in self.scene.render_list:
             vert_pos = model_3d.geometry.vertex_position
@@ -72,13 +73,8 @@ class GLRenderer(Renderer):
             ]
             vao = self.ctx.vertex_array(self.prog, vao_content, index_buffer=ibo)
 
-            # TODO Use camera transformation matrix
-            lookat = Matrix44.look_at(
-                eye=(5, 3, 4),
-                target=(0.0, 0.0, 0.0),
-                up=(0.0, 0.0, 1.0),
-            )
-            self.mvp.write((self.camera.projection_matrix * lookat).astype('f4').tobytes())
+            mvp = view_projection_matrix * model_3d.world_matrix
+            self.mvp.write(mvp.astype('f4').tobytes())
             vao.render(moderngl.TRIANGLE_STRIP)
 
 
