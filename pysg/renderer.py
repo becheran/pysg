@@ -21,6 +21,9 @@ class Renderer:
         """
         self.scene = scene
         self.camera = camera
+        self.ctx = moderngl.create_context()
+        self.ctx.enable(moderngl.CULL_FACE)
+        self.ctx.front_face = 'ccw'
 
     def render(self):
         raise NotImplementedError()
@@ -38,7 +41,6 @@ class GLRenderer(Renderer):
         super().__init__(scene, camera)
         # Viewport is a tuple of size four (x, y, width, height).
         self.viewport = None
-        self.ctx = moderngl.create_context()
 
         # TODO Load also other shader
         shader_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'shader')
@@ -75,7 +77,7 @@ class GLRenderer(Renderer):
 
             mvp = view_projection_matrix * model_3d.world_matrix
             self.mvp.write(mvp.astype('f4').tobytes())
-            vao.render(moderngl.TRIANGLE_STRIP)
+            vao.render(moderngl.TRIANGLES)
 
 
 class HeadlessGLRenderer(Renderer):

@@ -2,6 +2,7 @@
 """Geometry defines the vertices layout of a 3D object
 """
 from pyrr import geometry
+import numpy as np
 
 
 class Geometry:
@@ -37,34 +38,42 @@ class BoxGeometry(Geometry):
         self._depth = depth
         self._update_geometry()
 
-    @property
-    def width(self):
-        return self._width
-
-    @property
-    def height(self):
-        return self._height
-
-    @property
-    def depth(self):
-        return self._depth
-
-    @width.setter
-    def width(self, width):
-        self._width = width
-        self._update_geometry()
-
-    @height.setter
-    def height(self, height):
-        self._height = height
-        self._update_geometry()
-
-    @depth.setter
-    def depth(self, depth):
-        self._depth = depth
-        self._update_geometry()
-
     def _update_geometry(self):
         cube_geo = geometry.create_cube((self._width, self._height, self._depth))
-        self._vertex_position = cube_geo[0]
-        self._vertex_indices = cube_geo[1]
+        x = self._width / 2.0
+        y = self._height / 2.0
+        z = self._depth / 2.0
+        self._vertex_position = np.array([
+            # front
+            -x, -y, z,
+            x, -y, z,
+            x, y, z,
+            -x, y, z,
+            # back
+            -x, -y, -z,
+            x, -y, -z,
+            x, y, -z,
+            -x, y, -z])
+        self._vertex_indices = np.array([
+            # front
+            0, 1, 2,
+            2, 3, 0,
+            # right
+            1, 5, 6,
+            6, 2, 1,
+            # back
+            7, 6, 5,
+            5, 4, 7,
+            # left
+            4, 0, 3,
+            3, 7, 4,
+            # bottom
+            4, 5, 1,
+            1, 0, 4,
+            # top
+            3, 2, 6,
+            6, 7, 3
+        ])
+
+        # self._vertex_position = cube_geo[0]
+        # self._vertex_indices = cube_geo[1]
