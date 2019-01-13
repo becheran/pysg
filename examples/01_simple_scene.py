@@ -3,6 +3,8 @@
 # TODO remove once api is released
 import sys
 
+from pyrr import Vector3
+
 sys.path.append("..")  # Adds higher directory to python modules path.
 
 from pysg.constants import color
@@ -28,6 +30,7 @@ class SimpleScene(Example):
         cube.name = "Cube_1"
         camera.local_position.z += 5
         camera.local_position.y -= 1
+        cube.local_euler_angles(Vector3([0, 45, 0]))
         scene.add(cube)
         self.renderer = GLRenderer(scene, camera)
 

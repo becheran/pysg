@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 """The base of all objects which are displayed in the scene.
 """
+import math
 
+import numpy as np
 from pyrr import Matrix44, Vector3, Quaternion
 
 from pysg.math import compose_matrix
@@ -28,8 +30,6 @@ class Node3D:
 
         self._local_quaternion = Quaternion()
         self._world_quaternion = Quaternion()
-        # TODO self._local_eulerAngles = Vector3()
-        # TODO self._world_eulerAngles = Vector3()
         self._world_matrix = Matrix44.identity()
         self._local_matrix = Matrix44.identity()
         # TODO Rotation as matrix33
@@ -85,6 +85,10 @@ class Node3D:
         local_quaternion = pyrr_type_checker(local_quaternion, Quaternion)
         self.__matrix_needs_update = True
         self._local_quaternion = local_quaternion
+        if self._parent is None:
+            self.world_quaternion = local_quaternion
+        else:
+            self.world_quaternion = local_quaternion * self._parent.world_quaternion
 
     @property
     def world_quaternion(self):
@@ -95,6 +99,10 @@ class Node3D:
         world_quaternion = pyrr_type_checker(world_quaternion, Quaternion)
         self.__matrix_needs_update = True
         self._world_quaternion = world_quaternion
+        if self._parent is None:
+            self._world_quaternion = world_quaternion
+        for child in self.children:
+            child.world_quaternion = child.world_quaternion + self.world_quaternion
 
     @property
     def local_matrix(self):
@@ -102,6 +110,17 @@ class Node3D:
             self.__matrix_needs_update = False
             self._local_matrix = compose_matrix(self.local_position, self.local_quaternion, self.scale)
         return self._local_matrix
+
+    # TODO add rotation order of euler angles
+    def local_euler_angles(self, local_euler: Vector3) -> None:
+        """  Euler Angles as Vector of length 3 in the following order: [yaw, pitch, roll]
+
+        Args:
+            local_euler: Euler angles in degrees.
+        """
+        local_euler_radians = np.radians(local_euler)
+        # TODO NORMALIZE BETEWEEN 0 and 360 or -180 and 180
+        self.local_quaternion = Quaternion.from_eulers(local_euler_radians)
 
     @property
     def world_matrix(self):
