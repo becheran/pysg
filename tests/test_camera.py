@@ -38,10 +38,6 @@ class TestPerspectiveCamera(TestCase):
         with self.assertRaises(Error):
             PerspectiveCamera(fov=45, aspect=0.2, near=0, far=-1)
 
-    def test_matrix(self):
-        # TODO
-        self.assertFalse(True)
-
 
 class TestOrthographicCamera(TestCase):
 
@@ -70,7 +66,3 @@ class TestOrthographicCamera(TestCase):
             PerspectiveCamera(fov=45, aspect=0.2, near=-1, far=1)
         with self.assertRaises(Error):
             PerspectiveCamera(fov=45, aspect=0.2, near=0, far=-1)
-
-    def test_matrix(self):
-        # TODO
-        self.assertFalse(True)

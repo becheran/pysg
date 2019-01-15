@@ -1,12 +1,14 @@
 from unittest import TestCase
 
+import numpy as np
 from pyrr import Vector3, Quaternion
 
+from pysg.testing import CustomAssertions
 from pysg.math import quaternion_are_equal
 from pysg.node_3d import Node3D
 
 
-class TestNode3D(TestCase):
+class TestNode3D(TestCase, CustomAssertions):
     def setUp(self):
         # Root
         #   |  \
@@ -45,57 +47,75 @@ class TestNode3D(TestCase):
 
     def test_rotate_x_1(self):
         self.root.rotate_x(180)
-        self.assertTrue(quaternion_are_equal(self.root.local_quaternion, Quaternion([1, 0, 0, 0])))
+        self.assertQuaternionAreEqual(self.root.local_quaternion, Quaternion([1, 0, 0, 0]))
 
     def test_rotate_x_2(self):
         self.root.rotate_x(360)
-        self.assertTrue(quaternion_are_equal(self.root.local_quaternion, Quaternion([0, 0, 0, 1])))
+        self.assertQuaternionAreEqual(self.root.local_quaternion, Quaternion([0, 0, 0, 1]))
 
     def test_rotate_x_3(self):
         self.root.rotate_x(720)
-        self.assertTrue(quaternion_are_equal(self.root.local_quaternion, Quaternion([0, 0, 0, 1])))
+        self.assertQuaternionAreEqual(self.root.local_quaternion, Quaternion([0, 0, 0, 1]))
 
     def test_rotate_y_1(self):
         self.root.rotate_y(180)
-        self.assertTrue(quaternion_are_equal(self.root.local_quaternion, Quaternion([0, 1, 0, 0])))
+        self.assertQuaternionAreEqual(self.root.local_quaternion, Quaternion([0, 1, 0, 0]))
 
     def test_rotate_y_2(self):
         self.root.rotate_y(360)
-        self.assertTrue(quaternion_are_equal(self.root.local_quaternion, Quaternion([0, 0, 0, 1])))
+        self.assertQuaternionAreEqual(self.root.local_quaternion, Quaternion([0, 0, 0, 1]))
 
     def test_rotate_z_1(self):
         self.root.rotate_z(180)
-        self.assertTrue(quaternion_are_equal(self.root.local_quaternion, Quaternion([0, 0, 1, 0])))
+        self.assertQuaternionAreEqual(self.root.local_quaternion, Quaternion([0, 0, 1, 0]))
 
     def test_rotate_z_2(self):
         self.root.rotate_z(360)
-        self.assertTrue(quaternion_are_equal(self.root.local_quaternion, Quaternion([0, 0, 0, 1])))
+        self.assertQuaternionAreEqual(self.root.local_quaternion, Quaternion([0, 0, 0, 1]))
 
     def test_rotate_z_3(self):
         self.root.rotate_z(720)
-        self.assertTrue(quaternion_are_equal(self.root.local_quaternion, Quaternion([0, 0, 0, 1])))
+        self.assertQuaternionAreEqual(self.root.local_quaternion, Quaternion([0, 0, 0, 1]))
 
     def test_rotate_z_4(self):
         self.root.rotate_z(180, local_space=False)
-        self.assertTrue(quaternion_are_equal(self.root.local_quaternion, Quaternion([0, 0, 0, 1])))
-        self.assertTrue(quaternion_are_equal(self.root.world_quaternion, Quaternion([0, 0, 1, 0])))
+        self.assertQuaternionAreEqual(self.root.local_quaternion, Quaternion([0, 0, 1, 0]))
+        self.assertQuaternionAreEqual(self.root.world_quaternion, Quaternion([0, 0, 1, 0]))
 
-    def test_scale(self):
-        self.fail()
+    def test_euler_1(self):
+        self.root.local_euler_angles = Vector3([180, 0, 0])
+        self.assertQuaternionAreEqual(self.root.local_quaternion, Quaternion([1, 0, 0, 0]))
+
+    def test_euler_2(self):
+        self.child_1.local_euler_angles = Vector3([80, 40, 10])
+        np.testing.assert_almost_equal(self.child_1.local_euler_angles, Vector3([80, 40, 10]))
+        np.testing.assert_almost_equal(self.child_1.world_euler_angles, Vector3([80, 40, 10]))
+
+    def test_euler_3(self):
+        self.root.local_euler_angles = Vector3([180, 0, 0])
+        self.assertQuaternionAreEqual(self.child_2.local_quaternion, Quaternion([1, 0, 0, 0]))
+
+    def test_euler_4(self):
+        angles = Vector3([45, 78, 54])
+        self.root.local_euler_angles = angles
+        np.testing.assert_almost_equal(self.child_2.local_euler_angles, angles)
 
     def test_quaternion_1(self):
         self.root.local_quaternion = [0.5, 0.5, 0.5, 0.5]
-        self.assertTrue(quaternion_are_equal(self.child_2.world_quaternion, self.root.local_quaternion))
+        self.assertQuaternionAreEqual(self.child_2.world_quaternion, self.root.local_quaternion)
 
     def test_quaternion_2(self):
         self.root.local_quaternion = [-0.5, 0.5, 0.5, 0.5]
-        self.assertTrue(quaternion_are_equal(self.child_2.world_quaternion, self.root.local_quaternion))
+        self.assertQuaternionAreEqual(self.child_2.world_quaternion, self.root.local_quaternion)
 
     def test_quaternion_3(self):
         self.root.world_quaternion = [-0.5, 0.5, 0.5, 0.5]
-        self.assertTrue(quaternion_are_equal(self.child_2.world_quaternion, self.root.local_quaternion))
+        self.assertQuaternionAreEqual(self.child_2.world_quaternion, self.root.local_quaternion)
 
     def test_quaternion_4(self):
         self.root.world_quaternion = [1, 0, 0, 0]
         self.child_2.local_quaternion = [1, 0, 0, 0]
-        self.assertTrue(quaternion_are_equal(self.child_2.world_quaternion, Quaternion([0, 0, 0, 1])))
+        self.assertQuaternionAreEqual(self.child_2.world_quaternion, Quaternion([0, 0, 0, 1]))
+
+    def test_scale(self):
+        self.fail()
