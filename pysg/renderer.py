@@ -24,6 +24,7 @@ class Renderer:
         self.ctx = moderngl.create_context()
         self.ctx.enable(moderngl.CULL_FACE)
         self.ctx.front_face = 'ccw'
+        self.ctx.enable(moderngl.DEPTH_TEST)
 
     def render(self):
         raise NotImplementedError()

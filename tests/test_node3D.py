@@ -82,3 +82,20 @@ class TestNode3D(TestCase):
 
     def test_scale(self):
         self.fail()
+
+    def test_quaternion_1(self):
+        self.root.local_quaternion = [0.5, 0.5, 0.5, 0.5]
+        self.assertTrue(quaternion_are_equal(self.child_2.world_quaternion, self.root.local_quaternion))
+
+    def test_quaternion_2(self):
+        self.root.local_quaternion = [-0.5, 0.5, 0.5, 0.5]
+        self.assertTrue(quaternion_are_equal(self.child_2.world_quaternion, self.root.local_quaternion))
+
+    def test_quaternion_3(self):
+        self.root.world_quaternion = [-0.5, 0.5, 0.5, 0.5]
+        self.assertTrue(quaternion_are_equal(self.child_2.world_quaternion, self.root.local_quaternion))
+
+    def test_quaternion_4(self):
+        self.root.world_quaternion = [1, 0, 0, 0]
+        self.child_2.local_quaternion = [1, 0, 0, 0]
+        self.assertTrue(quaternion_are_equal(self.child_2.world_quaternion, Quaternion([0, 0, 0, 1])))
