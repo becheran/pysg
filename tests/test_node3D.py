@@ -1,6 +1,7 @@
 from unittest import TestCase
 
 from pyrr import Vector3
+from pyrr import Vector3, Quaternion
 
 from pysg.node_3d import Node3D
 
@@ -41,3 +42,20 @@ class TestNode3D(TestCase):
         self.child_2.local_position += 1
         self.assertEqual(self.child_2.world_position, self.child_2_2.world_position)
         self.assertEqual(self.root.world_position, self.child_1.world_position)
+
+    def test_quaternion_1(self):
+        self.root.local_quaternion = [0.5, 0.5, 0.5, 0.5]
+        self.assertTrue(quaternions_are_equal(self.child_2.world_quaternion, self.root.local_quaternion))
+
+    def test_quaternion_2(self):
+        self.root.local_quaternion = [-0.5, 0.5, 0.5, 0.5]
+        self.assertTrue(quaternions_are_equal(self.child_2.world_quaternion, self.root.local_quaternion))
+
+    def test_quaternion_3(self):
+        self.root.world_quaternion = [-0.5, 0.5, 0.5, 0.5]
+        self.assertTrue(quaternions_are_equal(self.child_2.world_quaternion, self.root.local_quaternion))
+
+    def test_quaternion_4(self):
+        self.root.world_quaternion = [1, 0, 0, 0]
+        self.child_2.local_quaternion = [1, 0, 0, 0]
+        self.assertTrue(quaternions_are_equal(self.child_2.world_quaternion, Quaternion([0, 0, 0, 1])))
