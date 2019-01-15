@@ -1,7 +1,8 @@
 from unittest import TestCase
 
-from pyrr import Vector3
+from pyrr import Vector3, Quaternion
 
+from pysg.math import quaternion_are_equal
 from pysg.node_3d import Node3D
 
 
@@ -41,3 +42,43 @@ class TestNode3D(TestCase):
         self.child_2.local_position += 1
         self.assertEqual(self.child_2.world_position, self.child_2_2.world_position)
         self.assertEqual(self.root.world_position, self.child_1.world_position)
+
+    def test_rotate_x_1(self):
+        self.root.rotate_x(180)
+        self.assertTrue(quaternion_are_equal(self.root.local_quaternion, Quaternion([1, 0, 0, 0])))
+
+    def test_rotate_x_2(self):
+        self.root.rotate_x(360)
+        self.assertTrue(quaternion_are_equal(self.root.local_quaternion, Quaternion([0, 0, 0, 1])))
+
+    def test_rotate_x_3(self):
+        self.root.rotate_x(720)
+        self.assertTrue(quaternion_are_equal(self.root.local_quaternion, Quaternion([0, 0, 0, 1])))
+
+    def test_rotate_y_1(self):
+        self.root.rotate_y(180)
+        self.assertTrue(quaternion_are_equal(self.root.local_quaternion, Quaternion([0, 1, 0, 0])))
+
+    def test_rotate_y_2(self):
+        self.root.rotate_y(360)
+        self.assertTrue(quaternion_are_equal(self.root.local_quaternion, Quaternion([0, 0, 0, 1])))
+
+    def test_rotate_z_1(self):
+        self.root.rotate_z(180)
+        self.assertTrue(quaternion_are_equal(self.root.local_quaternion, Quaternion([0, 0, 1, 0])))
+
+    def test_rotate_z_2(self):
+        self.root.rotate_z(360)
+        self.assertTrue(quaternion_are_equal(self.root.local_quaternion, Quaternion([0, 0, 0, 1])))
+
+    def test_rotate_z_3(self):
+        self.root.rotate_z(720)
+        self.assertTrue(quaternion_are_equal(self.root.local_quaternion, Quaternion([0, 0, 0, 1])))
+
+    def test_rotate_z_4(self):
+        self.root.rotate_z(180, local_space=False)
+        self.assertTrue(quaternion_are_equal(self.root.local_quaternion, Quaternion([0, 0, 0, 1])))
+        self.assertTrue(quaternion_are_equal(self.root.world_quaternion, Quaternion([0, 0, 1, 0])))
+
+    def test_scale(self):
+        self.fail()

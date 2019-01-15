@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 """The base of all objects which are displayed in the scene.
 """
-import math
 
 import numpy as np
 from pyrr import Matrix44, Vector3, Quaternion
 
 from pysg.math import compose_matrix
-from pysg.util import pyrr_type_checker
+from pysg.util import pyrr_type_checker, parameters_as_angles_deg_to_rad
 
 
 class Node3D:
@@ -119,8 +118,65 @@ class Node3D:
             local_euler: Euler angles in degrees.
         """
         local_euler_radians = np.radians(local_euler)
-        # TODO NORMALIZE BETEWEEN 0 and 360 or -180 and 180
         self.local_quaternion = Quaternion.from_eulers(local_euler_radians)
+
+    @parameters_as_angles_deg_to_rad('angle')
+    def rotate_x(self, angle: float, local_space: bool= True) -> None:
+        """ Rotate object around its x-axis.
+
+        Args:
+            angle: The rotation angle in degrees.
+            local_space: If True rotate in local coordinate system. Otherwise in world space.
+        """
+        rotation_quaternion = Quaternion.from_x_rotation(angle)
+        if local_space:
+            self.local_quaternion *= rotation_quaternion
+        else:
+            self.world_quaternion *= rotation_quaternion
+
+    @parameters_as_angles_deg_to_rad('angle')
+    def rotate_y(self, angle: float, local_space: bool= True) -> None:
+        """ Rotate object around its y-axis.
+
+        Args:
+            angle: The rotation angle in degrees.
+            local_space: If True rotate in local coordinate system. Otherwise in world space.
+        """
+        rotation_quaternion = Quaternion.from_y_rotation(angle)
+        if local_space:
+            self.local_quaternion *= rotation_quaternion
+        else:
+            self.world_quaternion *= rotation_quaternion
+
+    @parameters_as_angles_deg_to_rad('angle')
+    def rotate_z(self, angle: float, local_space: bool= True) -> None:
+        """ Rotate object around its z-axis.
+
+        Args:
+            angle: The rotation angle in degrees.
+            local_space: If True rotate in local coordinate system. Otherwise in world space.
+        """
+        rotation_quaternion = Quaternion.from_z_rotation(angle)
+        if local_space:
+            self.local_quaternion *= rotation_quaternion
+        else:
+            self.world_quaternion *= rotation_quaternion
+
+    @property
+    def scale(self, scale):
+        # TODO implement
+        self._scale = scale
+
+    # TODO SETTER SCALE.
+
+    # TODO LOSSY scale for global scale??
+
+    @property
+    def local_matrix(self):
+        if self.__matrix_needs_update:
+            self.__matrix_needs_update = False
+            self._local_matrix = compose_matrix(self.local_position, self.local_quaternion, self.scale)
+        return self._local_matrix
 
     @property
     def world_matrix(self):
