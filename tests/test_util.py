@@ -1,13 +1,15 @@
 from unittest import TestCase
 
-from pyrr import Vector3
+from pyrr import Vector3, Quaternion
 
+from pysg.testing import CustomAssertions
 from pysg.error import PyrrTypeError
+from pysg.math import quaternion_are_equal
 from pysg.util import pyrr_type_checker, parameters_as_angles_deg_to_rad
 import numpy as np
 
 
-class TestUtil(TestCase):
+class TestUtil(TestCase, CustomAssertions):
     def test_pyrr_type_checker_fail(self):
         in_var = [2, 1, 2, 4]
         with self.assertRaises(PyrrTypeError):
@@ -32,5 +34,17 @@ class TestUtil(TestCase):
         def test(angle, result):
             np.testing.assert_almost_equal(angle, result, decimal=5)
 
-        test(Vector3([45,0, -280]), Vector3([0.785398,0,-4.88692]))
+        test(Vector3([45, 0, -280]), Vector3([0.785398, 0, -4.88692]))
 
+    def test_quaternion_to_euler_angles(self):
+        v = np.radians(Vector3([0, 0, 0]))
+        self.assertQuaternionAreEqual(Quaternion.from_eulers(v), (Quaternion([0, 0, 0, 1])))
+        v = np.radians([0, 0, 180])
+        self.assertQuaternionAreEqual(Quaternion.from_eulers(v), (Quaternion([0, 0, 1, 0])))
+        v = np.radians([0, 0, 360])
+        self.assertQuaternionAreEqual(Quaternion.from_eulers(v), (Quaternion([0, 0, 0, 1])))
+        v = np.radians([90, 70, 45])
+        e = Quaternion.from_eulers(v)  # [-0.69034553 -0.15304592  0.15304592  0.69034553]
+        print(e)
+        self.assertQuaternionAreEqual(Quaternion.from_eulers(v),
+                                      Quaternion([0.69034553, 0.15304592, -0.15304592, 0.69034553]))

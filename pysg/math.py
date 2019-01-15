@@ -133,3 +133,36 @@ def quaternion_are_equal(q1: Quaternion, q2: Quaternion, epsilon: float = 1e-12)
     """
 
     return math.fabs(q1.dot(q2)) > 1 - epsilon
+
+
+# TODO push to pyrr
+#TODO add rotation order
+# From http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToAngle/
+def quaternion_to_euler_angles(quaternion: Quaternion) -> Vector3:
+    """ Converts quaternion to euler angles in YXZ order.
+
+    First heading, then attitude, then bank. See also:
+    http://www.euclideanspace.com/maths/geometry/rotations/euler/index.htm
+    and:
+    http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToEuler/index.htm
+
+    Returns:
+        Vector3: Vector3 representation of quaternion
+    """
+    t = quaternion.x * quaternion.y + quaternion.z * quaternion.w
+    if t > 0.499:  # singularity at north pole
+        x = 2 * np.math.atan2(quaternion.x, quaternion.w)
+        y = np.math.pi / 2
+        z = 0
+    elif t < -0.499:  # singularity at south pole
+        x = -2 * np.math.atan2(quaternion.x, quaternion.w)
+        y = - np.math.pi / 2
+        z = 0
+    else:
+        sx = quaternion.x * quaternion.x
+        sy = quaternion.y * quaternion.y
+        sz = quaternion.z * quaternion.z
+        x = np.math.atan2(2 * quaternion.y * quaternion.w - 2 * quaternion.x * quaternion.z, 1 - 2 * sy - 2 * sz)
+        y = np.math.asin(2 * quaternion.x * quaternion.y + 2 * quaternion.z * quaternion.w)
+        z = np.math.atan2(2 * quaternion.x * quaternion.w - 2 * quaternion.y * quaternion.z, 1 - 2 * sx - 2 * sz)
+    return Vector3([x, y, z])
