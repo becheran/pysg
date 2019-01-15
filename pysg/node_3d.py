@@ -101,16 +101,9 @@ class Node3D:
         if self._parent is None:
             self._world_quaternion = world_quaternion
         for child in self.children:
-            child.world_quaternion = child.world_quaternion + self.world_quaternion
+            child.world_quaternion = child.world_quaternion * self.world_quaternion
 
-    @property
-    def local_matrix(self):
-        if self.__matrix_needs_update:
-            self.__matrix_needs_update = False
-            self._local_matrix = compose_matrix(self.local_position, self.local_quaternion, self.scale)
-        return self._local_matrix
-
-    # TODO add rotation order of euler angles
+    # TODO add rotation order of euler angles to docstring
     def local_euler_angles(self, local_euler: Vector3) -> None:
         """  Euler Angles as Vector of length 3 in the following order: [yaw, pitch, roll]
 
