@@ -36,7 +36,7 @@ class SimpleScene(Example):
     def update(self):
         self.renderer.viewport = self.wnd.viewport
         self.renderer.render()
-        self.cube.local_euler_angles(Vector3([0, self.wnd.time * 100]))
+        self.cube.local_euler_angles(Vector3([0, self.wnd.time * 100, 0]))
 
 
 try:
