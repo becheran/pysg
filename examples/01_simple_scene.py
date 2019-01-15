@@ -1,6 +1,7 @@
 """ Renders a simple cube
 """
 # TODO remove once api is released
+import math
 import sys
 
 from pyrr import Vector3
@@ -26,17 +27,16 @@ class SimpleScene(Example):
         scene = Scene(background_color=color.rgb["black"], auto_update=True)
         geometry = BoxGeometry(1, 1, 1)
         material = BasicMaterial()
-        cube = Model3D(geometry, material)
-        cube.name = "Cube_1"
+        self.cube = Model3D(geometry, material)
+        self.cube.name = "Cube_1"
         camera.local_position.z += 5
-        camera.local_position.y -= 1
-        cube.local_euler_angles(Vector3([0, 45, 0]))
-        scene.add(cube)
+        scene.add(self.cube)
         self.renderer = GLRenderer(scene, camera)
 
     def update(self):
         self.renderer.viewport = self.wnd.viewport
         self.renderer.render()
+        self.cube.local_euler_angles(Vector3([0, self.wnd.time * 100]))
 
 
 try:
