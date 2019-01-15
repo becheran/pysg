@@ -3,6 +3,7 @@ import math
 from functools import wraps
 
 from pysg.error import PyrrTypeError
+import numpy as np
 
 
 def pyrr_type_checker(var: object, var_type: type) -> object:
@@ -63,12 +64,18 @@ def parameters_as_angles_deg_to_rad(*args_to_convert):
             args = list(args)
             for i, (k, v) in enumerate(zip(fn_args.args, args)):
                 if k in args_to_convert and v is not None:
-                    args[i] = math.radians(v)
+                    if type(v) == float or type(v) == int:
+                        args[i] = math.radians(v)
+                    else:
+                        args[i] = np.radians(v)
 
             # convert the **kwargs dict
             for k, v in kwargs.items():
                 if k in args_to_convert and v is not None:
-                    kwargs[k] = math.radians(v)
+                    if type(v) == float or type(v) == int:
+                        kwargs[k] = math.radians(v)
+                    else:
+                        kwargs[k] = np.radians(v)
 
             # pass the converted values to our function
             return fn(*args, **kwargs)
