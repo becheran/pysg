@@ -5,7 +5,7 @@
 import numpy as np
 from pyrr import Matrix44, Vector3, Quaternion
 
-from pysg.math import compose_matrix
+from pysg.math import compose_matrix, quaternion_to_euler_angles
 from pysg.util import pyrr_type_checker, parameters_as_angles_deg_to_rad
 
 
@@ -99,22 +99,43 @@ class Node3D:
         self.__matrix_needs_update = True
         self._world_quaternion = world_quaternion
         if self._parent is None:
-            self._world_quaternion = world_quaternion
+            self._local_quaternion = world_quaternion
         for child in self.children:
             child.world_quaternion = child.world_quaternion * self.world_quaternion
 
     # TODO add rotation order of euler angles to docstring
-    def local_euler_angles(self, local_euler: Vector3) -> None:
+    @property
+    def local_euler_angles(self):
         """  Euler Angles as Vector of length 3 in the following order: [yaw, pitch, roll]
 
         Args:
-            local_euler: Euler angles in degrees.
+            euler: Euler angles in degrees.
+            local_space: If True rotate in local coordinate system. Otherwise in world space.
         """
-        local_euler_radians = np.radians(local_euler)
-        self.local_quaternion = Quaternion.from_eulers(local_euler_radians)
+        return quaternion_to_euler_angles(self.local_quaternion)
+
+    @local_euler_angles.setter
+    @parameters_as_angles_deg_to_rad('euler')
+    def local_euler_angles(self, euler: Vector3):
+        """  Euler Angles as Vector of length 3 in the following order: [yaw, pitch, roll]
+
+        Args:
+            euler: Euler angles in degrees.
+            local_space: If True rotate in local coordinate system. Otherwise in world space.
+        """
+        self.local_quaternion = Quaternion.from_eulers(euler)
+
+    @property
+    def world_euler_angles(self):
+        return quaternion_to_euler_angles(self.world_quaternion)
+
+    @parameters_as_angles_deg_to_rad('euler')
+    @world_euler_angles.setter
+    def world_euler_angles(self, euler: Vector3):
+        self.world_quaternion = Quaternion.from_eulers(euler)
 
     @parameters_as_angles_deg_to_rad('angle')
-    def rotate_x(self, angle: float, local_space: bool= True) -> None:
+    def rotate_x(self, angle: float, local_space: bool = True) -> None:
         """ Rotate object around its x-axis.
 
         Args:
@@ -128,7 +149,7 @@ class Node3D:
             self.world_quaternion *= rotation_quaternion
 
     @parameters_as_angles_deg_to_rad('angle')
-    def rotate_y(self, angle: float, local_space: bool= True) -> None:
+    def rotate_y(self, angle: float, local_space: bool = True) -> None:
         """ Rotate object around its y-axis.
 
         Args:
@@ -142,7 +163,7 @@ class Node3D:
             self.world_quaternion *= rotation_quaternion
 
     @parameters_as_angles_deg_to_rad('angle')
-    def rotate_z(self, angle: float, local_space: bool= True) -> None:
+    def rotate_z(self, angle: float, local_space: bool = True) -> None:
         """ Rotate object around its z-axis.
 
         Args:
