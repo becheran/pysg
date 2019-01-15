@@ -116,3 +116,20 @@ def compose_matrix(position: Vector3, quaternion: Quaternion, scale: Vector3) ->
                              [0., 0., scale[2], 0.0],
                              [0., 0., 0., 1.]])
     return translation_matrix * rotation_matrix * scale_matrix
+
+
+# TODO move to pyrr
+def quaternion_are_equal(q1: Quaternion, q2: Quaternion, epsilon: float = 1e-12) -> bool:
+    """ Check whether two quaternions represent the same rotation.
+
+    Note that q = -q
+
+    Args:
+        epsilon (float): Wiggle factor for rounding inaccuracy.
+        q1: First quaternion.
+        q2: Second quaternion.
+    Returns:
+        bool: True if both are equal. False if not.
+    """
+
+    return math.fabs(q1.dot(q2)) > 1 - epsilon

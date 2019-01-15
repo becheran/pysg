@@ -2,8 +2,9 @@ from unittest import TestCase
 
 import numpy as np
 import pyrr
+from pyrr import Quaternion
 
-from pysg.math import ray_intersect_sphere
+from pysg.math import ray_intersect_sphere, quaternion_are_equal
 
 
 class TestMath(TestCase):
@@ -41,3 +42,12 @@ class TestMath(TestCase):
         self.assertEqual(len(intersections), 2)
         np.testing.assert_array_almost_equal(intersections[0], np.array([0.44, 1.77, -0.32]), decimal=2)
         np.testing.assert_array_almost_equal(intersections[1], np.array([1.41, 1.62, 0.67]), decimal=2)
+
+    def test_quaternion_are_equal_1(self):
+        self.assertTrue(quaternion_are_equal(Quaternion([1, 0, 0, 0]), Quaternion([-1, 0, 0, 0])))
+
+    def test_quaternion_are_equal_2(self):
+        self.assertFalse(quaternion_are_equal(Quaternion([0, 1, 0, 0]), Quaternion([-1, 0, 0, 0])))
+
+    def test_quaternion_are_equal_3(self):
+        self.assertTrue(quaternion_are_equal(Quaternion([1, 0, 0, 0]), Quaternion([1, 0, 0, 0])))
