@@ -1,7 +1,13 @@
 image: python:3.6-slim
 
 before_script:
-- python -V # Print out python version for debugging
+- python -V
+- apt-get update -q -y # quiet and automatically assume yes
+- virtualenv venv
+- . venv/bin/activate
+- python -V
+- pip install -r requirements.txt
+
 
 stages:
 - test

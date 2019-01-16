@@ -13,8 +13,8 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://gitlab.com/becheran/pysg",
     packages=setuptools.find_packages(),
-	# Python 3.6 required minimum due to the use of static type checking
-	python_requires = '>=3.6',
+    # Python 3.6 required minimum due to the use of static type checking
+    python_requires='>=3.6',
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
