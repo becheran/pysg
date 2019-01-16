@@ -1,7 +1,6 @@
-""" Renders a simple cube
+""" Renders a scene with a tree structure
 """
 # TODO remove once api is released
-import math
 import sys
 
 from pyrr import Vector3
@@ -19,7 +18,7 @@ from pysg.geometry import BoxGeometry
 from example_qt5_window import Example, run_example
 
 
-class SimpleScene(Example):
+class HierarchyScene(Example):
     def __init__(self):
         width = self.WINDOW_SIZE[0]
         height = self.WINDOW_SIZE[1]
@@ -27,19 +26,26 @@ class SimpleScene(Example):
         scene = Scene(background_color=color.rgb["black"], auto_update=True)
         geometry = BoxGeometry(1, 1, 1)
         material = BasicMaterial()
-        self.cube = Model3D(geometry, material)
-        self.cube.name = "Cube_1"
-        camera.local_position.z += 5
-        scene.add(self.cube)
+        self.cube_1 = Model3D(geometry, material, name = "Cube_1")
+        self.cube_2 = Model3D(geometry, material, name = "Cube_2")
+        self.cube_3 = Model3D(geometry, material, name = "Cube_3")
+        self.cube_1.add(self.cube_2)
+        self.cube_2.add(self.cube_3)
+        self.cube_2.local_position = Vector3([3., 0, 0])
+        self.cube_3.local_position = Vector3([0, 3.0, 0])
+        camera.local_position.z += 15
+        scene.add(self.cube_1)
         self.renderer = GLRenderer(scene, camera)
 
     def update(self):
         self.renderer.viewport = self.wnd.viewport
         self.renderer.render()
-        self.cube.local_euler_angles = Vector3([0, self.wnd.time * 100, 0])
+        rot = self.wnd.time * 100
+        self.cube_1.local_euler_angles = Vector3([0, rot, 0])
+        self.cube_2.local_euler_angles = Vector3([0, -rot, rot])
 
 
 try:
-    run_example(SimpleScene)
+    run_example(HierarchyScene)
 except Exception as e:
     print(e)
