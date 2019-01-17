@@ -8,6 +8,7 @@ import moderngl
 
 from pysg.camera import Camera
 from pysg.scene import Scene
+import numpy as np
 
 
 class Renderer:
@@ -48,7 +49,10 @@ class GLRenderer(Renderer):
         vertex_shader_source = open(os.path.join(shader_path, 'simple.vert')).read()
         fragment_shader_source = open(os.path.join(shader_path, 'simple.frag')).read()
         self.prog = self.ctx.program(fragment_shader=fragment_shader_source, vertex_shader=vertex_shader_source)
+        print(self.prog.geometry_input)
+
         self.mvp = self.prog['Mvp']
+        self.color = self.prog['Color']
         # TODO add light and other stuff
         # self.light = self.prog['Light']
 
@@ -67,15 +71,14 @@ class GLRenderer(Renderer):
 
         # Render all objects
         for model_3d in self.scene.render_list:
-            vert_pos = model_3d.geometry.vertex_position
-            vert_idx = model_3d.geometry.vertex_indices
-            vbo = self.ctx.buffer(vert_pos.astype('f4').tobytes())
-            ibo = self.ctx.buffer(vert_idx.astype('i4').tobytes())
+            self.color.value = model_3d.material.color
+            # TODO create buffers in geometry
+            vbo = self.ctx.buffer(model_3d.geometry.vertices_position.astype('f4').tobytes())
+            ibo = self.ctx.buffer(model_3d.geometry.vertex_indices.astype('i4').tobytes())
             vao_content = [
                 (vbo, '3f', 'in_vert')
             ]
             vao = self.ctx.vertex_array(self.prog, vao_content, index_buffer=ibo)
-
             mvp = view_projection_matrix * model_3d.world_matrix
             self.mvp.write(mvp.astype('f4').tobytes())
             vao.render(moderngl.TRIANGLES)
