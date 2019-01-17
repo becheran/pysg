@@ -32,7 +32,7 @@ class TestUtil(TestCase, CustomAssertions):
     def test_parameters_as_angles_deg_to_rad_array(self):
         @parameters_as_angles_deg_to_rad('angle')
         def test(angle, result):
-            np.testing.assert_almost_equal(angle, result, decimal=5)
+            np.testing.assert_almost_equal(np.array(angle), np.array(result), decimal=5)
 
         test(Vector3([45, 0, -280]), Vector3([0.785398, 0, -4.88692]))
 
