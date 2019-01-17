@@ -1,7 +1,6 @@
 """ Renders a simple cube
 """
 # TODO remove once api is released
-import math
 import sys
 
 from pyrr import Vector3
@@ -26,7 +25,7 @@ class SimpleScene(Example):
         camera = PerspectiveCamera(fov=45, aspect=width / height, near=0.01, far=1000)
         scene = Scene(background_color=color.rgb["black"], auto_update=True)
         geometry = BoxGeometry(1, 1, 1)
-        material = BasicMaterial()
+        material = BasicMaterial(color=color.rgb["red"])
         self.cube = Model3D(geometry, material)
         self.cube.name = "Cube_1"
         camera.local_position.z += 5

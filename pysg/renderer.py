@@ -3,12 +3,12 @@
 
 """
 import os
+from typing import Tuple
 
 import moderngl
 
 from pysg.camera import Camera
 from pysg.scene import Scene
-import numpy as np
 
 
 class Renderer:
@@ -22,42 +22,27 @@ class Renderer:
         """
         self.scene = scene
         self.camera = camera
-        self.ctx = moderngl.create_context()
+        self.ctx = None
+
+    def _setup(self):
+        """ Call this method from children as soon as context object was create.
+        """
         self.ctx.enable(moderngl.CULL_FACE)
         self.ctx.front_face = 'ccw'
         self.ctx.enable(moderngl.DEPTH_TEST)
-
-    def render(self):
-        raise NotImplementedError()
-
-
-class GLRenderer(Renderer):
-
-    def __init__(self, scene: Scene, camera: Camera):
-        """Render the scene to a given viewport.
-
-        Args:
-            scene (Scene): Scene which shall be rendered.
-            camera (Camera): Camera which is used to view scene.
-        """
-        super().__init__(scene, camera)
-        # Viewport is a tuple of size four (x, y, width, height).
-        self.viewport = None
-
         # TODO Load also other shader
         shader_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'shader')
-        vertex_shader_source = open(os.path.join(shader_path, 'simple.vert')).read()
-        fragment_shader_source = open(os.path.join(shader_path, 'simple.frag')).read()
-        self.prog = self.ctx.program(fragment_shader=fragment_shader_source, vertex_shader=vertex_shader_source)
-        print(self.prog.geometry_input)
-
+        self.prog = self.ctx.program(
+            vertex_shader=open(os.path.join(shader_path, 'simple.vert')).read(),
+            fragment_shader=open(os.path.join(shader_path, 'simple.frag')).read())
         self.mvp = self.prog['Mvp']
         self.color = self.prog['Color']
-        # TODO add light and other stuff
+        # TODO add lighting
         # self.light = self.prog['Light']
 
-    def render(self) -> None:
-        self.ctx.viewport = self.viewport
+    def _render(self) -> None:
+        """ Call this method from subclasses to render all objects in the scene
+        """
         self.ctx.clear(*self.scene.background_color)
 
         # Update projection matrices
@@ -83,6 +68,30 @@ class GLRenderer(Renderer):
             self.mvp.write(mvp.astype('f4').tobytes())
             vao.render(moderngl.TRIANGLES)
 
+    def render(self):
+        raise NotImplementedError()
+
+
+class GLRenderer(Renderer):
+
+    def __init__(self, scene: Scene, camera: Camera):
+        """Render the scene to a given viewport.
+
+        Args:
+            scene (Scene): Scene which shall be rendered.
+            camera (Camera): Camera which is used to view scene.
+        """
+        super().__init__(scene, camera)
+        self.ctx = moderngl.create_context()
+        super()._setup()
+
+        # Viewport is a tuple of size four (x, y, width, height).
+        self.viewport = None
+
+    def render(self) -> None:
+        self.ctx.viewport = self.viewport
+        super()._render()
+
 
 class HeadlessGLRenderer(Renderer):
 
@@ -97,9 +106,26 @@ class HeadlessGLRenderer(Renderer):
         """
 
         super().__init__(scene, camera)
-        self.width = width
-        self.height = height
+        self.ctx = moderngl.create_standalone_context()
+        super()._setup()
+
+        self.fbo = self.ctx.framebuffer(
+            self.ctx.renderbuffer((width, height)),
+            self.ctx.depth_renderbuffer((width, height)),
+        )
 
     def render(self) -> None:
-        # TODO
-        pass
+        """ Render the current scene and camera into a buffer.
+        The buffer can later be returned with the 'current_image' method.
+        """
+        self.fbo.use()
+        super()._render()
+
+    def current_image(self) -> bytes:
+        """ Render the current scene and camera into a buffer.
+        The buffer can later be returned with the 'current_image' method.
+
+        Returns:
+            bytes: The rendered byte array. Copy from vRAM to RAM.
+        """
+        return self.fbo.read(components=3, alignment=1)
