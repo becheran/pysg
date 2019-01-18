@@ -1,10 +1,9 @@
 from unittest import TestCase
 
 import numpy as np
-from pyrr import Vector3, Quaternion
+from pyrr import Vector3
 
 from pysg.error import PyrrTypeError
-from pysg.math import euler_angles_to_quaternion
 from pysg.testing import CustomAssertions
 from pysg.util import pyrr_type_checker, parameters_as_angles_deg_to_rad
 

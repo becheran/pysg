@@ -16,6 +16,7 @@ Overview
 
     overview/installation
     overview/usage
+    overview/rotations
 
 
 References

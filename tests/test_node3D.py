@@ -116,6 +116,5 @@ class TestNode3D(TestCase, CustomAssertions):
         self.child_2.local_quaternion = [1, 0, 0, 0]
         self.assertQuaternionAreEqual(self.child_2.world_quaternion, Quaternion([0, 0, 0, 1]))
 
-    #TODO ADD
-    # def test_scale(self):
-    #    self.fail()
+    def test_scale(self):
+        self.fail()

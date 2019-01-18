@@ -103,22 +103,18 @@ class Node3D:
         for child in self.children:
             child.world_quaternion = child.world_quaternion * self.world_quaternion
 
-    # TODO add rotation order of euler angles to docstring
     @property
     def local_euler_angles(self):
-        """  Euler Angles as Vector of length 3 in the following order: [yaw, pitch, roll]
+        """  Euler Angles as Vector of length 3.
+        The used rotation order is YZX.
+
+        Please have a look at the :ref:`rotations` section for more details.
         """
         return quaternion_to_euler_angles(self.local_quaternion)
 
     @local_euler_angles.setter
     @parameters_as_angles_deg_to_rad('euler')
     def local_euler_angles(self, euler: Vector3):
-        """  Euler Angles as Vector of length 3 in the following order: [yaw, pitch, roll]
-
-        Args:
-            euler: Euler angles in degrees.
-            local_space: If True rotate in local coordinate system. Otherwise in world space.
-        """
         self.local_quaternion = euler_angles_to_quaternion(euler)
 
     @property
