@@ -5,7 +5,7 @@
 import numpy as np
 from pyrr import Matrix44, Vector3, Quaternion
 
-from pysg.math import compose_matrix, quaternion_to_euler_angles
+from pysg.math import compose_matrix, quaternion_to_euler_angles, euler_angles_to_quaternion
 from pysg.util import pyrr_type_checker, parameters_as_angles_deg_to_rad
 
 
@@ -107,10 +107,6 @@ class Node3D:
     @property
     def local_euler_angles(self):
         """  Euler Angles as Vector of length 3 in the following order: [yaw, pitch, roll]
-
-        Args:
-            euler: Euler angles in degrees.
-            local_space: If True rotate in local coordinate system. Otherwise in world space.
         """
         return quaternion_to_euler_angles(self.local_quaternion)
 
@@ -123,7 +119,7 @@ class Node3D:
             euler: Euler angles in degrees.
             local_space: If True rotate in local coordinate system. Otherwise in world space.
         """
-        self.local_quaternion = Quaternion.from_eulers(euler)
+        self.local_quaternion = euler_angles_to_quaternion(euler)
 
     @property
     def world_euler_angles(self):
@@ -132,7 +128,7 @@ class Node3D:
     @parameters_as_angles_deg_to_rad('euler')
     @world_euler_angles.setter
     def world_euler_angles(self, euler: Vector3):
-        self.world_quaternion = Quaternion.from_eulers(euler)
+        self.world_quaternion = euler_angles_to_quaternion(euler)
 
     @parameters_as_angles_deg_to_rad('angle')
     def rotate_x(self, angle: float, local_space: bool = True) -> None:
