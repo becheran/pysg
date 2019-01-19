@@ -1,6 +1,0 @@
-moderngl==5.4.2
-multipledispatch==0.6.0
-numpy==1.15.4
-Pillow==5.4.1
-pyrr==0.10.0
-six==1.12.0
