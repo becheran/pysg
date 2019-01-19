@@ -4,6 +4,7 @@ before_script:
 - python -V
 - apt-get update -q -y # quiet and automatically assume yes
 - pip install -r requirements.txt
+- pip install twine
 
 stages:
 - test
@@ -20,7 +21,6 @@ build_job:
   stage: build
   script:
   - echo "Build package with setup.py"
-  - pip install twine
   - python setup.py sdist
   
 deploy_staging_job:
