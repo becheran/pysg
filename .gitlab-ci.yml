@@ -21,7 +21,7 @@ build_job:
   script:
   - echo "Build package with setup.py"
   - pip install twine
-  - pip setup.py sdist
+  - python setup.py sdist
   
 deploy_staging_job:
   stage: deploy
