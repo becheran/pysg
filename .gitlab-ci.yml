@@ -22,6 +22,9 @@ build_job:
   script:
   - echo "Build package with setup.py"
   - python setup.py sdist
+  artifacts:
+    paths:
+      - dist/
   
 deploy_staging_job:
   stage: deploy
