@@ -1,6 +1,7 @@
 """ Renders a scene with a tree structure
 """
 # TODO remove once api is released
+import math
 import sys
 
 from pyrr import Vector3
@@ -35,16 +36,20 @@ class HierarchyScene(Example):
         self.cube_2.add(self.cube_3)
         self.cube_2.local_position = Vector3([5., 0, 0])
         self.cube_3.local_position = Vector3([0, 3, 0])
-        camera.local_position.z += 15
+        camera.local_position.z += 30
         scene.add(self.cube_1)
         self.renderer = GLRenderer(scene, camera)
 
     def update(self):
-        self.renderer.viewport = self.wnd.viewport
-        self.renderer.render()
         rot = self.wnd.time * 100
+        scale = math.fabs(math.sin(self.wnd.time)) + 1
         self.cube_1.local_euler_angles = Vector3([0, rot, 0])
         self.cube_2.local_euler_angles = Vector3([0, -rot, rot])
+        self.cube_1.scale = Vector3([scale, scale, scale])
+        self.cube_2.scale = Vector3([scale, scale, scale]) * 0.5
+        self.cube_3.scale = Vector3([scale, scale, scale])
+        self.renderer.viewport = self.wnd.viewport
+        self.renderer.render()
 
 
 try:

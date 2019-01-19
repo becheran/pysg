@@ -3,9 +3,8 @@ from unittest import TestCase
 import numpy as np
 from pyrr import Vector3, Quaternion
 
-from pysg.testing import CustomAssertions
-from pysg.math import quaternion_are_equal
 from pysg.node_3d import Node3D
+from pysg.testing import CustomAssertions
 
 
 class TestNode3D(TestCase, CustomAssertions):
@@ -116,5 +115,14 @@ class TestNode3D(TestCase, CustomAssertions):
         self.child_2.local_quaternion = [1, 0, 0, 0]
         self.assertQuaternionAreEqual(self.child_2.world_quaternion, Quaternion([0, 0, 0, 1]))
 
-    def test_scale(self):
-        self.fail()
+    def test_scale_1(self):
+        self.root.scale = Vector3([1., 2., 3.])
+        np.testing.assert_almost_equal(np.array(self.root.scale), np.array([1., 2., 3.]))
+
+    def test_scale_2(self):
+        self.root.scale *= 2.
+        np.testing.assert_almost_equal(np.array(self.root.scale), np.array([2., 2., 2.]))
+
+    def test_scale_3(self):
+        self.root.scale *= -2.
+        np.testing.assert_almost_equal(np.array(self.root.scale), np.array([-2., -2., -2.]))

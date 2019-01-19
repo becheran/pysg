@@ -1,8 +1,52 @@
 # -*- coding: utf-8 -*-
-"""The base of all objects which are displayed in the scene.
+""" The base of all objects which can be aggregated to describe a 3D scene.
+Every Node3D element contains the local and world transformations in 3D space. Every node has one parent node
+and a list of child nodes. Every transformation such as, position, rotation, or scale, also affects the
+child objects of a node.
+
+The following code example shows how nodes can be created and combined to describe a simple scene with the
+following node hierarchy:
+
+Create Hierarchy
+    ::
+
+        #     root
+        #     /  \\
+        #   c_1, c_2
+        #       /   \\
+        #    c_2_1  c_2_2
+
+        root = Node3D("root")
+        c_1 = Node3D("child_1")
+        c_2 = Node3D("child_2")
+        c_2_1 = Node3D("child_2_1")
+        c_2_2 = Node3D("child_2_2")
+        root.add(c_1)
+        root.add(c_2)
+        c_2.add(c_2_1)
+        c_2.add(c_2_2)
+
+All Node3D objects can now be individually transformed in 3D space.
+
+Reposition root node
+    ::
+
+        root.local_position = Vector([2,1,1])
+
+After executing the code above, all child nodes and the root node itself are moved to the position of the root node.
+
+Change child node local position
+    ::
+
+        c_2.local_position += Vector([1,0,0])
+
+The root node and node c_1 are still at position [2,1,1] since they are not affected by the transforms
+of this child node. Both child nodes c_2_1 and c_2_2 and node c_2 itself are shifted 1 unit
+towards the local x-axis away from the root node. This means that these nodes are now at
+world coordinates [3,1,1].
+
 """
 
-import numpy as np
 from pyrr import Matrix44, Vector3, Quaternion
 
 from pysg.math import compose_matrix, quaternion_to_euler_angles, euler_angles_to_quaternion
@@ -10,10 +54,9 @@ from pysg.util import pyrr_type_checker, parameters_as_angles_deg_to_rad
 
 
 class Node3D:
-    """Node object of the scene graph. Contains transforms of objects in the scene."""
 
     def __init__(self, name: str = "New Node"):
-        """ Scene is the base node. All other nodes need to be added to the scene.
+        """  Node element of a scene graph. Has a tree structure.
 
         Args:
             name: Name for string representation.
@@ -169,15 +212,6 @@ class Node3D:
             self.world_quaternion *= rotation_quaternion
 
     @property
-    def scale(self, scale):
-        # TODO implement
-        self._scale = scale
-
-    # TODO SETTER SCALE.
-
-    # TODO LOSSY scale for global scale??
-
-    @property
     def local_matrix(self):
         if self.__matrix_needs_update:
             self.__matrix_needs_update = False
@@ -189,8 +223,15 @@ class Node3D:
         return self._world_matrix
 
     @property
-    def scale(self):
+    def scale(self) -> Vector3:
         return self._scale
+
+    @scale.setter
+    def scale(self, scale: Vector3) -> None:
+        self.__matrix_needs_update = True
+        self._scale = scale
+
+    # TODO Add lossy scale for global scale??
 
     def __repr__(self):
         return "Node(%s)" % self.name
