@@ -5,12 +5,31 @@ before_script:
 - apt-get update -q -y # quiet and automatically assume yes
 - pip install -r requirements.txt
 
-
 stages:
 - test
+- build
+- deploy
 
 test_job:
   stage: test
   script:
   - echo "Running tests"
   - python -m unittest discover -s "./tests/"
+  
+build_job:
+  stage: build
+  script:
+  - echo "Build package with setup.py"
+  - pip install twine
+  - pip setup.py sdist
+  
+deploy_staging_job:
+  stage: deploy
+  variables:
+    TWINE_USERNAME: $STAGING_USERNAME
+    TWINE_PASSWORD: $STAGING_PASSWORD
+  script:
+    - echo "Deploy for staging"
+    - twine upload --repository-url $STAGING_URL dist/*
+  only:
+    - master
