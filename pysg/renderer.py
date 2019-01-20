@@ -8,6 +8,7 @@ import moderngl
 from pyrr import Vector3
 
 from pysg.camera import Camera
+from pysg.geometry import create_cube
 from pysg.scene import Scene
 
 
@@ -40,6 +41,18 @@ class Renderer:
         self.point_light_color = self.prog['PointLightColor']
         self.model_matrix = self.prog['ModelMatrix']
         self.view_projection_matrix = self.prog['ViewProjectionMatrix']
+        self.model_size = self.prog['ModelSize']
+
+        # Cube geometry buffers
+        vertices, indices, normals = create_cube()
+        vbo = self.ctx.buffer(vertices.astype('f4').tobytes())
+        ibo = self.ctx.buffer(indices.astype('i4').tobytes())
+        nbo = self.ctx.buffer(normals.astype('f4').tobytes())
+        vao_content = [
+            (vbo, '3f', 'in_vert'),
+            (nbo, '3f', 'in_norm')
+        ]
+        self.cube_vao = self.ctx.vertex_array(self.prog, vao_content, index_buffer=ibo)
 
     def _render(self) -> None:
         """ Call this method from subclasses to render all objects in the scene
@@ -58,25 +71,16 @@ class Renderer:
         self.ambient_light.value = self.scene.ambient_light
 
         # TODO implement several light sources and other types
-        if len(self.scene.light_list) > 0:
-            self.point_light_color.value = self.scene.light_list[0].color
-            self.point_light_position.value = tuple(self.scene.light_list[0].world_position)
+        if len(self.scene.render_list.point_lights) > 0:
+            self.point_light_color.value = self.scene.render_list.point_lights[0].color
+            self.point_light_position.value = tuple(self.scene.render_list.point_lights[0].world_position)
 
-        # Render all objects
-        for object3D in self.scene.render_list:
-            self.model_matrix.write(object3D.world_matrix.astype('f4').tobytes())
-            self.object_color.value = object3D.color
-
-            # TODO create buffers in geometry
-            vbo = self.ctx.buffer(object3D.vertex_positions.astype('f4').tobytes())
-            nbo = self.ctx.buffer(object3D.normals.astype('f4').tobytes())
-            ibo = self.ctx.buffer(object3D.vertex_indices.astype('i4').tobytes())
-            vao_content = [
-                (vbo, '3f', 'in_vert'),
-                (nbo, '3f', 'in_norm')
-            ]
-            vao = self.ctx.vertex_array(self.prog, vao_content, index_buffer=ibo)
-            vao.render(moderngl.TRIANGLES)
+        # Render all cubes
+        for box_object_3d in self.scene.render_list.boxes:
+            self.model_matrix.write(box_object_3d.world_matrix.astype('f4').tobytes())
+            self.object_color.value = box_object_3d.color
+            self.model_size.value = box_object_3d.size
+            self.cube_vao.render(moderngl.TRIANGLES)
 
     def render(self):
         raise NotImplementedError()
