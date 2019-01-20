@@ -3,9 +3,9 @@
 
 """
 import os
-from typing import Tuple
 
 import moderngl
+from pyrr import Vector3
 
 from pysg.camera import Camera
 from pysg.scene import Scene
@@ -30,15 +30,16 @@ class Renderer:
         self.ctx.enable(moderngl.CULL_FACE)
         self.ctx.front_face = 'ccw'
         self.ctx.enable(moderngl.DEPTH_TEST)
-        # TODO Load also other shader
         shader_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'shader')
         self.prog = self.ctx.program(
             vertex_shader=open(os.path.join(shader_path, 'simple.vert')).read(),
             fragment_shader=open(os.path.join(shader_path, 'simple.frag')).read())
-        self.mvp = self.prog['Mvp']
-        self.color = self.prog['Color']
-        # TODO add lighting
-        # self.light = self.prog['Light']
+        self.object_color = self.prog['ObjectColor']
+        self.ambient_light = self.prog['AmbientLight']
+        self.point_light_position = self.prog['PointLightPosition']
+        self.point_light_color = self.prog['PointLightColor']
+        self.model_matrix = self.prog['ModelMatrix']
+        self.view_projection_matrix = self.prog['ViewProjectionMatrix']
 
     def _render(self) -> None:
         """ Call this method from subclasses to render all objects in the scene
@@ -52,20 +53,29 @@ class Renderer:
         if self.camera._parent is None:
             self.camera.update_world_matrix()
 
-        view_projection_matrix = self.camera.projection_matrix * self.camera.world_matrix.inverse
+        view_projection_mat44 = self.camera.projection_matrix * self.camera.world_matrix.inverse
+        self.view_projection_matrix.write(view_projection_mat44.astype('f4').tobytes())
+        self.ambient_light.value = self.scene.ambient_light
+
+        # TODO implement several light sources and other types
+        if len(self.scene.light_list) > 0:
+            self.point_light_color.value = self.scene.light_list[0].color
+            self.point_light_position.value = tuple(self.scene.light_list[0].world_position)
 
         # Render all objects
-        for model_3d in self.scene.render_list:
-            self.color.value = model_3d.material.color
+        for object3D in self.scene.render_list:
+            self.model_matrix.write(object3D.world_matrix.astype('f4').tobytes())
+            self.object_color.value = object3D.color
+
             # TODO create buffers in geometry
-            vbo = self.ctx.buffer(model_3d.geometry.vertices_position.astype('f4').tobytes())
-            ibo = self.ctx.buffer(model_3d.geometry.vertex_indices.astype('i4').tobytes())
+            vbo = self.ctx.buffer(object3D.vertex_positions.astype('f4').tobytes())
+            nbo = self.ctx.buffer(object3D.normals.astype('f4').tobytes())
+            ibo = self.ctx.buffer(object3D.vertex_indices.astype('i4').tobytes())
             vao_content = [
-                (vbo, '3f', 'in_vert')
+                (vbo, '3f', 'in_vert'),
+                (nbo, '3f', 'in_norm')
             ]
             vao = self.ctx.vertex_array(self.prog, vao_content, index_buffer=ibo)
-            mvp = view_projection_matrix * model_3d.world_matrix
-            self.mvp.write(mvp.astype('f4').tobytes())
             vao.render(moderngl.TRIANGLES)
 
     def render(self):

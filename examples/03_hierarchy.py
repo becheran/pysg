@@ -6,15 +6,15 @@ import sys
 
 from pyrr import Vector3
 
+from pysg.light import PointLight
+
 sys.path.append("..")  # Adds higher directory to python modules path.
 
 from pysg.constants import color
-from pysg.material import BasicMaterial
-from pysg.model_3d import Model3D
+from pysg.object_3d import Object3D, BoxObject3D
 from pysg.camera import PerspectiveCamera
 from pysg.scene import Scene
 from pysg.renderer import GLRenderer
-from pysg.geometry import BoxGeometry
 
 from example_qt5_window import Example, run_example
 
@@ -24,19 +24,18 @@ class HierarchyScene(Example):
         width = self.WINDOW_SIZE[0]
         height = self.WINDOW_SIZE[1]
         camera = PerspectiveCamera(fov=45, aspect=width / height, near=0.01, far=1000)
-        scene = Scene(background_color=color.rgb["black"], auto_update=True)
-        geometry = BoxGeometry(1, 1, 1)
-        red_material = BasicMaterial(color=color.rgb["red"])
-        green_material = BasicMaterial(color=color.rgb["green"])
-        blue_material = BasicMaterial(color=color.rgb["blue"])
-        self.cube_1 = Model3D(geometry, red_material, name="Cube_1")
-        self.cube_2 = Model3D(geometry, green_material, name="Cube_2")
-        self.cube_3 = Model3D(geometry, blue_material, name="Cube_3")
+        scene = Scene(background_color=color.rgb["black"], ambient_light=(0.2, 0.2, 0.2))
+        light = PointLight(color=(0.8, 0.8, 0.8))
+        light.world_position = Vector3([2, 2, 2])
+        scene.add(light)
+        self.cube_1 = BoxObject3D(1, 1, 1, name="Cube_1", color=(1, 0, 0))
+        self.cube_2 = BoxObject3D(1, 1, 1, name="Cube_2", color=(0, 1, 0))
+        self.cube_3 = BoxObject3D(1, 1, 1, name="Cube_3", color=(0, 0, 1))
         self.cube_1.add(self.cube_2)
         self.cube_2.add(self.cube_3)
         self.cube_2.local_position = Vector3([5., 0, 0])
         self.cube_3.local_position = Vector3([0, 3, 0])
-        camera.local_position.z += 30
+        camera.local_position.z += 30  # FIXME this shortcut does not call the setter!
         scene.add(self.cube_1)
         self.renderer = GLRenderer(scene, camera)
 

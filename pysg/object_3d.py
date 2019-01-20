@@ -1,57 +1,60 @@
 # -*- coding: utf-8 -*-
-"""Geometry defines the vertices layout of a 3D object
-"""
+""" Object3D methods and class"""
 import numpy as np
 
+import pysg.constants.color
+from pysg.node_3d import Node3D
 
-class Geometry:
 
-    def __init__(self):
-        """Base class for all geometry objects"""
-        self._vertices_position = None
-        self._vertices_index = None
-        self._texture_coordinates = None
+class Object3D(Node3D):
+
+    def __init__(self, name: str = "Model3D", color=pysg.constants.color.rgb['white']):
+        """ A Object3D instances can be added to a scene and rendered.
+
+        Args:
+            name (str): Name of Object3D node.
+        """
+
+        self._vertex_positions = None
+        self._vertex_indices = None
         self._normals = None
+        self.color = color
+        super().__init__(name=name)
 
     @property
-    def vertices_position(self):
-        return self._vertices_position
+    def vertex_positions(self):
+        return self._vertex_positions
 
     @property
     def vertex_indices(self):
-        return self._vertices_index
-
-    @property
-    def texture_coordinates(self):
-        return self._texture_coordinates
+        return self._vertex_indices
 
     @property
     def normals(self):
         return self._normals
 
 
-class BoxGeometry(Geometry):
+class BoxObject3D(Object3D):
 
-    def __init__(self, width: float, height: float, depth: float):
+    def __init__(self, width: float, height: float, depth: float, color=pysg.constants.color.rgb['white'],
+                 name: str = "BoxObject"):
         """Creates a simple cube geometry
 
         Args:
             width (float): Width of cube in meters.
             height (float): Height of cube in meters.
             depth (float): Depth of cube in meters.
+            color (tuple): Color of 3D object.
+            name (str): Name of object.
         """
-        super().__init__()
-        self._width = width
-        self._height = height
-        self._depth = depth
-        vertices, indices, texture, normals = self.create_cube(self._width, self._height, self._depth)
-        self._vertices_position = vertices
-        self._vertices_index = indices
-        self._texture_coordinates = texture
+        super().__init__(color=color, name=name)
+        vertices, indices, normals = self._create_cube(width, height, depth)
+        self._vertex_positions = vertices
+        self._vertex_indices = indices
         self._normals = normals
 
     @staticmethod
-    def create_cube(width, height, depth, dtype='float32'):
+    def _create_cube(width, height, depth, dtype='float32'):
         # half dimension
         width /= 2.
         height /= 2.
@@ -119,17 +122,6 @@ class BoxGeometry(Geometry):
             (width, -height, -depth),
         ], dtype=dtype)
 
-        # default st values
-        texture = np.tile(
-            np.array([
-                (1.0, 1.0,),
-                (0.0, 1.0,),
-                (0.0, 0.0,),
-                (1.0, 0.0,),
-            ], dtype=dtype),
-            (6, 1,)
-        )
-
         # For triangle type counter clockwise
         # top right -> top left -> bottom left
         # top right -> bottom left -> bottom right
@@ -138,7 +130,42 @@ class BoxGeometry(Geometry):
             indices[face] += (face * 4)
         indices.shape = (-1,)
 
-        # TODO normals
-        normals = vertices
+        normals = np.array([
+            # front
+            (0, 0, 1,),
+            (0, 0, 1,),
+            (0, 0, 1,),
+            (0, 0, 1,),
 
-        return vertices, indices, texture, normals
+            # right
+            (1, 0, 0,),
+            (1, 0, 0,),
+            (1, 0, 0,),
+            (1, 0, 0,),
+
+            # back
+            (0, 0, -1,),
+            (0, 0, -1,),
+            (0, 0, -1,),
+            (0, 0, -1,),
+
+            # left
+            (-1, 0, 0,),
+            (-1, 0, 0,),
+            (-1, 0, 0,),
+            (-1, 0, 0,),
+
+            # top
+            (0, 1, 0,),
+            (0, 1, 0,),
+            (0, 1, 0,),
+            (0, 1, 0,),
+
+            # bottom
+            (0, -1, 0,),
+            (0, -1, 0,),
+            (0, -1, 0,),
+            (0, -1, 0,),
+        ], dtype=dtype)
+
+        return vertices, indices, normals
