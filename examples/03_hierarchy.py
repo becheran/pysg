@@ -24,13 +24,13 @@ class HierarchyScene(Example):
         width = self.WINDOW_SIZE[0]
         height = self.WINDOW_SIZE[1]
         camera = PerspectiveCamera(fov=45, aspect=width / height, near=0.01, far=1000)
-        scene = Scene(background_color=color.rgb["black"], ambient_light=(0.2, 0.2, 0.2))
+        scene = Scene(background_color=color.rgb["white"], ambient_light=(0.2, 0.2, 0.2))
         light = PointLight(color=(0.8, 0.8, 0.8))
         light.world_position = Vector3([2, 2, 2])
         scene.add(light)
-        self.cube_1 = BoxObject3D(1, 1, 1, name="Cube_1", color=(1, 0, 0))
-        self.cube_2 = BoxObject3D(1, 1, 1, name="Cube_2", color=(0, 1, 0))
-        self.cube_3 = BoxObject3D(1, 1, 1, name="Cube_3", color=(0, 0, 1))
+        self.cube_1 = BoxObject3D(1, 1, 1, name="Cube_1", color=(0.9, 0.5, 0.4))
+        self.cube_2 = BoxObject3D(1, 1, 1, name="Cube_2", color=(0.5, 0.9, 0.4))
+        self.cube_3 = BoxObject3D(1, 1, 1, name="Cube_3", color=(0.4, 0.5, 0.9))
         self.cube_1.add(self.cube_2)
         self.cube_2.add(self.cube_3)
         self.cube_2.local_position = Vector3([5., 0, 0])
