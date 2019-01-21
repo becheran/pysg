@@ -1,6 +1,6 @@
-Model3D
+Object3D
 ********
 
-.. automodule:: pysg.model_3d
+.. automodule:: pysg.object_3d
     :members:
     :undoc-members:

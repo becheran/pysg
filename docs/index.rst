@@ -25,11 +25,9 @@ References
 .. toctree::
     :maxdepth: 2
 
-    references/camera
-    references/geometry
-    references/material
-    references/model_3d
     references/node_3d
+    references/object_3d
+    references/camera
     references/renderer
     references/util
 

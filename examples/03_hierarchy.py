@@ -11,7 +11,7 @@ from pysg.light import PointLight
 sys.path.append("..")  # Adds higher directory to python modules path.
 
 from pysg.constants import color
-from pysg.object_3d import Object3D, BoxObject3D
+from pysg.object_3d import BoxObject3D
 from pysg.camera import PerspectiveCamera
 from pysg.scene import Scene
 from pysg.renderer import GLRenderer
@@ -35,7 +35,7 @@ class HierarchyScene(Example):
         self.cube_2.add(self.cube_3)
         self.cube_2.local_position = Vector3([5., 0, 0])
         self.cube_3.local_position = Vector3([0, 3, 0])
-        camera.local_position.z += 30  # FIXME this shortcut does not call the setter!
+        camera.local_position = Vector3([0, 0, 30])
         scene.add(self.cube_1)
         self.renderer = GLRenderer(scene, camera)
 
