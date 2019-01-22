@@ -4,11 +4,10 @@ import os
 with open("README.md", "r") as fh:
     long_description = fh.read()
     
-#if os.environ.get('CI_COMMIT_TAG'):
-#    version = os.environ['CI_COMMIT_TAG']
-#else:
-#    version = os.environ['CI_JOB_ID']
-version = '0.0.0'
+if os.environ.get('CI_COMMIT_TAG'):
+    version = os.environ['CI_COMMIT_TAG']
+else:
+    version = os.environ['CI_JOB_ID']
 
 setuptools.setup(
     name="pysg",
