@@ -279,14 +279,12 @@ class Node3D:
             Vector3: X, Y and Z scale as Vector3.
 
         """
-        return self._scale
+        return copy(self._scale)
 
     @scale.setter
     def scale(self, scale: Vector3) -> None:
         self.__matrix_needs_update = True
         self._scale = scale
-
-    # TODO Add lossy scale for global scale??
 
     def __repr__(self):
         return "Node(%s)" % self.name

@@ -130,3 +130,47 @@ def create_cube(dtype='float32') -> Tuple[np.array, np.array, np.array]:
     ], dtype=dtype)
 
     return vertices, indices, normals
+
+
+def create_plane(dtype='float32') -> Tuple[np.array, np.array, np.array]:
+    """ Create standard plane of size one.
+
+    Args:
+        dtype: Data type of output numpy array.
+
+    Returns:
+        Tuple[np.array,np.array,np.array]: Tuple of size 3. First is np array for vertices, second for indices,
+        and last for the normals.
+
+    """
+    # half dimension
+    width = 0.5
+    height = 0.5
+
+    vertices = np.array([
+        # top right
+        (width, 0.0, -height),
+        # top left
+        (-width, 0.0, -height),
+        # bottom left
+        (-width, 0.0, height),
+        # bottom right
+        (width, 0.0, height),
+    ], dtype=dtype)
+
+    # For triangle type counter clockwise
+    # top right -> top left -> bottom left
+    # top right -> bottom left -> bottom right
+    indices = np.array([0, 1, 2, 0, 2, 3], dtype='int')
+
+    normals = np.array([
+        (0, 1, 0,),
+        (0, 1, 0,),
+        (0, 1, 0,),
+        (0, 1, 0,)
+    ], dtype=dtype)
+
+    return vertices, indices, normals
+
+
+tst = create_plane()

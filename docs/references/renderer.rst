@@ -1,8 +1,10 @@
+.. _renderer:
 Renderer
 ********
+.. TODO add ctx functions. Backface culling switch off!
 
 Renderer
-==================
+========
 
 .. autoclass:: pysg.renderer.Renderer
     :members:

@@ -8,7 +8,7 @@ import moderngl
 from pyrr import Vector3
 
 from pysg.camera import Camera
-from pysg.geometry import create_cube
+from pysg.geometry import create_cube, create_plane
 from pysg.scene import Scene
 
 
@@ -54,6 +54,17 @@ class Renderer:
         ]
         self.cube_vao = self.ctx.vertex_array(self.prog, vao_content, index_buffer=ibo)
 
+        # Plane geometry buffers
+        v_plane, i_plane, n_plane = create_plane()
+        vbo_plane = self.ctx.buffer(v_plane.astype('f4').tobytes())
+        ibo_plane = self.ctx.buffer(i_plane.astype('i4').tobytes())
+        nbo_plane = self.ctx.buffer(n_plane.astype('f4').tobytes())
+        vao_content_plane = [
+            (vbo_plane, '3f', 'in_vert'),
+            (nbo_plane, '3f', 'in_norm')
+        ]
+        self.plane_vao = self.ctx.vertex_array(self.prog, vao_content_plane, index_buffer=ibo_plane)
+
     def _render(self) -> None:
         """ Call this method from subclasses to render all objects in the scene
         """
@@ -81,6 +92,12 @@ class Renderer:
             self.object_color.value = box_object_3d.color
             self.model_size.value = box_object_3d.size
             self.cube_vao.render(moderngl.TRIANGLES)
+
+        for plane_object_3d in self.scene.render_list.planes:
+            self.model_matrix.write(plane_object_3d.world_matrix.astype('f4').tobytes())
+            self.object_color.value = plane_object_3d.color
+            self.model_size.value = plane_object_3d.size
+            self.plane_vao.render(moderngl.TRIANGLES)
 
     def render(self):
         raise NotImplementedError()

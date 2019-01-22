@@ -185,3 +185,6 @@ epub_title = project
 epub_exclude_files = ['search.html']
 
 # -- Extension configuration -------------------------------------------------
+
+# Added Becher
+autoclass_content = 'init'
