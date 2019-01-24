@@ -5,7 +5,7 @@ Sample scenes to demonstrate the capabilities of *pysg*.
 
 Simple rotating 3D cube.
 
-![SimpleScene](img/simpleScene.png)
+![SimpleScene](img/SimpleScene.png)
 
 ## Headless Renderer
 
@@ -14,7 +14,7 @@ Render the same simple scene of a rotating 3D cube, but instead of using a QT5 w
 ## Hierarchy Scene
 Rotating cubes in a scene hierarchy.
 
-![SimpleScene](img/hierarchyScene.png)
+![SimpleScene](img/HierarchyScene.png)
 
 
 ## Dependencies
