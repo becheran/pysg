@@ -5,10 +5,9 @@
 import os
 
 import moderngl
-from pyrr import Vector3
 
 from pysg.camera import Camera
-from pysg.geometry import create_cube, create_plane
+from pysg.geometry import create_cube, create_plane, create_icosahedron
 from pysg.scene import Scene
 
 
@@ -24,6 +23,16 @@ class Renderer:
         self.scene = scene
         self.camera = camera
         self.ctx = None
+
+    def _create_vertex_array(self, vertices, indices, normals):
+        vbo = self.ctx.buffer(vertices.astype('f4').tobytes())
+        ibo = self.ctx.buffer(indices.astype('i4').tobytes())
+        nbo = self.ctx.buffer(normals.astype('f4').tobytes())
+        vao_content = [
+            (vbo, '3f', 'in_vert'),
+            (nbo, '3f', 'in_norm')
+        ]
+        return self.ctx.vertex_array(self.prog, vao_content, index_buffer=ibo)
 
     def _setup(self):
         """ Call this method from children as soon as context object was create.
@@ -43,27 +52,9 @@ class Renderer:
         self.view_projection_matrix = self.prog['ViewProjectionMatrix']
         self.model_size = self.prog['ModelSize']
 
-        # Cube geometry buffers
-        vertices, indices, normals = create_cube()
-        vbo = self.ctx.buffer(vertices.astype('f4').tobytes())
-        ibo = self.ctx.buffer(indices.astype('i4').tobytes())
-        nbo = self.ctx.buffer(normals.astype('f4').tobytes())
-        vao_content = [
-            (vbo, '3f', 'in_vert'),
-            (nbo, '3f', 'in_norm')
-        ]
-        self.cube_vao = self.ctx.vertex_array(self.prog, vao_content, index_buffer=ibo)
-
-        # Plane geometry buffers
-        v_plane, i_plane, n_plane = create_plane()
-        vbo_plane = self.ctx.buffer(v_plane.astype('f4').tobytes())
-        ibo_plane = self.ctx.buffer(i_plane.astype('i4').tobytes())
-        nbo_plane = self.ctx.buffer(n_plane.astype('f4').tobytes())
-        vao_content_plane = [
-            (vbo_plane, '3f', 'in_vert'),
-            (nbo_plane, '3f', 'in_norm')
-        ]
-        self.plane_vao = self.ctx.vertex_array(self.prog, vao_content_plane, index_buffer=ibo_plane)
+        self.cube_vao = self._create_vertex_array(*create_cube())
+        self.plane_vao = self._create_vertex_array(*create_plane())
+        self.icosahedron_vao = self._create_vertex_array(*create_icosahedron())
 
     def _render(self) -> None:
         """ Call this method from subclasses to render all objects in the scene
@@ -98,6 +89,12 @@ class Renderer:
             self.object_color.value = plane_object_3d.color
             self.model_size.value = plane_object_3d.size
             self.plane_vao.render(moderngl.TRIANGLES)
+
+        for icosahedron_object_3d in self.scene.render_list.icosahedrons:
+            self.model_matrix.write(icosahedron_object_3d.world_matrix.astype('f4').tobytes())
+            self.object_color.value = icosahedron_object_3d.color
+            self.model_size.value = icosahedron_object_3d.size
+            self.icosahedron_vao.render(moderngl.TRIANGLES)
 
     def render(self):
         raise NotImplementedError()

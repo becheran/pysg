@@ -7,13 +7,14 @@ All children added to this node can be rendered via a renderer.
 from pysg.constants import color
 from pysg.light import Light, PointLight
 from pysg.node_3d import Node3D
-from pysg.object_3d import Object3D, BoxObject3D, PlaneObject3D
+from pysg.object_3d import Object3D, BoxObject3D, PlaneObject3D, IcosahedronObject3D
 
 
 class RenderLists:
     def __init__(self):
         self.boxes = list()
         self.planes = list()
+        self.icosahedrons = list()
         self.point_lights = list()
 
 
@@ -53,6 +54,8 @@ class Scene(Node3D):
                 self.render_list.boxes.append(n)
             elif issubclass(object_3d_type, PlaneObject3D):
                 self.render_list.planes.append(n)
+            elif issubclass(object_3d_type, IcosahedronObject3D):
+                self.render_list.icosahedrons.append(n)
             else:
                 raise NotImplemented("This type is not implemented yet!")
 
@@ -70,6 +73,10 @@ class Scene(Node3D):
                 self.render_list.point_lights.remove(n)
             elif issubclass(type(n), BoxObject3D):
                 self.render_list.boxes.remove(n)
+            elif issubclass(type(n), PlaneObject3D):
+                self.render_list.planes.remove(n)
+            elif issubclass(type(n), IcosahedronObject3D):
+                self.render_list.icosahedrons.remove(n)
             else:
                 raise NotImplemented("This type is not implemented yet!")
 

@@ -26,9 +26,9 @@ class BoxObject3D(Object3D):
         """Creates a simple cube geometry
 
         Args:
-            width (float): Width of cube in meters.
-            height (float): Height of cube in meters.
-            depth (float): Depth of cube in meters.
+            width (float): Width of cube.
+            height (float): Height of cube.
+            depth (float): Depth of cube.
             color (tuple): Color of 3D object.
             name (str): Name of object.
         """
@@ -47,10 +47,25 @@ class PlaneObject3D(Object3D):
                 for more information.
 
         Args:
-            width (float): Width of plane in meters.
-            height (float): Height of plane in meters.
+            width (float): Width of plane.
+            height (float): Height of plane.
             color (tuple): Color of 3D object.
             name (str): Name of object.
         """
         super().__init__(color=color, name=name)
         self.size = (width, 1, height)
+
+
+class IcosahedronObject3D(Object3D):
+
+    def __init__(self, radius: float, color=pysg.constants.color.rgb['white'],
+                 name: str = "BoxObject"):
+        """Creates a icosahedron geometry.
+
+        Args:
+            radius (float): Radius of icosahedron.
+            color (tuple): Color of 3D object.
+            name (str): Name of object.
+        """
+        super().__init__(color=color, name=name)
+        self.size = (radius, radius, radius)
