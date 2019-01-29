@@ -291,3 +291,30 @@ def create_circle(dtype='float32') -> Tuple[np.array, np.array, np.array]:
     normals = np.array([(0, 1, 0,), ] * (fan_vertices + 1), dtype=dtype)
 
     return vertices, indices, normals
+
+
+def create_triangle(dtype='float32') -> Tuple[np.array, np.array, np.array]:
+    """ Create standard triangle with side length one.
+
+    Args:
+        dtype: Data type of output numpy array.
+
+    Returns:
+        Tuple[np.array,np.array,np.array]: Tuple of size 3. First is np array for vertices, second for indices,
+        and last for the normals.
+
+    """
+
+    h = 0.5 * math.sqrt(3)
+    inner_circle_radius = math.sqrt(3) / 6.
+    vertices = np.array([
+        (0, 0, h - inner_circle_radius),
+        (0.5, 0, -inner_circle_radius),
+        (-0.5, 0, -inner_circle_radius),
+    ], dtype=dtype)
+
+    indices = np.arange(0, 3, dtype='int')
+
+    normals = np.array([(0, 1, 0,), ] * 3, dtype=dtype)
+
+    return vertices, indices, normals
