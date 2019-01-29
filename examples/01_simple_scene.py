@@ -9,7 +9,7 @@ from pysg.light import PointLight
 
 sys.path.append("..")  # Adds higher directory to python modules path.
 
-from pysg.object_3d import BoxObject3D
+from pysg.object_3d import CubeObject3D
 from pysg.camera import PerspectiveCamera
 from pysg.scene import Scene
 from pysg.renderer import GLRenderer
@@ -26,7 +26,7 @@ class SimpleScene(Example):
         light = PointLight(color=(0.8, 0.8, 0.8))
         light.world_position = Vector3([1, 1, 1])
         scene.add(light)
-        self.cube = BoxObject3D(1, 1, 1, color=(0.4, 0.5, 0.9))
+        self.cube = CubeObject3D(1, 1, 1, color=(0.4, 0.5, 0.9))
         self.cube.name = "Cube_1"
         camera.local_position += Vector3([0, 0, 10])
         scene.add(self.cube)

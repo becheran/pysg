@@ -11,7 +11,7 @@ from pysg.light import PointLight
 sys.path.append("..")  # Adds higher directory to python modules path.
 
 from pysg.constants import color
-from pysg.object_3d import BoxObject3D, PlaneObject3D, IcosahedronObject3D
+from pysg.object_3d import CubeObject3D, PlaneObject3D, IcosahedronObject3D, CircleObject3D
 from pysg.camera import PerspectiveCamera
 from pysg.scene import Scene
 from pysg.renderer import GLRenderer
@@ -28,23 +28,28 @@ class HierarchyScene(Example):
         light = PointLight(color=(0.8, 0.8, 0.8))
         light.world_position = Vector3([2, 2, 3])
         scene.add(light)
-        self.cube_1 = BoxObject3D(1, 1, 1, name="Cube_1", color=(0.9, 0.5, 0.4))
-        self.plane_1 = PlaneObject3D(1, 1, name="Plane_1", color=(0.5, 0.9, 0.4))
-        self.icosahedron_1 = IcosahedronObject3D(1, name="Icosahedron_1", color=(0.5, 0.4, 0.9))
-        self.cube_1.local_position = [2, 0, 0]
-        self.icosahedron_1.local_position = [-2, 0, 0]
+        self.cube = CubeObject3D(1, 1, 1, name="Cube", color=(0.9, 0.5, 0.4))
+        self.icosahedron = IcosahedronObject3D(1, name="Icosahedron", color=(0.5, 0.4, 0.9))
+        self.plane = PlaneObject3D(1, 1, name="Plane", color=(0.5, 0.9, 0.4))
+        self.circle = CircleObject3D(0.7, name="Circle", color=(0.9, 0.9, 0.3))
+        self.circle.local_position = [0, -2, 0]
+        self.plane.local_position = [-2, -2, 0]
+        self.cube.local_position = [2, 0, 0]
+        self.icosahedron.local_position = [-2, 0, 0]
         camera.local_position = Vector3([0, 1, 10])
         camera.local_euler_angles = Vector3([10, 0, 0])
-        scene.add(self.cube_1)
-        scene.add(self.plane_1)
-        scene.add(self.icosahedron_1)
+        scene.add(self.cube)
+        scene.add(self.plane)
+        scene.add(self.icosahedron)
+        scene.add(self.circle)
         self.renderer = GLRenderer(scene, camera)
 
     def update(self):
         rot = self.wnd.time * 100
-        self.cube_1.local_euler_angles = Vector3([rot, rot, 0])
-        self.plane_1.local_euler_angles = Vector3([-90, rot, math.sin(self.wnd.time) * 45])
-        self.icosahedron_1.local_euler_angles = Vector3([0, rot, rot])
+        self.cube.local_euler_angles = Vector3([rot, rot, 0])
+        self.icosahedron.local_euler_angles = Vector3([0, rot, rot])
+        self.plane.local_euler_angles = Vector3([-90, rot, math.sin(self.wnd.time) * 45])
+        self.circle.local_euler_angles = Vector3([-90, rot, math.sin(self.wnd.time) * 45])
         self.renderer.viewport = self.wnd.viewport
         self.renderer.render()
 

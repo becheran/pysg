@@ -7,7 +7,8 @@ import os
 import moderngl
 
 from pysg.camera import Camera
-from pysg.geometry import create_cube, create_plane, create_icosahedron
+from pysg.geometry import create_cube, create_plane, create_icosahedron, create_circle
+from pysg.object_3d import PlaneObject3D, IcosahedronObject3D, CubeObject3D, CircleObject3D
 from pysg.scene import Scene
 
 
@@ -55,6 +56,7 @@ class Renderer:
         self.cube_vao = self._create_vertex_array(*create_cube())
         self.plane_vao = self._create_vertex_array(*create_plane())
         self.icosahedron_vao = self._create_vertex_array(*create_icosahedron())
+        self.circle_vao = self._create_vertex_array(*create_circle())
 
     def _render(self) -> None:
         """ Call this method from subclasses to render all objects in the scene
@@ -77,24 +79,21 @@ class Renderer:
             self.point_light_color.value = self.scene.render_list.point_lights[0].color
             self.point_light_position.value = tuple(self.scene.render_list.point_lights[0].world_position)
 
-        # Render all cubes
-        for box_object_3d in self.scene.render_list.boxes:
-            self.model_matrix.write(box_object_3d.world_matrix.astype('f4').tobytes())
-            self.object_color.value = box_object_3d.color
-            self.model_size.value = box_object_3d.size
-            self.cube_vao.render(moderngl.TRIANGLES)
-
-        for plane_object_3d in self.scene.render_list.planes:
-            self.model_matrix.write(plane_object_3d.world_matrix.astype('f4').tobytes())
-            self.object_color.value = plane_object_3d.color
-            self.model_size.value = plane_object_3d.size
-            self.plane_vao.render(moderngl.TRIANGLES)
-
-        for icosahedron_object_3d in self.scene.render_list.icosahedrons:
-            self.model_matrix.write(icosahedron_object_3d.world_matrix.astype('f4').tobytes())
-            self.object_color.value = icosahedron_object_3d.color
-            self.model_size.value = icosahedron_object_3d.size
-            self.icosahedron_vao.render(moderngl.TRIANGLES)
+        # Render 3D geometries
+        for object_3d in self.scene.render_list.geometry:
+            self.model_matrix.write(object_3d.world_matrix.astype('f4').tobytes())
+            self.object_color.value = object_3d.color
+            self.model_size.value = object_3d.size
+            if issubclass(type(object_3d), PlaneObject3D):
+                self.plane_vao.render(moderngl.TRIANGLES)
+            elif issubclass(type(object_3d), IcosahedronObject3D):
+                self.icosahedron_vao.render(moderngl.TRIANGLES)
+            elif issubclass(type(object_3d), CubeObject3D):
+                self.cube_vao.render(moderngl.TRIANGLES)
+            elif issubclass(type(object_3d), CircleObject3D):
+                self.circle_vao.render(moderngl.TRIANGLE_FAN)
+            else:
+                assert NotImplementedError(object_3d, "Renderer for object3D not implemented yet")
 
     def render(self):
         raise NotImplementedError()
