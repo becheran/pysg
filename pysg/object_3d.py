@@ -104,3 +104,19 @@ class TriangleObject3D(Object3D):
         """
         super().__init__(color=color, name=name)
         self.size = (width, 1, height)
+
+
+class CylinderObject3D(Object3D):
+
+    def __init__(self, height: float, radius: float, color=pysg.constants.color.rgb['white'],
+                 name: str = "BoxObject"):
+        """Creates a icosahedron geometry.
+
+        Args:
+            width (float): Width of triangle.
+            height (float): Height of triangle.
+            color (tuple): Color of 3D object.
+            name (str): Name of object.
+        """
+        super().__init__(color=color, name=name)
+        self.size = (radius * 2, height, radius * 2)
