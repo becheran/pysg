@@ -126,3 +126,8 @@ class TestNode3D(TestCase, CustomAssertions):
     def test_scale_3(self):
         self.root.scale *= -2.
         np.testing.assert_almost_equal(np.array(self.root.scale), np.array([-2., -2., -2.]))
+
+    def test_position_1(self):
+        self.root.local_position += 2.
+        np.testing.assert_almost_equal(np.array(self.root.local_position), np.array([2., 2., 2.]))
+        np.testing.assert_almost_equal(np.array(self.root.world_position), np.array([2., 2., 2.]))

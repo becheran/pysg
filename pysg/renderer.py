@@ -5,10 +5,10 @@
 import os
 
 import moderngl
-from pyrr import Vector3
 
 from pysg.camera import Camera
-from pysg.geometry import create_cube
+from pysg.geometry import create_cube, create_plane, create_icosahedron, create_circle, create_triangle
+from pysg.object_3d import PlaneObject3D, IcosahedronObject3D, CubeObject3D, CircleObject3D, TriangleObject3D
 from pysg.scene import Scene
 
 
@@ -24,6 +24,16 @@ class Renderer:
         self.scene = scene
         self.camera = camera
         self.ctx = None
+
+    def _create_vertex_array(self, vertices, indices, normals):
+        vbo = self.ctx.buffer(vertices.astype('f4').tobytes())
+        ibo = self.ctx.buffer(indices.astype('i4').tobytes())
+        nbo = self.ctx.buffer(normals.astype('f4').tobytes())
+        vao_content = [
+            (vbo, '3f', 'in_vert'),
+            (nbo, '3f', 'in_norm')
+        ]
+        return self.ctx.vertex_array(self.prog, vao_content, index_buffer=ibo)
 
     def _setup(self):
         """ Call this method from children as soon as context object was create.
@@ -43,16 +53,11 @@ class Renderer:
         self.view_projection_matrix = self.prog['ViewProjectionMatrix']
         self.model_size = self.prog['ModelSize']
 
-        # Cube geometry buffers
-        vertices, indices, normals = create_cube()
-        vbo = self.ctx.buffer(vertices.astype('f4').tobytes())
-        ibo = self.ctx.buffer(indices.astype('i4').tobytes())
-        nbo = self.ctx.buffer(normals.astype('f4').tobytes())
-        vao_content = [
-            (vbo, '3f', 'in_vert'),
-            (nbo, '3f', 'in_norm')
-        ]
-        self.cube_vao = self.ctx.vertex_array(self.prog, vao_content, index_buffer=ibo)
+        self.cube_vao = self._create_vertex_array(*create_cube())
+        self.plane_vao = self._create_vertex_array(*create_plane())
+        self.icosahedron_vao = self._create_vertex_array(*create_icosahedron())
+        self.circle_vao = self._create_vertex_array(*create_circle())
+        self.triangle_vao = self._create_vertex_array(*create_triangle())
 
     def _render(self) -> None:
         """ Call this method from subclasses to render all objects in the scene
@@ -75,12 +80,23 @@ class Renderer:
             self.point_light_color.value = self.scene.render_list.point_lights[0].color
             self.point_light_position.value = tuple(self.scene.render_list.point_lights[0].world_position)
 
-        # Render all cubes
-        for box_object_3d in self.scene.render_list.boxes:
-            self.model_matrix.write(box_object_3d.world_matrix.astype('f4').tobytes())
-            self.object_color.value = box_object_3d.color
-            self.model_size.value = box_object_3d.size
-            self.cube_vao.render(moderngl.TRIANGLES)
+        # Render 3D geometries
+        for object_3d in self.scene.render_list.geometry:
+            self.model_matrix.write(object_3d.world_matrix.astype('f4').tobytes())
+            self.object_color.value = object_3d.color
+            self.model_size.value = object_3d.size
+            if issubclass(type(object_3d), PlaneObject3D):
+                self.plane_vao.render(moderngl.TRIANGLES)
+            elif issubclass(type(object_3d), IcosahedronObject3D):
+                self.icosahedron_vao.render(moderngl.TRIANGLES)
+            elif issubclass(type(object_3d), CubeObject3D):
+                self.cube_vao.render(moderngl.TRIANGLES)
+            elif issubclass(type(object_3d), CircleObject3D):
+                self.circle_vao.render(moderngl.TRIANGLE_FAN)
+            elif issubclass(type(object_3d), TriangleObject3D):
+                self.triangle_vao.render(moderngl.TRIANGLES)
+            else:
+                raise NotImplementedError(object_3d, "Renderer for object3D not implemented yet")
 
     def render(self):
         raise NotImplementedError()

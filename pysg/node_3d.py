@@ -46,6 +46,7 @@ towards the local x-axis away from the root node. This means that these nodes ar
 world coordinates [3,1,1].
 
 """
+from copy import copy
 
 from pyrr import Matrix44, Vector3, Quaternion
 
@@ -79,6 +80,11 @@ class Node3D:
 
     @property
     def parent(self):
+        """ The parent of the current node element.
+
+        Returns (Node3D): Parent node.
+
+        """
         return self._parent
 
     @parent.setter
@@ -89,7 +95,15 @@ class Node3D:
 
     @property
     def local_position(self):
-        return self._local_position
+        """ The local position is relative to the transform of the parent node.
+
+        .. note:: The return value is a copy of the original vector and can not be edited directly.
+                 This means that code like node.local_position.x += 2 will not work as you might expect it to!
+
+        Returns (Vector3): Position of node relative to parent node.
+
+        """
+        return copy(self._local_position)
 
     @local_position.setter
     def local_position(self, local_position: Vector3) -> None:
@@ -104,7 +118,15 @@ class Node3D:
 
     @property
     def world_position(self):
-        return self._world_position
+        """ The world position of a node.
+
+        .. note:: The return value is a copy of the original vector and can not be edited directly.
+                 This means that code like node.world_position.x += 2 will not work as you might expect it to!
+
+        Returns (Vector3): Position of node in world space.
+
+        """
+        return copy(self._world_position)
 
     @world_position.setter
     def world_position(self, world_position: Vector3) -> None:
@@ -118,7 +140,15 @@ class Node3D:
 
     @property
     def local_quaternion(self):
-        return self._local_quaternion
+        """ The local rotation as quaternion.
+
+        .. note:: The return value is a copy of the original quaternion and can not be edited directly.
+                Use the quaternion setter instead.
+
+        Returns (Quaternion): Quaternion rotation relative to parent node.
+
+        """
+        return copy(self._local_quaternion)
 
     @local_quaternion.setter
     def local_quaternion(self, local_quaternion: Quaternion) -> None:
@@ -132,7 +162,15 @@ class Node3D:
 
     @property
     def world_quaternion(self):
-        return self._world_quaternion
+        """ The world rotation as quaternion.
+
+        .. note:: The return value is a copy of the original quaternion and can not be edited directly.
+                Use the quaternion setter instead.
+
+        Returns (Quaternion): Quaternion rotation in world space.
+
+        """
+        return copy(self._world_quaternion)
 
     @world_quaternion.setter
     def world_quaternion(self, world_quaternion: Quaternion) -> None:
@@ -146,10 +184,10 @@ class Node3D:
 
     @property
     def local_euler_angles(self):
-        """  Euler Angles as Vector of length 3.
-        The used rotation order is YZX.
+        """  Rotation in euler angle representation as Vector of length 3.
+        Internally quaternions are used. The used rotation order is YZX.
 
-        Please have a look at the :ref:`rotations` section for more details.
+        .. seealso:: Please have a look at the :ref:`rotations` section for more details.
         """
         return quaternion_to_euler_angles(self.local_quaternion)
 
@@ -210,19 +248,37 @@ class Node3D:
             self.world_quaternion *= rotation_quaternion
 
     @property
-    def local_matrix(self):
+    def local_matrix(self) -> Matrix44:
+        """ Local translation matrix (read only).
+
+        Returns:
+            Matrix44: 4x4 local translation matrix of the current node.
+
+        """
         if self.__matrix_needs_update:
             self.__matrix_needs_update = False
             self._local_matrix = compose_matrix(self.local_position, self.local_quaternion, self.scale)
-        return self._local_matrix
+        return copy(self._local_matrix)
 
     @property
-    def world_matrix(self):
-        return self._world_matrix
+    def world_matrix(self) -> Matrix44:
+        """ World translation matrix (read only).
+
+        Returns:
+            Matrix44: 4x4 translation matrix of the current node in world space.
+
+        """
+        return copy(self._world_matrix)
 
     @property
     def scale(self) -> Vector3:
-        return self._scale
+        """ Local scale of current node.
+
+        Returns:
+            Vector3: X, Y and Z scale as Vector3.
+
+        """
+        return copy(self._scale)
 
     @scale.setter
     def scale(self, scale: Vector3) -> None:
@@ -262,12 +318,11 @@ class Node3D:
         for child in self.children:
             child.update_world_matrix()
 
-    # TODO Add check function as parameter
     def get_leaf_nodes(self) -> list:
         """ Recursively goes over all node children and returns Node3D list.
 
         Returns:
-            list: Node3D list of all children and object itself.
+            list: Node3D list of all children and the object itself.
         """
         leafs = []
 

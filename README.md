@@ -16,7 +16,12 @@ Right now pysg is under construction and not ready for usage yet. This is a list
 
 ## Documentation
 
-[Link to online documentation](https://pysg.readthedocs.io/en/latest/)
+[Link documentation](https://pysg.readthedocs.io/en/latest/).
+
+
+## Examples
+
+Checkout the [examples folder](/examples).
 
 ## Dependencies
 
