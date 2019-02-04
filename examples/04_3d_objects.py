@@ -20,7 +20,7 @@ from pysg.renderer import GLRenderer
 from example_qt5_window import Example, run_example
 
 
-class HierarchyScene(Example):
+class ObjectsScene(Example):
     def __init__(self):
         width = self.WINDOW_SIZE[0]
         height = self.WINDOW_SIZE[1]
@@ -64,6 +64,6 @@ class HierarchyScene(Example):
 
 
 try:
-    run_example(HierarchyScene)
+    run_example(ObjectsScene)
 except Exception as e:
     print(e)
