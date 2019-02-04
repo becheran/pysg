@@ -90,8 +90,14 @@ class Node3D:
     @parent.setter
     def parent(self, parent: 'Node3D') -> None:
         self._parent = parent
-        self._local_quaternion = self._local_quaternion * parent.world_quaternion.inverse
-        self._local_position = self._local_quaternion * (self.world_position - parent.world_position)
+        if parent is None:
+            # If parent is set to None local and world transform are the same
+            self._world_position = self._local_position
+            self._world_quaternion = self._local_quaternion
+        else:
+            # If new root node is added the local transform will be set relative to new root node
+            self._local_quaternion = self._local_quaternion * parent.world_quaternion.inverse
+            self._local_position = self._local_quaternion * (self.world_position - parent.world_position)
 
     @property
     def local_position(self):
@@ -306,6 +312,7 @@ class Node3D:
         Args:
             node_3d (Node3D): The child node which shall be removed from the scene graph.
         """
+        node_3d.parent = None
         self.children.remove(node_3d)
 
     def update_world_matrix(self) -> None:
