@@ -92,7 +92,6 @@ class Node3D:
         self._parent = parent
         self._local_quaternion = self._local_quaternion * parent.world_quaternion.inverse
         self._local_position = self._local_quaternion * (self.world_position - parent.world_position)
-        # TODO UPDATE scale
 
     @property
     def local_position(self):
@@ -298,7 +297,7 @@ class Node3D:
             node_3d (Node3D): The child node which shall be added to the scene graph.
         """
         self.children.append(node_3d)
-        # Update local transform of child!
+        # Local transforms will be updated when setting the parent property
         node_3d.parent = self
 
     def remove(self, node_3d: 'Node3D') -> None:

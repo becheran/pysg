@@ -137,7 +137,6 @@ def quaternion_are_equal(q1: Quaternion, q2: Quaternion, epsilon: float = 1e-12)
 
 
 # TODO push to pyrr
-# TODO add rotation order
 # From http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToAngle/
 def quaternion_to_euler_angles(quaternion: Quaternion) -> Vector3:
     """ Converts quaternion to euler angles in degrees and YZX order.
