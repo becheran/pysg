@@ -7,8 +7,9 @@ import os
 import moderngl
 
 from pysg.camera import Camera
-from pysg.geometry import create_cube, create_plane, create_icosahedron, create_circle, create_triangle
-from pysg.object_3d import PlaneObject3D, IcosahedronObject3D, CubeObject3D, CircleObject3D, TriangleObject3D
+from pysg.geometry import create_cube, create_plane, create_icosahedron, create_circle, create_triangle, create_cylinder
+from pysg.object_3d import PlaneObject3D, IcosahedronObject3D, CubeObject3D, CircleObject3D, TriangleObject3D, \
+    CylinderObject3D
 from pysg.scene import Scene
 
 
@@ -58,6 +59,7 @@ class Renderer:
         self.icosahedron_vao = self._create_vertex_array(*create_icosahedron())
         self.circle_vao = self._create_vertex_array(*create_circle())
         self.triangle_vao = self._create_vertex_array(*create_triangle())
+        self.cylinder_vao = self._create_vertex_array(*create_cylinder())
 
     def _render(self) -> None:
         """ Call this method from subclasses to render all objects in the scene
@@ -95,6 +97,8 @@ class Renderer:
                 self.circle_vao.render(moderngl.TRIANGLE_FAN)
             elif issubclass(type(object_3d), TriangleObject3D):
                 self.triangle_vao.render(moderngl.TRIANGLES)
+            elif issubclass(type(object_3d), CylinderObject3D):
+                self.cylinder_vao.render(moderngl.TRIANGLES)
             else:
                 raise NotImplementedError(object_3d, "Renderer for object3D not implemented yet")
 

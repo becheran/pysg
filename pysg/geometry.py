@@ -262,10 +262,12 @@ def create_plane(dtype='float32') -> Tuple[np.array, np.array, np.array]:
     return vertices, indices, normals
 
 
-def create_circle(dtype='float32') -> Tuple[np.array, np.array, np.array]:
+def create_circle(dtype='float32', radius=1., fan_vertices=40) -> Tuple[np.array, np.array, np.array]:
     """ Create standard circle with radius one.
 
     Args:
+        radius: Radius of circle.
+        fan_vertices: Number of vertices used for triangle fan.
         dtype: Data type of output numpy array.
 
     Returns:
@@ -273,7 +275,6 @@ def create_circle(dtype='float32') -> Tuple[np.array, np.array, np.array]:
         and last for the normals.
 
     """
-    fan_vertices = 40
 
     vertices = np.zeros((1 + fan_vertices, 3), dtype=dtype)
     vertices[0] = (0., 0., 0.)
@@ -281,8 +282,8 @@ def create_circle(dtype='float32') -> Tuple[np.array, np.array, np.array]:
     angle_step = (2 * math.pi) / fan_vertices
     angle = 0
     for idx in range(1, fan_vertices + 1):
-        x = math.cos(angle)
-        y = math.sin(angle)
+        x = math.cos(angle) * radius
+        y = math.sin(angle) * radius
         vertices[idx] = (x, 0., y)
         angle += angle_step
 
@@ -316,5 +317,79 @@ def create_triangle(dtype='float32') -> Tuple[np.array, np.array, np.array]:
     indices = np.arange(0, 3, dtype='int')
 
     normals = np.array([(0, 1, 0,), ] * 3, dtype=dtype)
+
+    return vertices, indices, normals
+
+
+def create_cylinder(dtype='float32') -> Tuple[np.array, np.array, np.array]:
+    """ Create standard cylinder with height two and radius one.
+
+    Args:
+        dtype: Data type of output numpy array.
+
+    Returns:
+        Tuple[np.array,np.array,np.array]: Tuple of size 3. First is np array for vertices, second for indices,
+        and last for the normals.
+
+    """
+
+    height = 2.
+    radius = 1.
+    sides = 6
+
+    # Top and bottom share one center vertices and the triangles form a fan.
+    # Each sides needs two unique triangle to render correct normals
+    # Vertices layout: (top (1), upper_circle (sides), middle (4*sides)  ,lower_circle (sides), bottom (1).
+    vertices = np.zeros((sides * 6 + 2, 3), dtype=dtype)
+    normals = np.zeros(vertices.shape, dtype=dtype)
+    # Every side has 4 triangles (two for middle, one for top, and one for bottom).
+    indices = np.zeros((sides * 4, 3), dtype='int')
+
+    y = height / 2.
+    vertices[0] = (0., y, 0.)
+    normals[0] = (0, 1, 0)
+    vertices[-1] = (0., -y, 0.)
+    normals[-1] = (0, -1, 0)
+    angle_step = (2 * math.pi) / sides
+    angle = 0
+    for idx in range(1, sides + 1):
+        x = math.cos(angle) * radius
+        z = math.sin(angle) * radius
+        # Top circle
+        vertices[idx] = (x, y, z)
+        normals[idx] = (0, 1, 0)
+        # Bottom circle
+        vertices[idx + (sides * 5)] = (x, -y, z)
+        normals[-idx - 1] = (0, -1, 0)
+        angle += angle_step
+
+    # Top indices
+    indices[0:sides] = [(0, (i + 1) % sides + 1, i + 1) for i in range(sides)]
+    # Bottom indices
+    offset = len(vertices) - 1
+    indices[-sides:] = [(offset, offset - sides + i, offset - sides + (i + 1) % sides) for i in range(sides)]
+
+    for idx in range(0, sides):
+        array_idx = sides + idx * 4 + 1
+        top_left = vertices[idx + 1]
+        next_idx_top = idx + 2 if idx + 1 < sides else 1
+        top_right = vertices[next_idx_top]
+        bottom_left = vertices[idx - sides - 1]
+        next_idx_bottom = idx - sides if idx - sides <= -2 else -sides - 1
+        bottom_right = vertices[next_idx_bottom]
+
+        vertices[array_idx] = top_left
+        vertices[array_idx + 1] = top_right
+        vertices[array_idx + 2] = bottom_left
+        vertices[array_idx + 3] = bottom_right
+        v1 = top_right - top_left
+        v2 = bottom_left - top_left
+        normal = np.cross(v1, v2) / np.linalg.norm(np.cross(v1, v2))
+        normals[array_idx: (array_idx + 4)] = normal
+
+        indices[sides + idx] = (array_idx, array_idx + 1, array_idx + 2)
+        indices[sides * 2 + idx] = (array_idx + 1, array_idx + 3, array_idx + 2)
+
+    indices = indices.flatten()
 
     return vertices, indices, normals

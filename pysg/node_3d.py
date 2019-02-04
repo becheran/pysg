@@ -264,7 +264,7 @@ class Node3D:
         if self.__matrix_needs_update:
             self.__matrix_needs_update = False
             self._local_matrix = compose_matrix(self.local_position, self.local_quaternion, self.scale)
-        return copy(self._local_matrix)
+        return self._local_matrix
 
     @property
     def world_matrix(self) -> Matrix44:
@@ -274,7 +274,7 @@ class Node3D:
             Matrix44: 4x4 translation matrix of the current node in world space.
 
         """
-        return copy(self._world_matrix)
+        return self._world_matrix
 
     @property
     def scale(self) -> Vector3:
