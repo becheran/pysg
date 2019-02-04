@@ -23,7 +23,7 @@ class HierarchyScene(Example):
     def __init__(self):
         width = self.WINDOW_SIZE[0]
         height = self.WINDOW_SIZE[1]
-        camera = PerspectiveCamera(fov=45, aspect=width / height, near=0.01, far=1000)
+        self.camera = PerspectiveCamera(fov=45, aspect=width / height, near=0.01, far=1000)
         scene = Scene(background_color=color.rgb["white"], ambient_light=(0.2, 0.2, 0.2))
         light = PointLight(color=(0.8, 0.8, 0.8))
         light.world_position = Vector3([2, 2, 2])
@@ -35,9 +35,9 @@ class HierarchyScene(Example):
         self.cube_2.add(self.cube_3)
         self.cube_2.local_position = Vector3([5., 0, 0])
         self.cube_3.local_position = Vector3([0, 3, 0])
-        camera.local_position = Vector3([0, 0, 30])
+        self.camera.local_position = Vector3([0, 0, 30])
         scene.add(self.cube_1)
-        self.renderer = GLRenderer(scene, camera)
+        self.renderer = GLRenderer(scene, self.camera)
 
     def update(self):
         rot = self.wnd.time * 100
