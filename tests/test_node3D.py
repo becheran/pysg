@@ -131,3 +131,30 @@ class TestNode3D(TestCase, CustomAssertions):
         self.root.local_position += 2.
         np.testing.assert_almost_equal(np.array(self.root.local_position), np.array([2., 2., 2.]))
         np.testing.assert_almost_equal(np.array(self.root.world_position), np.array([2., 2., 2.]))
+
+    def test_position_2(self):
+        self.root.local_position += 2.
+        np.testing.assert_almost_equal(np.array(self.child_1.world_position), np.array([2., 2., 2.]))
+        np.testing.assert_almost_equal(np.array(self.child_2_1.world_position), np.array([2., 2., 2.]))
+
+    def test_add_1(self):
+        new_child = Node3D("new_child")
+        self.root.add(new_child)
+        self.assertEqual(new_child.parent, self.root)
+
+    def test_add_2(self):
+        new_child = Node3D("new_child")
+        new_child.local_position = Vector3([1, 2, 3])
+        np.testing.assert_almost_equal(np.array(new_child.world_position), np.array([1., 2., 3.]))
+        self.root.local_position = Vector3([1, 1, 1])
+        self.root.add(new_child)
+        np.testing.assert_almost_equal(np.array(new_child.local_position), np.array([0., 1., 2.]))
+        np.testing.assert_almost_equal(np.array(new_child.world_position), np.array([1., 2., 3.]))
+
+    def test_remove(self):
+        new_child = Node3D("new_child")
+        self.root.add(new_child)
+        self.assertTrue(new_child in self.root.children)
+        self.root.remove(new_child)
+        self.assertEqual(new_child.parent, None)
+        self.assertFalse(new_child in self.root.children)
