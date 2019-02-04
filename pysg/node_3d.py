@@ -74,7 +74,6 @@ class Node3D:
         self._world_quaternion = Quaternion()
         self._world_matrix = Matrix44.identity()
         self._local_matrix = Matrix44.identity()
-        # TODO Rotation as matrix33
 
         self.__matrix_needs_update = True
 
@@ -87,7 +86,6 @@ class Node3D:
         self._parent = parent
         self._local_quaternion = self._local_quaternion * parent.world_quaternion.inverse
         self._local_position = self._local_quaternion * (self.world_position - parent.world_position)
-        # TODO UPDATE scale
 
     @property
     def local_position(self):
@@ -231,8 +229,6 @@ class Node3D:
         self.__matrix_needs_update = True
         self._scale = scale
 
-    # TODO Add lossy scale for global scale??
-
     def __repr__(self):
         return "Node(%s)" % self.name
 
@@ -245,7 +241,7 @@ class Node3D:
             node_3d (Node3D): The child node which shall be added to the scene graph.
         """
         self.children.append(node_3d)
-        # Update local transform of child!
+        # Local transforms will be updated when setting the parent property
         node_3d.parent = self
 
     def remove(self, node_3d: 'Node3D') -> None:
