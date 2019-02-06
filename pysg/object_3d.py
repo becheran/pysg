@@ -7,7 +7,7 @@ from pysg.node_3d import Node3D
 
 class Object3D(Node3D):
 
-    def __init__(self, name: str = "Model3D", color=pysg.constants.color.rgb['white']):
+    def __init__(self, name: str = "Object3D", color=pysg.constants.color.rgb['white']):
         """ A Object3D instances can be added to a scene and rendered.
 
         Args:
@@ -39,7 +39,7 @@ class CubeObject3D(Object3D):
 class PlaneObject3D(Object3D):
 
     def __init__(self, width: float, height: float, color=pysg.constants.color.rgb['white'],
-                 name: str = "BoxObject"):
+                 name: str = "PlaneObject"):
         """Creates a simple plane geometry.
 
         .. note:: Per default, only the front face of a plane gets rendered. If you want to also show the
@@ -59,7 +59,7 @@ class PlaneObject3D(Object3D):
 class CircleObject3D(Object3D):
 
     def __init__(self, radius: float, color=pysg.constants.color.rgb['white'],
-                 name: str = "BoxObject"):
+                 name: str = "CircleObject"):
         """Creates a simple circle geometry.
 
         .. note:: Per default, only the front face of a plane gets rendered. If you want to also show the
@@ -78,7 +78,7 @@ class CircleObject3D(Object3D):
 class IcosahedronObject3D(Object3D):
 
     def __init__(self, radius: float, color=pysg.constants.color.rgb['white'],
-                 name: str = "BoxObject"):
+                 name: str = "IcosahedronObject"):
         """Creates a icosahedron geometry.
 
         Args:
@@ -93,7 +93,7 @@ class IcosahedronObject3D(Object3D):
 class TriangleObject3D(Object3D):
 
     def __init__(self, width: float, height: float, color=pysg.constants.color.rgb['white'],
-                 name: str = "BoxObject"):
+                 name: str = "TriangleObject"):
         """Creates a icosahedron geometry.
 
         Args:
@@ -109,7 +109,7 @@ class TriangleObject3D(Object3D):
 class CylinderObject3D(Object3D):
 
     def __init__(self, height: float, radius: float, color=pysg.constants.color.rgb['white'],
-                 name: str = "BoxObject"):
+                 name: str = "CylinderObject"):
         """Creates a icosahedron geometry.
 
         Args:
