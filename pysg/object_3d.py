@@ -120,3 +120,18 @@ class CylinderObject3D(Object3D):
         """
         super().__init__(color=color, name=name)
         self.size = (radius * 2, height, radius * 2)
+
+
+class TetrahedralObject3D(Object3D):
+
+    def __init__(self, radius: float, color=pysg.constants.color.rgb['white'],
+                 name: str = "BoxObject"):
+        """Creates a tetrahedral geometry.
+
+        Args:
+            radius (float): radius of edge points lying on unit sphere.
+            color (tuple): Color of 3D object.
+            name (str): Name of object.
+        """
+        super().__init__(color=color, name=name)
+        self.size = (radius, radius, radius)

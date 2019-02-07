@@ -12,7 +12,7 @@ sys.path.append("..")  # Adds higher directory to python modules path.
 
 from pysg.constants import color
 from pysg.object_3d import CubeObject3D, PlaneObject3D, IcosahedronObject3D, CircleObject3D, TriangleObject3D, \
-    CylinderObject3D
+    CylinderObject3D, TetrahedralObject3D
 from pysg.camera import PerspectiveCamera
 from pysg.scene import Scene
 from pysg.renderer import GLRenderer
@@ -35,12 +35,14 @@ class ObjectsScene(Example):
         self.circle = CircleObject3D(0.7, name="Circle", color=(0.9, 0.9, 0.3))
         self.triangle = TriangleObject3D(1, 1, name="Triangle", color=(0.3, 0.9, 0.9))
         self.cylinder = CylinderObject3D(0.7, 0.4, name="Cylinder", color=(0.9, 0.3, 0.9))
+        self.tetrahedral = TetrahedralObject3D(1, name="Tetrahedral", color=(0.3, 0.8, 0.9))
         self.circle.local_position = [0, -2, 0]
         self.plane.local_position = [-2, -2, 0]
         self.triangle.local_position = [2, -2, 0]
         self.cube.local_position = [2, 0, 0]
         self.icosahedron.local_position = [-2, 0, 0]
         self.cylinder.local_position = [0, 0, 0]
+        self.tetrahedral.local_position = [4, 0, 0]
         camera.local_position = Vector3([0, 1, 10])
         camera.local_euler_angles = Vector3([10, 0, 0])
         scene.add(self.cube)
@@ -49,6 +51,7 @@ class ObjectsScene(Example):
         scene.add(self.circle)
         scene.add(self.triangle)
         scene.add(self.cylinder)
+        scene.add(self.tetrahedral)
         self.renderer = GLRenderer(scene, camera)
 
     def update(self):
@@ -56,6 +59,7 @@ class ObjectsScene(Example):
         self.cube.local_euler_angles = Vector3([rot, rot, 0])
         self.icosahedron.local_euler_angles = Vector3([0, rot, rot])
         self.cylinder.local_euler_angles = Vector3([rot, -rot, 0])
+        self.tetrahedral.local_euler_angles = Vector3([rot, rot, 0])
         self.plane.local_euler_angles = Vector3([-90, rot, math.sin(self.wnd.time) * 45])
         self.circle.local_euler_angles = Vector3([-90, rot, math.sin(self.wnd.time) * 45])
         self.triangle.local_euler_angles = Vector3([-90, rot, math.sin(self.wnd.time) * 45])

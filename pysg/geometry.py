@@ -393,3 +393,59 @@ def create_cylinder(dtype='float32') -> Tuple[np.array, np.array, np.array]:
     indices = indices.flatten()
 
     return vertices, indices, normals
+
+
+def create_tetrahedral(dtype='float32') -> Tuple[np.array, np.array, np.array]:
+    """ Create tetrahedral geometry with radius one.
+
+    Args:
+        dtype: Data type of output numpy array.
+
+    Returns:
+        Tuple[np.array,np.array,np.array]: Tuple of size 3. First is np array for vertices, second for indices,
+        and last for the normals.
+
+    """
+    base_height = -1 / 3
+
+    tip_vert = np.array((0, 1, 0))
+    base_top_vert = np.array((math.sqrt(8 / 9), base_height, 0))
+    base_left_vert = np.array((-math.sqrt(2 / 9), base_height, math.sqrt(2 / 3)))
+    base_right_vert = np.array((-math.sqrt(2 / 9), base_height, -math.sqrt(2 / 3)))
+
+    vertices = np.array([
+        # Bottom
+        base_top_vert,
+        base_left_vert,
+        base_right_vert,
+
+        # Front
+        tip_vert,
+        base_right_vert,
+        base_left_vert,
+
+        # Right
+        tip_vert,
+        base_top_vert,
+        base_right_vert,
+
+        # Left
+        tip_vert,
+        base_left_vert,
+        base_top_vert,
+    ], dtype=dtype)
+
+    norm_front = tuple(np.cross((base_right_vert - tip_vert), (base_left_vert - tip_vert)))
+    norm_right = tuple(np.cross((base_top_vert - tip_vert), (base_right_vert - tip_vert)))
+    norm_left = tuple(np.cross((base_left_vert - tip_vert), (base_top_vert - tip_vert)))
+
+    normals = np.array([
+        (0, -1, 0) * 3,  # Bottom
+        norm_front * 3,  # Front
+        norm_right * 3,  # Right
+        norm_left * 3,  # Left
+    ])
+
+    indices = np.arange(0, 12, dtype='int')
+
+    return vertices, indices, normals

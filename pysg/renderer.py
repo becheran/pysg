@@ -3,13 +3,15 @@
 
 """
 import os
+import time
 
 import moderngl
 
 from pysg.camera import Camera
-from pysg.geometry import create_cube, create_plane, create_icosahedron, create_circle, create_triangle, create_cylinder
+from pysg.geometry import create_cube, create_plane, create_icosahedron, create_circle, create_triangle, \
+    create_cylinder, create_tetrahedral
 from pysg.object_3d import PlaneObject3D, IcosahedronObject3D, CubeObject3D, CircleObject3D, TriangleObject3D, \
-    CylinderObject3D
+    CylinderObject3D, TetrahedralObject3D
 from pysg.scene import Scene
 
 
@@ -60,6 +62,7 @@ class Renderer:
         self.circle_vao = self._create_vertex_array(*create_circle())
         self.triangle_vao = self._create_vertex_array(*create_triangle())
         self.cylinder_vao = self._create_vertex_array(*create_cylinder())
+        self.tetrahedral_vao = self._create_vertex_array(*create_tetrahedral())
 
     def _render(self) -> None:
         """ Call this method from subclasses to render all objects in the scene
