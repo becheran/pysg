@@ -1,18 +1,20 @@
+![header](_img/header.png)
 # pysg
 
 Simple and lightweight 3D render scene graph for python 3.
 
 ## TODO
 
-Right now pysg is under construction and not ready for usage yet. This is a list of things that still need to be done:
-
-- [ ] Doc
+- [ ] Update Doc
 	- [ ] Static pages 
 	- [x] Setup autodoc with SPHINX
-	- [ ] Add to readthedocs.io
-- [ ] Static typing for most function calls and methods
-- [ ] Make pip package
-- [ ] Examples
+	- [x] Add to readthedocs.io
+- [ ] Upload package to PyPi
+
+## Installation
+Install the latest version of pysg via pip:
+
+	pip install pysg --extra-index-url https://api.packagr.app/JpLhv7UqD/ --disable-pip-version-check  
 
 ## Documentation
 
