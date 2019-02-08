@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 
 dirname = os.path.dirname(__file__)
 
-with open('pyrr/version.py', 'r') as f:
+with open('pysg/version.py', 'r') as f:
     exec(f.read())
 
 setuptools.setup(
