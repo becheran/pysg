@@ -6,20 +6,12 @@ with open("README.md", "r") as fh:
 
 dirname = os.path.dirname(__file__)
 
-if os.environ.get('CI'):
-    if os.environ.get('CI_COMMIT_TAG'):
-        version = os.environ['CI_COMMIT_TAG']
-    else:
-        version = os.environ['CI_JOB_ID']
-    with open(os.path.join(dirname, 'VERSION'),'a') as version_file:
-        version_file.write(str(version))
-        
-with open(os.path.join(dirname, 'VERSION')) as version_file:
-    version = version_file.read().strip()
+with open('pyrr/version.py', 'r') as f:
+    exec(f.read())
 
 setuptools.setup(
     name="pysg",
-    version=version,
+    version=__version__,
     author="Armin Becher",
     author_email="becherarmin@gmail.com",
     description="Simple and lightweight 3D render scene graph for python",
