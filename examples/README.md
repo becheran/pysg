@@ -19,9 +19,7 @@ Rotating cubes in a scene hierarchy.
 ## 04 3D Objects
 All possible 3D objects.
 
-<!---
-TODO add image once all 3D objects are ready
-[SimpleScene](img/HierarchyScene.png)-->
+![Geometry](img/Geometry.png)
 
 ## 05 Performance
 Render a large amount of cubes to show pysg performance.
