@@ -135,3 +135,19 @@ class TetrahedralObject3D(Object3D):
         """
         super().__init__(color=color, name=name)
         self.size = (radius, radius, radius)
+
+
+class PyramidObject3D(Object3D):
+
+    def __init__(self, base_size: float, height: float, color=pysg.constants.color.rgb['white'],
+                 name: str = "PyramidObject"):
+        """Creates a square base pyramide geometry.
+
+        Args:
+            base_size (float): Size of the pyramid square base.
+            height (float): Pyramid height.
+            color (tuple): Color of 3D object.
+            name (str): Name of object.
+        """
+        super().__init__(color=color, name=name)
+        self.size = (base_size, height, base_size)

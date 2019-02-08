@@ -449,3 +449,69 @@ def create_tetrahedral(dtype='float32') -> Tuple[np.array, np.array, np.array]:
     indices = np.arange(0, 12, dtype='int')
 
     return vertices, indices, normals
+
+
+def create_pyramid(dtype='float32') -> Tuple[np.array, np.array, np.array]:
+    """ Create regular pyramid geometry with square base with base size and height one.
+
+    Args:
+        dtype: Data type of output numpy array.
+
+    Returns:
+        Tuple[np.array,np.array,np.array]: Tuple of size 3. First is np array for vertices, second for indices,
+        and last for the normals.
+
+    """
+    base_height = -0.333333
+
+    tip_vert = np.array((0, 0.666666, 0))
+    base_top_right_vert = np.array((0.5, base_height, 0.5))
+    base_top_left_vert = np.array((-0.5, base_height, 0.5))
+    base_bottom_right_vert = np.array((0.5, base_height, -0.5))
+    base_bottom_left_vert = np.array((-0.5, base_height, -0.5))
+
+    vertices = np.array([
+        # Bottom
+        base_top_right_vert,
+        base_top_left_vert,
+        base_bottom_left_vert,
+        base_bottom_right_vert,
+
+        # Front
+        tip_vert,
+        base_bottom_right_vert,
+        base_bottom_left_vert,
+
+        # Back
+        tip_vert,
+        base_top_left_vert,
+        base_top_right_vert,
+
+        # Right
+        tip_vert,
+        base_top_right_vert,
+        base_bottom_right_vert,
+
+        # Left
+        tip_vert,
+        base_bottom_left_vert,
+        base_top_left_vert,
+    ], dtype=dtype)
+
+    norm_back = tuple(np.cross((base_top_left_vert - tip_vert), (base_top_right_vert - tip_vert)))
+    norm_front = tuple(np.cross((base_bottom_right_vert - tip_vert), (base_bottom_left_vert - tip_vert)))
+    norm_right = tuple(np.cross((base_top_right_vert - tip_vert), (base_bottom_right_vert - tip_vert)))
+    norm_left = tuple(np.cross((base_bottom_left_vert - tip_vert), (base_top_left_vert - tip_vert)))
+
+    normals = np.concatenate([
+        (0, -1, 0) * 4,  # Bottom
+        norm_front * 3,  # Front
+        norm_back * 3,  # Back
+        norm_right * 3,  # Right
+        norm_left * 3  # Left
+    ]).flatten()
+
+    bottom_indices = np.array([0, 1, 2, 0, 2, 3])
+    indices = np.concatenate([bottom_indices, np.arange(4, 16, dtype='int')])
+
+    return vertices, indices, normals

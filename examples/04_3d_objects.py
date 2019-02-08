@@ -12,7 +12,7 @@ sys.path.append("..")  # Adds higher directory to python modules path.
 
 from pysg.constants import color
 from pysg.object_3d import CubeObject3D, PlaneObject3D, IcosahedronObject3D, CircleObject3D, TriangleObject3D, \
-    CylinderObject3D, TetrahedralObject3D
+    CylinderObject3D, TetrahedralObject3D, PyramidObject3D
 from pysg.camera import PerspectiveCamera
 from pysg.scene import Scene
 from pysg.renderer import GLRenderer
@@ -29,6 +29,8 @@ class ObjectsScene(Example):
         light = PointLight(color=(0.8, 0.8, 0.8))
         light.world_position = Vector3([0, 4, 3])
         scene.add(light)
+        line_one_y = 1
+        line_two_y = -1
         self.cube = CubeObject3D(1, 1, 1, name="Cube", color=(0.9, 0.5, 0.4))
         self.icosahedron = IcosahedronObject3D(1, name="Icosahedron", color=(0.5, 0.4, 0.9))
         self.plane = PlaneObject3D(1, 1, name="Plane", color=(0.5, 0.9, 0.4))
@@ -36,15 +38,20 @@ class ObjectsScene(Example):
         self.triangle = TriangleObject3D(1, 1, name="Triangle", color=(0.3, 0.9, 0.9))
         self.cylinder = CylinderObject3D(0.7, 0.4, name="Cylinder", color=(0.9, 0.3, 0.9))
         self.tetrahedral = TetrahedralObject3D(1, name="Tetrahedral", color=(0.3, 0.8, 0.9))
-        self.circle.local_position = [0, -2, 0]
-        self.plane.local_position = [-2, -2, 0]
-        self.triangle.local_position = [2, -2, 0]
-        self.cube.local_position = [2, 0, 0]
-        self.icosahedron.local_position = [-2, 0, 0]
-        self.cylinder.local_position = [0, 0, 0]
-        self.tetrahedral.local_position = [4, 0, 0]
-        camera.local_position = Vector3([0, 1, 10])
-        camera.local_euler_angles = Vector3([10, 0, 0])
+        self.pyramid = PyramidObject3D(1, 1.5, name="Pyramid", color=(0.9, 0.9, 0.2))
+
+        self.cube.local_position = [2, line_one_y, 0]
+        self.icosahedron.local_position = [-2, line_one_y, 0]
+        self.cylinder.local_position = [0, line_one_y, 0]
+        self.tetrahedral.local_position = [4, line_one_y, 0]
+        self.pyramid.local_position = [-4, line_one_y, 0]
+
+        self.circle.local_position = [0, line_two_y, 0]
+        self.plane.local_position = [-2, line_two_y, 0]
+        self.triangle.local_position = [2, line_two_y, 0]
+
+        camera.local_position = Vector3([0, 0, 10])
+        camera.local_euler_angles = Vector3([0, 0, 0])
         scene.add(self.cube)
         scene.add(self.plane)
         scene.add(self.icosahedron)
@@ -52,6 +59,7 @@ class ObjectsScene(Example):
         scene.add(self.triangle)
         scene.add(self.cylinder)
         scene.add(self.tetrahedral)
+        scene.add(self.pyramid)
         self.renderer = GLRenderer(scene, camera)
 
     def update(self):
@@ -60,6 +68,7 @@ class ObjectsScene(Example):
         self.icosahedron.local_euler_angles = Vector3([0, rot, rot])
         self.cylinder.local_euler_angles = Vector3([rot, -rot, 0])
         self.tetrahedral.local_euler_angles = Vector3([rot, rot, 0])
+        self.pyramid.local_euler_angles = Vector3([rot, rot, 0])
         self.plane.local_euler_angles = Vector3([-90, rot, math.sin(self.wnd.time) * 45])
         self.circle.local_euler_angles = Vector3([-90, rot, math.sin(self.wnd.time) * 45])
         self.triangle.local_euler_angles = Vector3([-90, rot, math.sin(self.wnd.time) * 45])
