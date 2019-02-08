@@ -35,4 +35,4 @@ deploy_staging_job:
     - echo "Deploy for staging"
     - twine upload --repository-url $STAGING_URL dist/*
   only:
-    - master
+    - tags
