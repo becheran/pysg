@@ -37,7 +37,7 @@ class Scene(Node3D):
         return self._render_lists
 
     def add(self, node_3d: 'Node3D') -> None:
-        """ Overrides base class of Node3D to add an objects to render por light list.
+        """ Overrides base class of Node3D to add an objects to render or light list.
 
         Args:
             node_3d (Node3D): The child node which shall be added to the scene graph.
@@ -46,7 +46,10 @@ class Scene(Node3D):
         for n in (node_3d.get_leaf_nodes()):
             object_3d_type = type(n)
             if issubclass(object_3d_type, PointLight):
-                self.render_list.point_lights.append(n)
+                if len(self.render_list.point_lights) < 1:
+                    self.render_list.point_lights.append(n)
+                else:
+                    print('Warning! Not more than one point light in a scene is possible right now.')
             else:
                 self.render_list.geometry.append(n)
 
