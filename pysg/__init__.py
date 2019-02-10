@@ -1,6 +1,4 @@
 """ Export all modules needed to use pysg."""
-from __future__ import absolute_import
-
 # Renderer
 from .renderer import GLRenderer
 from .renderer import HeadlessGLRenderer
