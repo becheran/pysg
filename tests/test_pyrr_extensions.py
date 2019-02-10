@@ -1,7 +1,6 @@
 from unittest import TestCase
 
 import numpy as np
-import pyrr
 from pyrr import Quaternion, Vector3
 
 from pysg.pyrr_extensions import quaternion_are_equal, euler_angles_to_quaternion, quaternion_to_euler_angles

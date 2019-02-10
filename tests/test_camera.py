@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from pysg.camera import PerspectiveCamera, OrthographicCamera
+from pysg import PerspectiveCamera, OrthographicCamera
 from pysg.error import Error
 
 

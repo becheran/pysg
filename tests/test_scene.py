@@ -1,8 +1,6 @@
 from unittest import TestCase
 
-from pysg.light import PointLight
-from pysg.object_3d import CubeObject3D
-from pysg.scene import Scene
+from pysg import CubeObject3D, PointLight, Scene
 from pysg.testing import CustomAssertions
 
 

@@ -6,7 +6,7 @@ import math
 import pyrr
 from pyrr import Matrix44
 
-from pysg.pyrr_extensions import  is_angle
+from pysg.pyrr_extensions import is_angle
 from pysg.error import ParameterError
 from pysg.node_3d import Node3D
 

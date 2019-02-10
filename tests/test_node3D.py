@@ -3,7 +3,7 @@ from unittest import TestCase
 import numpy as np
 from pyrr import Vector3, Quaternion
 
-from pysg.node_3d import Node3D
+from pysg import Node3D
 from pysg.testing import CustomAssertions
 
 

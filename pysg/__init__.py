@@ -1,6 +1,10 @@
 """ Export all modules needed to use pysg."""
 from __future__ import absolute_import
 
+# Renderer
+from .renderer import GLRenderer
+from .renderer import HeadlessGLRenderer
+
 # Camera
 from .camera import PerspectiveCamera
 from .camera import OrthographicCamera
@@ -20,10 +24,6 @@ from .object_3d import PlaneObject3D
 from .object_3d import PyramidObject3D
 from .object_3d import TetrahedralObject3D
 from .object_3d import TriangleObject3D
-
-# Renderer
-from .renderer import GLRenderer
-from .renderer import HeadlessGLRenderer
 
 # Scene
 from .scene import Scene
