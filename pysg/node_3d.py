@@ -50,7 +50,7 @@ from copy import copy
 
 from pyrr import Matrix44, Vector3, Quaternion
 
-from pysg.math import compose_matrix, quaternion_to_euler_angles, euler_angles_to_quaternion
+from pysg.pyrr_extensions import compose_matrix, quaternion_to_euler_angles, euler_angles_to_quaternion
 from pysg.util import pyrr_type_checker, parameters_as_angles_deg_to_rad
 
 

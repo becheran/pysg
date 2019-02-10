@@ -6,7 +6,7 @@ import math
 import pyrr
 from pyrr import Matrix44
 
-import pysg.math as pysg_math
+from pysg.pyrr_extensions import  is_angle
 from pysg.error import ParameterError
 from pysg.node_3d import Node3D
 
@@ -59,7 +59,7 @@ class PerspectiveCamera(Camera):
         # Check all parameter
         if fov <= 0 \
                 or fov >= 180 \
-                or not pysg_math.is_angle(fov, in_degrees=True, allow_negative=False, limit_to_circle=True):
+                or not is_angle(fov, in_degrees=True, allow_negative=False, limit_to_circle=True):
             raise ParameterError(fov, 'Field of view with this value is not allowed!')
         if aspect <= 0:
             raise ParameterError(aspect, 'Aspect smaller or equals zero not allowed!')

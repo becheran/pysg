@@ -1,6 +1,6 @@
 from pyrr import Quaternion
 
-from pysg.math import quaternion_are_equal
+from pysg.pyrr_extensions import quaternion_are_equal
 
 
 class CustomAssertions:
