@@ -25,7 +25,7 @@ class PerformanceScene(Example):
         height = self.WINDOW_SIZE[1]
         self.camera = PerspectiveCamera(fov=45, aspect=width / height, near=1.0, far=1000)
         # It is very important to set auto_update to false for huge performance gain
-        scene = Scene(background_color=color.rgb["white"], ambient_light=(0.2, 0.2, 0.2),auto_update=False)
+        scene = Scene(background_color=color.rgb["white"], ambient_light=(0.2, 0.2, 0.2), auto_update=False)
         light = PointLight(color=(0.8, 0.8, 0.8))
         light.world_position = Vector3([GRID_SIZE / 2., GRID_SIZE / 2., GRID_SIZE / 2.])
         scene.add(light)

@@ -4,7 +4,7 @@
 """
 import os
 
-import moderngl
+import moderngl as mgl
 
 from pysg.camera import Camera
 from pysg.geometry import create_cube, create_plane, create_icosahedron, create_circle, create_triangle, \
@@ -40,9 +40,9 @@ class Renderer:
     def _setup(self):
         """ Call this method from children as soon as context object was create.
         """
-        self.ctx.enable(moderngl.CULL_FACE)
+        self.ctx.enable(mgl.CULL_FACE)
         self.ctx.front_face = 'ccw'
-        self.ctx.enable(moderngl.DEPTH_TEST)
+        self.ctx.enable(mgl.DEPTH_TEST)
         shader_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'shader')
         self.prog = self.ctx.program(
             vertex_shader=open(os.path.join(shader_path, 'simple.vert')).read(),
@@ -91,21 +91,21 @@ class Renderer:
             self.object_color.value = object_3d.color
             self.model_size.value = object_3d.size
             if issubclass(type(object_3d), PlaneObject3D):
-                self.plane_vao.render(moderngl.TRIANGLES)
+                self.plane_vao.render(mgl.TRIANGLES)
             elif issubclass(type(object_3d), IcosahedronObject3D):
-                self.icosahedron_vao.render(moderngl.TRIANGLES)
+                self.icosahedron_vao.render(mgl.TRIANGLES)
             elif issubclass(type(object_3d), CubeObject3D):
-                self.cube_vao.render(moderngl.TRIANGLES)
+                self.cube_vao.render(mgl.TRIANGLES)
             elif issubclass(type(object_3d), CircleObject3D):
-                self.circle_vao.render(moderngl.TRIANGLE_FAN)
+                self.circle_vao.render(mgl.TRIANGLE_FAN)
             elif issubclass(type(object_3d), TriangleObject3D):
-                self.triangle_vao.render(moderngl.TRIANGLES)
+                self.triangle_vao.render(mgl.TRIANGLES)
             elif issubclass(type(object_3d), CylinderObject3D):
-                self.cylinder_vao.render(moderngl.TRIANGLES)
+                self.cylinder_vao.render(mgl.TRIANGLES)
             elif issubclass(type(object_3d), TetrahedralObject3D):
-                self.tetrahedral_vao.render(moderngl.TRIANGLES)
+                self.tetrahedral_vao.render(mgl.TRIANGLES)
             elif issubclass(type(object_3d), PyramidObject3D):
-                self.pyramid_vao.render(moderngl.TRIANGLES)
+                self.pyramid_vao.render(mgl.TRIANGLES)
             else:
                 raise NotImplementedError(object_3d, "Renderer for object3D not implemented yet")
 
@@ -123,7 +123,7 @@ class GLRenderer(Renderer):
             camera (Camera): Camera which is used to view scene.
         """
         super().__init__(scene, camera)
-        self.ctx = moderngl.create_context()
+        self.ctx = mgl.create_context()
         super()._setup()
 
         # Viewport is a tuple of size four (x, y, width, height).
@@ -147,7 +147,7 @@ class HeadlessGLRenderer(Renderer):
         """
 
         super().__init__(scene, camera)
-        self.ctx = moderngl.create_standalone_context()
+        self.ctx = mgl.create_standalone_context()
         super()._setup()
 
         self.fbo = self.ctx.framebuffer(
