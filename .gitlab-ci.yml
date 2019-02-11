@@ -2,7 +2,8 @@ image: python:3.6-slim
 
 before_script:
 - python -V
-- apt-get update -q -y # quiet and automatically assume yes
+- apt-get update -q -y # Quiet and automatically assume yes
+- apt-get install libgl1-mesa-glx -y # Allow ModernGL to work
 - pip install -r requirements.txt
 - pip install twine
 
