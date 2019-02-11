@@ -1,5 +1,6 @@
+==================
 Camera
-********
+==================
 
 Perspective Camera
 ==================
@@ -16,3 +17,6 @@ Orthographic Camera
 .. autoclass:: pysg.camera.OrthographicCamera
     :members:
     :undoc-members:
+
+.. toctree::
+    :maxdepth: 2

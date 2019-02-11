@@ -1,6 +1,8 @@
 .. _renderer:
+
+=========
 Renderer
-********
+=========
 .. TODO add ctx functions. Backface culling switch off!
 
 Renderer
@@ -24,3 +26,6 @@ HeadlessGLRenderer
 .. autoclass:: pysg.renderer.HeadlessGLRenderer
     :members:
     :undoc-members:
+
+.. toctree::
+    :maxdepth: 2

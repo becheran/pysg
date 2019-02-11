@@ -1,7 +1,8 @@
+.. _installation:
+
+============
 Installation
 ============
-
-.. _installation:
 
 Install the latest stable version of pysg with :command:`pip`:
 

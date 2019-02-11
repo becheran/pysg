@@ -14,32 +14,10 @@ Overview
 .. toctree::
     :maxdepth: 2
 
-    overview/installation
-    overview/usage
-    overview/rotations
-
-
-References
-===================
-
-.. toctree::
-    :maxdepth: 2
-
-    references/node_3d
-    references/object_3d
-    references/camera
-    references/renderer
-    references/util
-
-Development
-===========
-
-.. toctree::
-    :maxdepth: 1
-
-    development/coding_standards
-    development/contribution
-
+    installation
+    guide/index
+    references/index
+    development/index
 
 
 Indices and tables
