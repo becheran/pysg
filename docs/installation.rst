@@ -10,7 +10,7 @@ Install the latest stable version of pysg with :command:`pip`:
 
     $ pip install pysg --extra-index-url https://api.packagr.app/JpLhv7UqD/ --disable-pip-version-check
 
-Check version:
+Check *pysg* version:
 
 .. code-block:: py
 
