@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-""" Object3D methods and class"""
+""" This module contains all geometric 3D objects which can be added to a scene. All 3D objects inherit from
+the Object3D base class. 3D objects are defined via a color, the object size, and a name."""
 
 import pysg.constants.color
 from pysg.node_3d import Node3D

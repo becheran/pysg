@@ -28,7 +28,7 @@ Create Hierarchy
 
 All Node3D objects can now be individually transformed in 3D space.
 
-Reposition root node
+Change position of root node
     ::
 
         root.local_position = Vector([2,1,1])
@@ -41,7 +41,7 @@ Change child node local position
         c_2.local_position += Vector([1,0,0])
 
 The root node and node c_1 are still at position [2,1,1] since they are not affected by the transforms
-of this child node. Both child nodes c_2_1 and c_2_2 and node c_2 itself are shifted 1 unit
+of the c_2 child node. Both child nodes c_2_1 and c_2_2 and node c_2 itself are shifted 1 unit
 towards the local x-axis away from the root node. This means that these nodes are now at
 world coordinates [3,1,1].
 
@@ -57,7 +57,7 @@ from pysg.util import pyrr_type_checker, parameters_as_angles_deg_to_rad
 class Node3D:
 
     def __init__(self, name: str = "New Node"):
-        """  Node element of a scene graph. Has a tree structure.
+        """  Node element of scene graph (tree structure).
 
         Args:
             name: Name for string representation.
@@ -82,7 +82,8 @@ class Node3D:
     def parent(self):
         """ The parent of the current node element.
 
-        Returns (Node3D): Parent node.
+        Returns:
+            Node3D: Parent node.
 
         """
         return self._parent
@@ -106,7 +107,8 @@ class Node3D:
         .. note:: The return value is a copy of the original vector and can not be edited directly.
                  This means that code like node.local_position.x += 2 will not work as you might expect it to!
 
-        Returns (Vector3): Position of node relative to parent node.
+        Returns:
+            Vector3: Position of node relative to parent node.
 
         """
         return copy(self._local_position)
@@ -129,7 +131,8 @@ class Node3D:
         .. note:: The return value is a copy of the original vector and can not be edited directly.
                  This means that code like node.world_position.x += 2 will not work as you might expect it to!
 
-        Returns (Vector3): Position of node in world space.
+        Returns:
+            Vector3: Position of node in world space.
 
         """
         return copy(self._world_position)
@@ -151,7 +154,8 @@ class Node3D:
         .. note:: The return value is a copy of the original quaternion and can not be edited directly.
                 Use the quaternion setter instead.
 
-        Returns (Quaternion): Quaternion rotation relative to parent node.
+        Returns:
+            Quaternion: Quaternion rotation relative to parent node.
 
         """
         return copy(self._local_quaternion)
@@ -173,7 +177,8 @@ class Node3D:
         .. note:: The return value is a copy of the original quaternion and can not be edited directly.
                 Use the quaternion setter instead.
 
-        Returns (Quaternion): Quaternion rotation in world space.
+        Returns:
+            Quaternion: Rotation in world space as quaternion.
 
         """
         return copy(self._world_quaternion)
@@ -190,7 +195,7 @@ class Node3D:
 
     @property
     def local_euler_angles(self):
-        """  Rotation in euler angle representation as Vector of length 3.
+        """ Local rotation in euler angle representation as Vector of length 3.
         Internally quaternions are used. The used rotation order is YZX.
 
         .. seealso:: Please have a look at the :ref:`rotations` section for more details.
@@ -204,6 +209,11 @@ class Node3D:
 
     @property
     def world_euler_angles(self):
+        """  World rotation in euler angle representation as Vector of length 3.
+        Internally quaternions are used. The used rotation order is YZX.
+
+        .. seealso:: Please have a look at the :ref:`rotations` section for more details.
+        """
         return quaternion_to_euler_angles(self.world_quaternion)
 
     @parameters_as_angles_deg_to_rad('euler')
@@ -295,9 +305,9 @@ class Node3D:
         return "Node(%s)" % self.name
 
     def add(self, node_3d: 'Node3D') -> None:
-        """ Adds another node as a child of this node to the scene graph.
-        It is very important to note, that the world position and rotation will remain the same of the added child, but
-        all its local transforms will be updated relative to the new parent.
+        """ Adds another node as child of this node. It is important to note, that the world position and
+        rotation will remain the same of the added child, but all its local transforms will be updated relative
+        to the new parent.
 
         Args:
             node_3d (Node3D): The child node which shall be added to the scene graph.
@@ -326,10 +336,10 @@ class Node3D:
             child.update_world_matrix()
 
     def get_leaf_nodes(self) -> list:
-        """ Recursively goes over all node children and returns Node3D list.
+        """ Recursively iterate over all children and return list with all leaf Node3Ds (no more children).
 
         Returns:
-            list: Node3D list of all children and the object itself.
+            list: List of all children with no more child nodes. Type of list elements is Node3D.
         """
         leafs = []
 
