@@ -1,3 +1,4 @@
+""" Utility functions for *pysg*."""
 import inspect
 import math
 from functools import wraps

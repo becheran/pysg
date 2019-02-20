@@ -3,9 +3,10 @@
 =========
 Renderer
 =========
+.. automodule:: pysg.renderer
 .. TODO add ctx functions. Backface culling switch off!
 
-Renderer
+Base Class
 ========
 
 .. autoclass:: pysg.renderer.Renderer

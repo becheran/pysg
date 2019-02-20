@@ -2,6 +2,15 @@
 Camera
 ==================
 
+.. automodule:: pysg.camera
+
+Camera
+======
+
+.. autoclass:: pysg.camera.Camera
+    :members:
+    :undoc-members:
+
 Perspective Camera
 ==================
 

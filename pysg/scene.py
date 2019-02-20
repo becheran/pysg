@@ -10,7 +10,9 @@ from pysg.node_3d import Node3D
 
 
 class RenderLists:
+
     def __init__(self):
+        """ Data object containing lights and geometry list for rendering. """
         self.geometry = list()
         self.point_lights = list()
 
@@ -20,6 +22,7 @@ class Scene(Node3D):
     def __init__(self, background_color: tuple = color.rgb["black"],
                  ambient_light: tuple = (0., 0., 0.), auto_update: bool = True):
         """ The scene object. Must always bee the root node of the scene graph.
+
         Args:
             background_color: The clear color of the scene.
             ambient_light: Light value which will be applied to all objects in scene.
@@ -34,6 +37,11 @@ class Scene(Node3D):
 
     @property
     def render_list(self) -> RenderLists:
+        """ The current render list containing all the 3D objects and lights for rendering.
+
+        Returns:
+            RenderLists: A RenderLists object containing all elements for rendering.
+        """
         return self._render_lists
 
     def add(self, node_3d: 'Node3D') -> None:

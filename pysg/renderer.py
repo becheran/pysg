@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-""" All rendering related functions and classes
-
-"""
+""" All rendering related functions and classes. The ModernGL python library is used for all rendering functions
+in *pysg*."""
 import os
 
 import moderngl as mgl
@@ -15,8 +14,9 @@ from pysg.scene import Scene
 
 
 class Renderer:
+
     def __init__(self, scene: Scene, camera: Camera):
-        """Base class which takes a scene and camera and render.
+        """Base class. All renderer implementations need to inherit form this class.
 
         Args:
             scene (Scene): Scene which shall be rendered.
@@ -26,6 +26,15 @@ class Renderer:
         self.scene = scene
         self.camera = camera
         self.ctx = None
+        """Context: 
+        The ModernGL context object which can be used to set some OpenGL related settings.
+        For example the context can be used to deactivate backface culling:
+            ::
+
+               camera.ctx.disable(moderngl.CULL_FACE)
+               
+        See https://moderngl.readthedocs.io/en/stable/reference/context.html for more information.
+        """
 
     def _create_vertex_array(self, vertices, indices, normals):
         vbo = self.ctx.buffer(vertices.astype('f4').tobytes())
@@ -65,7 +74,7 @@ class Renderer:
         self.pyramid_vao = self._create_vertex_array(*create_pyramid())
 
     def _render(self) -> None:
-        """ Call this method from subclasses to render all objects in the scene
+        """ Call this method from subclasses to render all objects in the scene.
         """
         self.ctx.clear(*self.scene.background_color)
 
@@ -109,7 +118,8 @@ class Renderer:
             else:
                 raise NotImplementedError(object_3d, "Renderer for object3D not implemented yet")
 
-    def render(self):
+    def render(self) -> None:
+        """ Base render function which needs to be implemented by sub-classes."""
         raise NotImplementedError()
 
 
@@ -126,10 +136,11 @@ class GLRenderer(Renderer):
         self.ctx = mgl.create_context()
         super()._setup()
 
-        # Viewport is a tuple of size four (x, y, width, height).
         self.viewport = None
+        """ tuple: Viewport is a tuple of size four (x, y, width, height). """
 
     def render(self) -> None:
+        """ Set viewport and call _render() function of base class."""
         self.ctx.viewport = self.viewport
         super()._render()
 
@@ -137,7 +148,7 @@ class GLRenderer(Renderer):
 class HeadlessGLRenderer(Renderer):
 
     def __init__(self, scene: Scene, camera: Camera, *, width: int, height: int):
-        """Render the scene to a framebuffer which can be read to CPU RAM to be used as an image.
+        """Render the scene to a framebuffer which can be read to CPU memory to be used as an image.
 
         Args:
             scene (Scene): Scene which shall be rendered.
@@ -157,7 +168,7 @@ class HeadlessGLRenderer(Renderer):
 
     def render(self) -> None:
         """ Render the current scene and camera into a buffer.
-        The buffer can later be returned with the 'current_image' method.
+        The buffer can later be returned with the current_image method.
         """
         self.fbo.use()
         super()._render()

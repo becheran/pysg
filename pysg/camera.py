@@ -1,18 +1,16 @@
-# -*- coding: utf-8 -*-
-"""Camera is used to render a scene to the screen
-"""
+""" The camera is used to calculate the viewing frustum in 3D space. All cameras inherit from the Camera class which
+itself is of the type Node3D and can be added to the scene graph. """
 import math
 
 import pyrr
 from pyrr import Matrix44
 
-from pysg.pyrr_extensions import is_angle
 from pysg.error import ParameterError
 from pysg.node_3d import Node3D
+from pysg.pyrr_extensions import is_angle
 
 
 class Camera(Node3D):
-    """Camera in scene"""
 
     def __init__(self):
         """Base class of all camera types used in pysg."""
@@ -23,37 +21,43 @@ class Camera(Node3D):
 
     @property
     def projection_matrix(self) -> Matrix44:
+        """ The current projection matrix of the camera.
+
+        Returns:
+            Matrix44: Projection matrix of camera in OpenGL format:\n
+            m00 m04 m08 m12\n
+            m01 m05 m09 m13\n
+            m02 m06 m10 m14\n
+            m03 m07 m11 m15
+        """
         if self._need_matrix_update:
             self._need_matrix_update = False
-            self.__projection_matrix = self.compute_projection_matrix()
+            self.__projection_matrix = self._compute_projection_matrix()
         return self.__projection_matrix
 
-    def compute_projection_matrix(self) -> Matrix44:
+    def _compute_projection_matrix(self) -> Matrix44:
         """ Projection matrix calculation based on different camera types.
+        Must be implemented by child classes.
 
         Returns:
             Matrix44: Projection matrix in OpenGL format.
-            m0 m4 m8  m12
-            m1 m5 m9  m13
-            m2 m6 m10 m14
-            m3 m7 m11 m15
 
         """
         raise NotImplementedError()
 
 
 class PerspectiveCamera(Camera):
-    """Uses frustum as projection matrix"""
 
     def __init__(self, *, fov: float, aspect: float, near: float, far: float):
-        """
-        Args:
-            fov (float): Vertical field of view for the perspective camera in degrees.
-            aspect (float): Aspect ratio of camera sensor. With/Height.
-            near (float): Camera frustum near plane. Everything closer will be culled.
-            far (float): Camera frustum far plane. Everything farther away will be culled.
+        """ Camera which uses frustum for the projection matrix.
 
-        """
+         Args:
+             fov (float): Vertical field of view for the perspective camera in degrees.
+             aspect (float): Aspect ratio of camera sensor (with/height).
+             near (float): Camera frustum near plane. Everything closer will be culled.
+             far (float): Camera frustum far plane. Everything farther away will be culled.
+
+         """
         super().__init__()
 
         # Check all parameter
@@ -75,10 +79,13 @@ class PerspectiveCamera(Camera):
         self.__near = near
         self.__far = far
 
-    def compute_projection_matrix(self) -> Matrix44:
+    def _compute_projection_matrix(self) -> Matrix44:
         """ Projection matrix calculation for the perspective camera.
             Based on: https://glumpy.github.io/modern-gl.html#projection-matrix
             Only difference is that we use the horizontal FOV not vertical
+
+        Returns:
+            Matrix44: The computed projection matrix.
         """
 
         near_minus_far = self.__near - self.__far
@@ -98,10 +105,10 @@ class PerspectiveCamera(Camera):
 
 
 class OrthographicCamera(Camera):
-    """Uses square as projection matrix"""
 
     def __init__(self, *, left: float, right: float, top: float, bottom: float, near: float, far: float):
-        """
+        """  Camera using a box geometry for the projection matrix.
+
         Args:
             left (float):  Camera volume left (usually -screen_width/2).
             right (float):  Camera volume right (usually screen_width/2).
@@ -132,7 +139,7 @@ class OrthographicCamera(Camera):
         self.__near = near
         self.__far = far
 
-    def compute_projection_matrix(self) -> Matrix44:
+    def _compute_projection_matrix(self) -> Matrix44:
         """ Projection matrix calculation for the orthographic camera.
                 Based on: https://glumpy.github.io/modern-gl.html#projection-matrix
         """
