@@ -4,7 +4,7 @@
 Installation
 ============
 
-Install the latest stable version of pysg with :command:`pip`:
+Install the latest stable version of *pysg* with :command:`pip`:
 
 .. code-block:: sh
 

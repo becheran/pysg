@@ -5,10 +5,7 @@ Simple and lightweight 3D render scene graph for python 3.
 
 ## TODO
 
-- [ ] Update Doc
-	- [ ] Static pages 
-	- [x] Setup autodoc with SPHINX
-	- [x] Add to readthedocs.io
+- [ ] Improve render performance (use multi instance rendering)
 - [ ] Upload package to PyPi
 
 ## Installation

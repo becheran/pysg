@@ -7,7 +7,7 @@ With *pysg* it is possible to create simple scenes with basic 3D geometries and 
 or save them as images on the hard drive.
 
 The example described in this section only render a single image and display it on the screen using
-the python pillow_.
+pillow_.
 
 .. _pillow: https://pypi.org/project/Pillow/
 
@@ -18,9 +18,9 @@ the python pillow_.
 
 References
 ==========
-Load all required references. Not that pillow_ (PIL) is only required if you want to display the
-result image of the standalone renderer. The pyrr_ vector is needed in order to define a new position
-for the 3D elements in the scene.
+Load all required references. The pillow_ (PIL) library is required to display the result
+image of the standalone renderer. The pyrr_ vector is needed to define a new position for
+the 3D elements in the scene.
 
 .. _pyrr: https://github.com/adamlwgriffiths/Pyrr
 
@@ -33,11 +33,11 @@ for the 3D elements in the scene.
 Init
 ====
 Initialize all camera, scene, and renderer. All three things are required to display a 3D scene.
-The camera defines the viewing volume with an scene. The scene is the root element of all 3D objects
-which are used for rendering. A scene also defines the ambient brightness and background color of
-the rendering. The renderer is used to actually synthesise the described *pysg* scene. It can either
-be a standalone renderer which renders to a texture which can later be saved as an image, or a
-GLRenderer used for OpenGL windows.
+The camera defines the viewing volume within an scene. The scene is the root element of all 3D objects
+which are used for rendering. A scene also defines the ambient brightness and background color.
+The renderer is used to actually synthesise the described *pysg* scene. It can either
+be a standalone renderer, rendering to a texture which can later be saved as an image. With
+the  GLRenderer the scene can be displayed within a OpenGL windows.
 
 .. code-block:: py
 
