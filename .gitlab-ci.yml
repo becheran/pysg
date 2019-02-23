@@ -34,6 +34,6 @@ deploy_staging_job:
     TWINE_PASSWORD: $STAGING_PASSWORD
   script:
     - echo "Deploy for staging"
-    - twine upload -u TWINE_USERNAME - p TWINE_PASSWORD --repository-url $STAGING_URL dist/*
+    - twine upload -u TWINE_USERNAME -p TWINE_PASSWORD --repository-url $STAGING_URL dist/*
   only:
     - tags
