@@ -33,7 +33,7 @@ deploy_job:
     TWINE_USERNAME: $DEPLOY_USERNAME
     TWINE_PASSWORD: $DEPLOY_PASSWORD
   script:
-    - echo "Deploy to Pypi"
-    - twine upload --repository-url dist/*
+    - echo "Deploy to PyPi"
+    - twine upload dist/*
   only:
     - tags
