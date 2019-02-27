@@ -22,6 +22,11 @@ setuptools.setup(
     # Python 3.6 required minimum due to the use of static type checking
     python_requires='>=3.6',
     license='MIT',
+    install_requires=[
+        'moderngl>=5.4.2',
+        'numpy>=1.15.4',
+        'pyrr>=0.10.0',
+    ],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
