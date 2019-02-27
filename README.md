@@ -1,4 +1,4 @@
-![header](https://gitlab.com/becheran/pysg/tree/master/_img/header.png)
+![header](https://gitlab.com/becheran/pysg/raw/master/_img/header.png)
 # pysg
 
 Simple and lightweight 3D render scene graph for python 3.
