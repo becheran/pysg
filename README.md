@@ -3,15 +3,10 @@
 
 Simple and lightweight 3D render scene graph for python 3.
 
-## TODO
-
-- [ ] Improve render performance (use multi instance rendering)
-- [ ] Upload package to PyPi
-
 ## Installation
 Install the latest version of pysg via pip:
 
-	pip install pysg --extra-index-url https://api.packagr.app/JpLhv7UqD/ --disable-pip-version-check  
+	pip install pysg 
 
 ## Documentation
 
@@ -77,3 +72,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 Many thanks to the [ModernGL](https://github.com/cprogrammer1994/ModernGL) and [pyrr](https://github.com/adamlwgriffiths/Pyrr) teams. 
 
 Also many thanks to the [three.js](https://threejs.org/) developers where I got a lot of inspiration from.
+
+## TODO
+
+- [ ] Improve render performance (use multi instance rendering)

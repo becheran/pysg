@@ -8,7 +8,7 @@ Install the latest stable version of *pysg* with :command:`pip`:
 
 .. code-block:: sh
 
-    $ pip install pysg --extra-index-url https://api.packagr.app/JpLhv7UqD/ --disable-pip-version-check
+    $ pip install pysg
 
 Check *pysg* version:
 
