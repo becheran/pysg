@@ -1,20 +1,12 @@
-""" Renders a simple cube
-"""
-# TODO remove once api is released
-import sys
-
+""" Renders a simple cube. """
+from example_qt5_window import Example, run_example
 from pyrr import Vector3
 
-from pysg.light import PointLight
-
-sys.path.append("..")  # Adds higher directory to python modules path.
-
-from pysg.object_3d import CubeObject3D
 from pysg.camera import PerspectiveCamera
-from pysg.scene import Scene
+from pysg.light import PointLight
+from pysg.object_3d import CubeObject3D
 from pysg.renderer import GLRenderer
-
-from example_qt5_window import Example, run_example
+from pysg.scene import Scene
 
 
 class SimpleScene(Example):

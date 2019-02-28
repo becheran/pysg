@@ -1,21 +1,14 @@
-""" Renders a scene with a tree structure
-"""
-# TODO remove once api is released
-import sys
-
-from pyrr import Vector3
-
-from pysg.light import PointLight
-
-sys.path.append("..")  # Adds higher directory to python modules path.
-
-from pysg.constants import color
-from pysg.object_3d import CubeObject3D
-from pysg.camera import PerspectiveCamera
-from pysg.scene import Scene
-from pysg.renderer import GLRenderer
+""" Renders scene with many cubes to test the render performance of pysg. """
 
 from example_qt5_window import Example, run_example
+from pyrr import Vector3
+
+from pysg.camera import PerspectiveCamera
+from pysg.constants import color
+from pysg.light import PointLight
+from pysg.object_3d import CubeObject3D
+from pysg.renderer import GLRenderer
+from pysg.scene import Scene
 
 
 class PerformanceScene(Example):

@@ -1,23 +1,17 @@
-""" Renders a scene with a tree structure
-"""
-# TODO remove once api is released
+""" Renders all 3D objects provided by pysg. """
+
 import math
-import sys
-
-from pyrr import Vector3
-
-from pysg.light import PointLight
-
-sys.path.append("..")  # Adds higher directory to python modules path.
-
-from pysg.constants import color
-from pysg.object_3d import CubeObject3D, PlaneObject3D, IcosahedronObject3D, CircleObject3D, TriangleObject3D, \
-    CylinderObject3D, TetrahedralObject3D, PyramidObject3D
-from pysg.camera import PerspectiveCamera
-from pysg.scene import Scene
-from pysg.renderer import GLRenderer
 
 from example_qt5_window import Example, run_example
+from pyrr import Vector3
+
+from pysg.camera import PerspectiveCamera
+from pysg.constants import color
+from pysg.light import PointLight
+from pysg.object_3d import CubeObject3D, PlaneObject3D, IcosahedronObject3D, CircleObject3D, TriangleObject3D, \
+    CylinderObject3D, TetrahedralObject3D, PyramidObject3D
+from pysg.renderer import GLRenderer
+from pysg.scene import Scene
 
 
 class ObjectsScene(Example):

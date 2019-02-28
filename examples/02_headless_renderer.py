@@ -1,21 +1,14 @@
 """ Renders a simple cube without the QT5 window.
-Use ModernGL standalone context instead.
-"""
-# TODO remove once api is released
-import sys
+Use ModernGL standalone context instead. """
 
 from PIL import Image
 from pyrr import Vector3
 
-from pysg.light import PointLight
-
-sys.path.append("..")  # Adds higher directory to python modules path.
-
-from pysg.constants import color
-from pysg.object_3d import Object3D, CubeObject3D
 from pysg.camera import PerspectiveCamera
-from pysg.scene import Scene
+from pysg.light import PointLight
+from pysg.object_3d import CubeObject3D
 from pysg.renderer import HeadlessGLRenderer
+from pysg.scene import Scene
 
 width = 800
 height = 600
