@@ -22,47 +22,9 @@ Checkout the [examples folder](/examples).
 * [ModernGL](https://github.com/cprogrammer1994/ModernGL) - OpenGL related stuff.
 * [pyrr](https://github.com/adamlwgriffiths/Pyrr) - Math operations in 3D like matrix multiplication etc.. Fast due to the heavy use of [numpy](http://www.numpy.org/).
 
-<!-- 
-## Installing
-
-The pysg package can be installed using pip. Please note that a python version >=3.6 is required since the static type checking feature is used.
-
-TODO: make sure pysg is in pip
-
-```
-pip install pysg
-```
-
-## Running the tests
-
-TODO
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
--->
-
 ## Built With
 
 * [SPHINX](http://www.sphinx-doc.org/en/master/) - Used to generate Documentation
-
-<!-- 
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
--->
 
 ## License
 
