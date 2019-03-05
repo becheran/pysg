@@ -11,3 +11,5 @@ venv/
 
 # sphinx build folder
 _build
+pysg.egg-info/
+dist/
