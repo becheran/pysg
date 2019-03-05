@@ -76,4 +76,11 @@ class Scene(Node3D):
             else:
                 self.render_list.geometry.remove(n)
 
-        super(Scene, self).remove(node_3d)
+        super().remove(node_3d)
+
+    def clear(self) -> None:
+        """ Clears render lists and scene graph. """
+
+        self.render_list.point_lights = list()
+        self.render_list.geometry = list()
+        self.children = list()

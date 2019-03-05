@@ -27,3 +27,10 @@ class TestScene(TestCase, CustomAssertions):
         self.scene.add(cube)
         self.scene.remove(cube)
         self.assertEqual(len(self.scene.render_list.geometry), 0)
+
+    def test_clear(self):
+        cube = CubeObject3D(1, 1, 1)
+        self.scene.add(cube)
+        self.scene.clear()
+        self.assertEqual(len(self.scene.render_list.geometry), 0)
+        self.assertEqual(len(self.scene.children), 0)
