@@ -7,7 +7,7 @@ from pysg.node_3d import Node3D
 
 class Light(Node3D):
 
-    def __init__(self, color: tuple, name: str) -> 'Light':
+    def __init__(self, color: tuple, name: str = "Light") -> 'Light':
         """ Base class of all lights which can be added to the scene.
         """
         super().__init__(name)
@@ -16,7 +16,7 @@ class Light(Node3D):
 
 class PointLight(Light):
 
-    def __init__(self, color: tuple, name: str) -> 'PointLight':
+    def __init__(self, color: tuple, name: str = "PointLight") -> 'PointLight':
         """ Point light emits light in all directions from a single point.
 
         Args:
