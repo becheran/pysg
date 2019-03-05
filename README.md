@@ -38,3 +38,4 @@ Also many thanks to the [three.js](https://threejs.org/) developers where I got 
 ## TODO
 
 - [ ] Improve render performance (use multi instance rendering)
+- [ ] Allow more light sources and add different light types
