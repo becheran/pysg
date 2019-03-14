@@ -25,13 +25,13 @@ def create_cube(dtype='float32') -> Tuple[np.array, np.array, np.array]:
     vertices = np.array([
         # front
         # top right
-        (width, height, depth,),
+        (width, height, depth),
         # top left
-        (-width, height, depth,),
+        (-width, height, depth),
         # bottom left
-        (-width, -height, depth,),
+        (-width, -height, depth),
         # bottom right
-        (width, -height, depth,),
+        (width, -height, depth),
 
         # right
         # top right
