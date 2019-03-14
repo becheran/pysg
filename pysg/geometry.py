@@ -406,44 +406,45 @@ def create_tetrahedral(dtype='float32') -> Tuple[np.array, np.array, np.array]:
         and last for the normals.
 
     """
-    base_height = -1 / 3
+    size = 0.5
 
-    tip_vert = np.array((0, 1, 0))
-    base_top_vert = np.array((math.sqrt(8 / 9), base_height, 0))
-    base_left_vert = np.array((-math.sqrt(2 / 9), base_height, math.sqrt(2 / 3)))
-    base_right_vert = np.array((-math.sqrt(2 / 9), base_height, -math.sqrt(2 / 3)))
+    v1 = np.array((size, size, size))
+    v2 = np.array((size, -size, -size))
+    v3 = np.array((-size, size, -size))
+    v4 = np.array((-size, -size, size))
 
     vertices = np.array([
-        # Bottom
-        base_top_vert,
-        base_left_vert,
-        base_right_vert,
+        # 1
+        v4,
+        v3,
+        v2,
 
-        # Front
-        tip_vert,
-        base_right_vert,
-        base_left_vert,
+        # 2
+        v3,
+        v4,
+        v1,
 
-        # Right
-        tip_vert,
-        base_top_vert,
-        base_right_vert,
+        # 3
+        v1,
+        v4,
+        v2,
 
-        # Left
-        tip_vert,
-        base_left_vert,
-        base_top_vert,
+        # 4
+        v2,
+        v3,
+        v1,
     ], dtype=dtype)
 
-    norm_front = tuple(np.cross((base_right_vert - tip_vert), (base_left_vert - tip_vert)))
-    norm_right = tuple(np.cross((base_top_vert - tip_vert), (base_right_vert - tip_vert)))
-    norm_left = tuple(np.cross((base_left_vert - tip_vert), (base_top_vert - tip_vert)))
+    norm_1 = tuple(np.cross((v4 - v2), (v3 - v2)))
+    norm_2 = tuple(np.cross((v3 - v1), (v4 - v1)))
+    norm_3 = tuple(np.cross((v4 - v1), (v2 - v1)))
+    norm_4 = tuple(np.cross((v2 - v1), (v3 - v1)))
 
     normals = np.array([
-        (0, -1, 0) * 3,  # Bottom
-        norm_front * 3,  # Front
-        norm_right * 3,  # Right
-        norm_left * 3,  # Left
+        norm_1 * 3,
+        norm_2 * 3,
+        norm_3 * 3,
+        norm_4 * 3,
     ])
 
     indices = np.arange(0, 12, dtype='int')
