@@ -1,7 +1,7 @@
 ![header](https://gitlab.com/becheran/pysg/raw/master/_img/header.png)
 # pysg
 
-Simple and lightweight 3D render scene graph for python 3.
+Simple and lightweight 3D render scene graph for python 3 (tested with 3.8).
 
 ## Installation
 Install the latest version of pysg via pip:

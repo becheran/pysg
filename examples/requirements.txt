@@ -1,0 +1,4 @@
+-r ../requirements.txt
+Pillow==7.0.0
+PyQt5==5.14.1
+PyQt5-sip==12.7.0

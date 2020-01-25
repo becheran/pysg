@@ -41,7 +41,7 @@ class ExampleWindow(QtOpenGL.QGLWidget):
         self.move(QtWidgets.QDesktopWidget().rect().center() - self.rect().center())
         self.setWindowTitle(title)
 
-        self.start_time = time.clock()
+        self.start_time = time.process_time()
         self.example = lambda: None
         self.ex = None
 
@@ -69,7 +69,7 @@ class ExampleWindow(QtOpenGL.QGLWidget):
     def paintGL(self):
         if self.ex is None:
             self.ex = self.example()
-        self.wnd.time = time.clock() - self.start_time
+        self.wnd.time = time.process_time() - self.start_time
         self.ex.update()
         self.wnd.old_keys = np.copy(self.wnd.keys)
         self.wnd.wheel = 0
