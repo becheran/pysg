@@ -1,4 +1,4 @@
-image: python:3.6-slim
+image: python:3.8-slim
 
 before_script:
 - python -V
@@ -12,13 +12,28 @@ stages:
 - build
 - deploy
 
-test_job:
+test_python_3_6:
+  image: python:3.6-slim
   stage: test
   script:
   - echo "Running tests"
   - python -m unittest discover -s "./tests/"
-  
-build_job:
+
+test_python_3_7:
+  image: python:3.7-slim
+  stage: test
+  script:
+  - echo "Running tests"
+  - python -m unittest discover -s "./tests/"
+
+test_python_3_8:
+  image: python:3.8-slim
+  stage: test
+  script:
+  - echo "Running tests"
+  - python -m unittest discover -s "./tests/"
+
+build:
   stage: build
   script:
   - echo "Build package with setup.py"
@@ -27,7 +42,7 @@ build_job:
     paths:
       - dist/
   
-deploy_job:
+deploy:
   stage: deploy
   variables:
     TWINE_USERNAME: $DEPLOY_USERNAME
