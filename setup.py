@@ -19,13 +19,12 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://gitlab.com/becheran/pysg",
     packages=setuptools.find_packages(),
-    # Python 3.6 required minimum due to the use of static type checking
     python_requires='>=3.6',
     license='MIT',
     install_requires=[
-        'moderngl>=5.4.2',
-        'numpy>=1.15.4',
-        'pyrr>=0.10.0',
+        'moderngl>=5.4.2,<6',
+        'numpy>=1.15.4,<2',
+        'pyrr>=0.10.0<1',
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
