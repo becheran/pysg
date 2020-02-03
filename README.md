@@ -1,7 +1,7 @@
 [![Build Status](https://gitlab.com/becheran/pysg_ci/badges/master/pipeline.svg)](https://gitlab.com/becheran/pysg_ci/pipelines)
 [![](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-![header](https://gitlab.com/becheran/pysg/raw/master/_img/header.png)
+![header](https://raw.githubusercontent.com/becheran/pysg/master/_img/header.png)
 # pysg
 
 Simple and lightweight 3D render scene graph for python 3.
