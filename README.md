@@ -1,5 +1,6 @@
 [![Build Status](https://gitlab.com/becheran/pysg_ci/badges/master/pipeline.svg)](https://gitlab.com/becheran/pysg_ci/pipelines)
 [![](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Documentation Status](https://readthedocs.org/projects/pysg/badge/?version=latest)](https://pysg.readthedocs.io/en/latest/?badge=latest)
 
 ![header](https://raw.githubusercontent.com/becheran/pysg/master/_img/header.png)
 # pysg
