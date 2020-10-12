@@ -70,7 +70,8 @@ class ObjectsScene(Example):
         self.renderer.render()
 
 
-try:
-    run_example(ObjectsScene)
-except Exception as e:
-    print(e)
+if __name__ == "__main__":
+    try:
+        run_example(ObjectsScene)
+    except Exception as e:
+        print(e)

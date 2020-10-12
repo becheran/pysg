@@ -44,7 +44,8 @@ class HierarchyScene(Example):
         self.renderer.render()
 
 
-try:
-    run_example(HierarchyScene)
-except Exception as e:
-    print(e)
+if __name__ == "__main__":
+    try:
+        run_example(HierarchyScene)
+    except Exception as e:
+        print(e)

@@ -3,19 +3,22 @@
 [![Documentation Status](https://readthedocs.org/projects/pysg/badge/?version=latest)](https://pysg.readthedocs.io/en/latest/?badge=latest)
 
 ![header](https://raw.githubusercontent.com/becheran/pysg/master/_img/header.png)
+
 # pysg
 
 Simple and lightweight 3D render scene graph for python 3.
 
 ## Installation
+
 Install the latest version of pysg via pip:
 
-	pip install pysg 
+``` sh
+pip install pysg
+```
 
 ## Documentation
 
 [Link documentation](https://pysg.readthedocs.io/en/latest/).
-
 
 ## Examples
 
@@ -35,6 +38,7 @@ Checkout the [examples folder](/examples).
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
 ## Acknowledgments
+
 Many thanks to the [ModernGL](https://github.com/cprogrammer1994/ModernGL) and [pyrr](https://github.com/adamlwgriffiths/Pyrr) teams. 
 
 Also many thanks to the [three.js](https://threejs.org/) developers where I got a lot of inspiration from.

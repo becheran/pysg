@@ -30,7 +30,8 @@ class SimpleScene(Example):
         self.cube.local_euler_angles = Vector3([0, self.wnd.time * 100, 0])
 
 
-try:
-    run_example(SimpleScene)
-except Exception as e:
-    print(e)
+if __name__ == "__main__":
+    try:
+        run_example(SimpleScene)
+    except Exception as e:
+        print(e)

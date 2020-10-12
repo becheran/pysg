@@ -1,3 +1,3 @@
-moderngl==5.5.4
-numpy==1.18.1
+moderngl==5.6.2
+numpy==1.19.2
 pyrr==0.10.3
