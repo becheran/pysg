@@ -1,4 +1,4 @@
 -r ../requirements.txt
-Pillow==8.3.2
+Pillow==9.0.0
 PyQt5==5.15.1
 PyQt5-sip==12.8.1
